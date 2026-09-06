@@ -79,8 +79,11 @@ a:hover { text-decoration: underline; }
   color: var(--muted);
   z-index: 60;
 }
+@media (max-width: 720px) {
+  .scroll-progress__readout { display: none; } /* kollidiert sonst mit dem Menü-Knopf */
+}
 
-/* ---------- Navigation ---------- */
+/* ---------- Navigation · Skeuomorphismus (gebürstetes Metall) ---------- */
 .nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -89,63 +92,119 @@ a:hover { text-decoration: underline; }
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px clamp(16px, 4vw, 40px);
-  background: rgba(7, 10, 13, 0.72);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
+  padding: 9px clamp(14px, 4vw, 40px);
+  background:
+    linear-gradient(180deg, #2c343d 0%, #232b32 12%, #1a2027 55%, #11161b 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.022) 0 1px, rgba(0, 0, 0, 0.03) 1px 2px);
+  border-bottom: 1px solid #05080b;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55),
+    0 2px 1px rgba(0, 0, 0, 0.45),
+    0 7px 20px rgba(0, 0, 0, 0.55);
 }
+/* Akzent-Lichtleiste unter der Leiste */
+.nav::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.55), transparent);
+}
+
+/* Marken-Plakette (eingelassen) */
 .nav__brand {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
+  padding: 7px 14px;
+  border-radius: 9px;
   font-family: var(--font-mono);
   font-weight: 700;
-  color: var(--text);
+  color: #e7eef4;
   white-space: nowrap;
+  background: linear-gradient(180deg, #10151a, #0b0f13);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.85),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    0 1px 0 rgba(255, 255, 255, 0.08);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.7);
 }
 .nav__brand:hover { text-decoration: none; }
 .nav__logo {
-  height: 24px;
-  width: auto;
+  height: 26px;
+  width: 26px;
   flex-shrink: 0;
   display: block;
-  transition: opacity .2s ease;
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.45)) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.6));
+  transition: filter .2s ease;
 }
-.nav__brand:hover .nav__logo { opacity: .7; }
+.nav__brand:hover .nav__logo { filter: drop-shadow(0 0 11px rgba(34, 211, 238, 0.8)); }
 .nav__brand-text {
   font-size: 15px;
   letter-spacing: 0.5px;
 }
 .nav__prompt { color: var(--accent); }
+
+/* Navi-Links als gefräste Tasten */
 .nav__links {
   display: flex;
-  gap: clamp(10px, 2.4vw, 26px);
+  gap: clamp(5px, 1.5vw, 12px);
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 13.5px;
 }
 .nav__links a {
-  color: var(--muted);
-  padding: 4px 2px;
-  border-bottom: 2px solid transparent;
-  transition: color .15s, border-color .15s;
+  color: #b7c4d0;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #333c45 0%, #262e36 48%, #1f262d 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.45),
+    0 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.55);
+  transition: transform .08s ease, box-shadow .12s ease, color .12s ease, background .12s ease;
 }
-.nav__links a:hover { color: var(--text); text-decoration: none; }
+.nav__links a:hover {
+  color: #eaf2f8;
+  text-decoration: none;
+  background: linear-gradient(180deg, #3d4751 0%, #2d363e 48%, #232b33 100%);
+}
+.nav__links a:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.7), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
 .nav__links a.is-active {
   color: var(--accent);
-  border-bottom-color: var(--accent);
+  background: linear-gradient(180deg, #14181d 0%, #1b2127 100%);
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.8),
+    inset 0 0 8px rgba(34, 211, 238, 0.22),
+    0 0 0 1px rgba(34, 211, 238, 0.25);
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.7);
 }
+
+/* Menü-Taste (Mobil) als Metallknopf */
 .nav__toggle {
   display: none;
   flex-direction: column;
   gap: 5px;
-  background: none;
+  padding: 9px 8px;
   border: 0;
   cursor: pointer;
-  padding: 6px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #333c45, #20272e);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.45),
+    0 1px 2px rgba(0, 0, 0, 0.5);
 }
+.nav__toggle:active { box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.7); }
 .nav__toggle span {
-  width: 24px; height: 2px;
-  background: var(--text);
+  width: 22px; height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #d6dee6, #9aa7b2);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
   transition: transform .2s, opacity .2s;
 }
 
@@ -609,22 +668,30 @@ a:hover { text-decoration: underline; }
   .nav__toggle { display: flex; }
   .nav__links {
     position: absolute;
-    top: 100%;
-    left: 0; right: 0;
+    top: calc(100% + 8px);
+    left: clamp(8px, 3vw, 16px);
+    right: clamp(8px, 3vw, 16px);
     flex-direction: column;
-    gap: 0;
-    background: rgba(7, 10, 13, 0.97);
-    border-bottom: 1px solid var(--border);
+    gap: 6px;
+    padding: 0;
+    border-radius: 12px;
     max-height: 0;
     overflow: hidden;
-    transition: max-height .25s ease;
+    transition: max-height .28s ease, padding .28s ease;
   }
-  .nav__links.open { max-height: 340px; }
+  .nav__links.open {
+    max-height: 460px;
+    padding: 10px;
+    background: linear-gradient(180deg, #262e36, #14191e);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 12px 28px rgba(0, 0, 0, 0.6),
+      0 0 0 1px #05080b;
+  }
   .nav__links a {
-    padding: 14px clamp(16px, 4vw, 40px);
-    border-bottom: 1px solid var(--border);
+    display: block;
+    padding: 13px 14px;
   }
-  .nav__links a.is-active { border-bottom-color: var(--border); }
 }
 
 /* ---------- Reduzierte Bewegung ---------- */
