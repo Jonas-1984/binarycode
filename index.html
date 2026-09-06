@@ -26,20 +26,7 @@
   <!-- Navigation -->
   <header class="nav" id="nav">
     <a class="nav__brand" href="#home" aria-label="binaryCode – Startseite">
-      <svg class="nav__logo" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-        <rect x="1" y="1" width="42" height="42" rx="10" stroke="currentColor" stroke-opacity=".3" stroke-width="2" />
-        <g fill="currentColor">
-          <rect x="9" y="9" width="6" height="6" rx="1" />
-          <rect x="19" y="9" width="6" height="6" rx="1" opacity=".25" />
-          <rect x="29" y="9" width="6" height="6" rx="1" />
-          <rect x="9" y="19" width="6" height="6" rx="1" opacity=".25" />
-          <rect x="19" y="19" width="6" height="6" rx="1" />
-          <rect x="29" y="19" width="6" height="6" rx="1" opacity=".25" />
-          <rect x="9" y="29" width="6" height="6" rx="1" />
-          <rect x="19" y="29" width="6" height="6" rx="1" opacity=".25" />
-          <rect x="29" y="29" width="6" height="6" rx="1" />
-        </g>
-      </svg>
+      <span class="nav__logo" aria-hidden="true"></span>
       <span class="nav__brand-text">binary<span class="accent">Code</span></span>
     </a>
     <button class="nav__toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
@@ -61,7 +48,8 @@
     <!-- ============================================================= -->
     <section id="home" class="section hero">
       <div class="binary-strip" aria-hidden="true"></div>
-      <div class="container">
+      <div class="container hero__grid">
+       <div class="hero__text">
         <p class="hero__hi">01001010 01010011 &nbsp;//&nbsp; Jonas Shojaei</p>
         <h1 class="hero__name" data-name>Jonas Shojaei</h1>
         <h2 class="hero__role">
@@ -87,6 +75,14 @@
           <a class="btn btn--primary" href="#timeline">./werdegang.sh</a>
           <a class="btn" href="#contact">Kontakt aufnehmen</a>
         </div>
+       </div>
+
+       <figure class="hero__portrait">
+         <img src="assets/img/jonas.jpg" width="640" height="864"
+              alt="Porträtfoto von Jonas Shojaei" loading="eager" decoding="async" />
+         <span class="hero__portrait-ring" aria-hidden="true"></span>
+         <figcaption aria-hidden="true">01001010&nbsp;01010011</figcaption>
+       </figure>
       </div>
       <a href="#about" class="scroll-hint" aria-label="Nach unten scrollen">
         <span>scroll</span>
@@ -464,6 +460,7 @@
 
   <footer class="footer">
     <div class="footer__binary" aria-hidden="true"></div>
+    <span class="footer__logo" aria-hidden="true"></span>
     <p>
       <span class="accent">&lt;/&gt;</span>
       &copy; <span id="year">2026</span> Jonas Shojaei &middot; gebaut mit HTML, CSS &amp; ein&nbsp;bisschen&nbsp;JavaScript

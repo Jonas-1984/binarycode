@@ -35,7 +35,9 @@ Wichtigste Stellen:
 
 | Was | Wo |
 |-----|-----|
-| Logo / Markenname im Header | `<a class="nav__brand">` – Bit-Grid-SVG + Text „binaryCode"; Größe/Farbe in `styles.css` unter `.nav__logo` |
+| Logo | [`logo.svg`](logo.svg) – aus dem eingereichten Monogramm freigestellt; wird per CSS-`mask` im Header (`.nav__logo`) und Footer (`.footer__logo`) in der Akzentfarbe angezeigt |
+| Markenname im Header | `<span class="nav__brand-text">` – „binaryCode" |
+| Porträtfoto | `assets/img/jonas.jpg` (640×864, aus `face.png` verkleinert); eingebunden im Hero unter `<figure class="hero__portrait">` |
 | Name | `<h1 class="hero__name">` |
 | Titel / Rolle | `<h2 class="hero__role">` und Terminal-Ausgabe darunter |
 | Über mich | Sektion `#about` |
