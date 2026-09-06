@@ -116,14 +116,12 @@ a:hover { text-decoration: underline; }
 }
 .nav__brand:hover { text-decoration: none; }
 .nav__logo {
-  height: 44px;
-  width: 44px;
+  height: 46px;
+  width: 46px;
   flex-shrink: 0;
   display: block;
-  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.55));
-  transition: filter .2s ease;
+  filter: none;                 /* flach, ohne Beleuchtung/Glow */
 }
-.nav__brand:hover .nav__logo { filter: drop-shadow(0 0 13px rgba(34, 211, 238, 0.9)); }
 .nav__brand-text {
   font-size: 16px;
   letter-spacing: 0.5px;
@@ -134,9 +132,11 @@ a:hover { text-decoration: underline; }
 .nav__links {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 2.4vw, 22px);
+  gap: clamp(14px, 2.6vw, 26px);
 }
-.nav__ico {
+/* Gemeinsamer Soft-UI-Knopf (Menü + Social) */
+.nav__ico,
+.soc {
   --sz: 46px;
   width: var(--sz);
   height: var(--sz);
@@ -146,36 +146,38 @@ a:hover { text-decoration: underline; }
   color: #c3cad4;
   background: linear-gradient(225deg, #363b46, #404653);
   box-shadow:
-    -6px 6px 14px #2c2f39,
-    6px -6px 14px #4c5363;
-  transition: box-shadow .16s ease, color .16s ease, transform .06s ease;
+    -7px 7px 28px #2c2f39,
+    7px -7px 28px #4c5363;
+  transition: box-shadow .18s ease, color .16s ease, transform .06s ease;
 }
-.nav__ico svg {
+.nav__ico svg,
+.soc svg {
   width: 20px;
   height: 20px;
 }
-.nav__ico:hover {
+.nav__ico:hover,
+.soc:hover {
   color: #eef6fb;
   text-decoration: none;
   box-shadow:
-    -9px 9px 20px #2c2f39,
-    9px -9px 20px #4c5363;
+    -10px 10px 34px #2c2f39,
+    10px -10px 34px #4c5363;
 }
-.nav__ico:active {
+.nav__ico:active,
+.soc:active {
   transform: translateY(1px);
   box-shadow:
-    inset -5px 5px 11px #2c2f39,
-    inset 5px -5px 11px #4c5363;
+    inset -6px 6px 16px #2c2f39,
+    inset 6px -6px 16px #4c5363;
 }
 .nav__ico.is-active {
   color: var(--accent);
   background: linear-gradient(225deg, #333842, #3b414d);
   box-shadow:
-    inset -5px 5px 11px #2c2f39,
-    inset 5px -5px 11px #4c5363,
-    inset 0 0 10px rgba(34, 211, 238, 0.25);
+    inset -6px 6px 16px #2c2f39,
+    inset 6px -6px 16px #4c5363,
+    inset 0 0 10px rgba(34, 211, 238, 0.22);
 }
-.nav__ico.is-active svg { filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.75)); }
 
 /* ---------- Layout ---------- */
 .container {
@@ -549,31 +551,70 @@ a:hover { text-decoration: underline; }
 .footer {
   position: relative;
   z-index: 2;
-  text-align: center;
-  padding: 28px 16px 40px;
+  padding: 26px clamp(16px, 5vw, 48px) 40px;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--muted);
+  color: #9aa7b4;
+  background: #3b404c;                 /* Soft-UI-Grund wie die Menüleiste */
+  border-top: 1px solid rgba(0, 0, 0, 0.35);
 }
 .footer__binary {
   font-size: 11px;
-  color: var(--accent);
-  opacity: 0.12;
+  color: #cdd9e5;
+  opacity: 0.10;
   word-break: break-all;
   max-width: 700px;
-  margin: 0 auto 16px;
+  margin: 0 auto 18px;
+  text-align: center;
   user-select: none;
 }
+.footer__rule {
+  border: 0;
+  height: 1px;
+  margin: 0 0 22px;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.4) 20%, rgba(76, 83, 99, 0.6) 80%, transparent);
+}
+.footer__grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+/* Social-Buttons links unter der Linie */
+.footer__social {
+  list-style: none;
+  display: flex;
+  gap: clamp(14px, 3vw, 24px);
+  margin: 0;
+  padding: 0;
+}
+.soc { --sz: 44px; }              /* erbt Soft-UI-Look von .nav__ico, .soc */
+.soc:hover { color: var(--accent); }
+
+.footer__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+}
+.footer__meta p { margin: 0; }
 .footer__logo {
   display: block;
   width: auto;
-  height: 76px;
-  margin: 0 auto 16px;
-  opacity: 0.5;
-  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.25));
+  height: 58px;
+  opacity: 0.55;
+  filter: none;                    /* flach, ohne Glow */
   transition: opacity .2s ease;
 }
 .footer:hover .footer__logo { opacity: 0.9; }
+
+@media (max-width: 620px) {
+  .footer__grid { justify-content: flex-start; gap: 22px; }
+  .footer__meta { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .soc { --sz: 42px; box-shadow: -5px 5px 18px #2c2f39, 5px -5px 18px #4c5363; }
+  .soc:active { box-shadow: inset -4px 4px 11px #2c2f39, inset 4px -4px 11px #4c5363; }
+}
 
 /* ---------- Kontaktformular ---------- */
 .cform-wrap {
@@ -705,28 +746,29 @@ a:hover { text-decoration: underline; }
 /* ---------- Mobile ---------- */
 @media (max-width: 620px) {
   .nav { gap: 10px; padding: 10px 12px; }
-  .nav__brand { padding: 6px 12px; gap: 8px; border-radius: 15px; }
-  .nav__brand,
-  .nav__ico:active,
-  .nav__ico.is-active {
-    box-shadow: inset -4px 4px 8px #2c2f39, inset 4px -4px 8px #4c5363;
-  }
-  .nav__ico.is-active {
-    box-shadow: inset -4px 4px 8px #2c2f39, inset 4px -4px 8px #4c5363, inset 0 0 8px rgba(34, 211, 238, 0.25);
+  .nav__brand {
+    padding: 6px 12px; gap: 8px; border-radius: 15px;
+    box-shadow: inset -4px 4px 9px #2c2f39, inset 4px -4px 9px #4c5363;
   }
   .nav__brand-text { display: none; }   /* nur noch das Logo */
   .nav__logo { height: 38px; width: 38px; }
   .nav__ico {
     --sz: 40px;
-    box-shadow: -4px 4px 9px #2c2f39, 4px -4px 9px #4c5363;
+    box-shadow: -5px 5px 18px #2c2f39, 5px -5px 18px #4c5363;
   }
-  .nav__ico:hover { box-shadow: -6px 6px 13px #2c2f39, 6px -6px 13px #4c5363; }
+  .nav__ico:hover { box-shadow: -7px 7px 24px #2c2f39, 7px -7px 24px #4c5363; }
+  .nav__ico:active {
+    box-shadow: inset -4px 4px 11px #2c2f39, inset 4px -4px 11px #4c5363;
+  }
+  .nav__ico.is-active {
+    box-shadow: inset -4px 4px 11px #2c2f39, inset 4px -4px 11px #4c5363, inset 0 0 8px rgba(34, 211, 238, 0.22);
+  }
   .nav__ico svg { width: 18px; height: 18px; }
-  .nav__links { gap: clamp(8px, 2.6vw, 16px); }
+  .nav__links { gap: clamp(10px, 3vw, 18px); }
 }
 @media (max-width: 400px) {
   .nav__ico { --sz: 36px; }
-  .nav__links { gap: 7px; }
+  .nav__links { gap: 9px; }
 }
 
 /* ---------- Reduzierte Bewegung ---------- */
