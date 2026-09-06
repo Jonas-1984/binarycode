@@ -346,9 +346,20 @@ a:hover { text-decoration: underline; }
 .skill-card li::marker { content: "› "; color: var(--accent); }
 
 /* ---------- Timeline ---------- */
+.tl-group { margin-top: 34px; }
+.tl-group__title {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 6px;
+}
+.tl-group__title::before { content: "// "; opacity: 0.5; }
+
 .tl {
   list-style: none;
-  margin: 30px 0 0;
+  margin: 18px 0 0;
   padding: 0;
   position: relative;
 }

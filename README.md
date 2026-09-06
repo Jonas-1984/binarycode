@@ -1,8 +1,10 @@
 # binarycode
 
-Persönliche One-Page-Webseite für einen **IT-Spezialisten & Systemadministrator**.
-Dark-/IT-Theme, durchgängig mit Binärcode (0/1) gestaltet, Lebenslauf als Timeline.
+Persönliche One-Page-Webseite von **Jonas Shojaei – IT-Spezialist & IT-Systemadministrator** (Hamburg).
+Dark-/IT-Theme, durchgängig mit Binärcode (0/1) gestaltet, Werdegang + Bildungsweg als Timeline.
 Reines HTML/CSS/JavaScript – kein Build, kein Framework.
+
+Inhalte stammen aus dem Lebenslauf. **Noch offen:** LinkedIn-URL in Sektion `#contact` eintragen.
 
 ## Vorschau
 
@@ -37,9 +39,9 @@ Wichtigste Stellen:
 | Titel / Rolle | `<h2 class="hero__role">` und Terminal-Ausgabe darunter |
 | Über mich | Sektion `#about` |
 | Skills | Sektion `#skills` – `<article class="skill-card">` kopieren/anpassen |
-| **Werdegang / Timeline** | Sektion `#timeline` – je Station ein `<li class="tl__item">` |
-| Zertifikate | Sektion `#certs` (oder Sektion + Nav-Link entfernen) |
-| Kontakt (E-Mail, GitHub, LinkedIn) | Sektion `#contact` |
+| **Werdegang / Timeline** | Sektion `#timeline` – zwei Blöcke (`Berufserfahrung`, `Bildungsweg`), je Station ein `<li class="tl__item">` |
+| Sprachen & Eckdaten | Sektion `#profil` |
+| Kontakt (E-Mail, Telefon, GitHub, LinkedIn) | Sektion `#contact` |
 | Footer-Name / Jahr | `<footer>` (Jahr wird automatisch gesetzt) |
 
 ### Neue Timeline-Station hinzufügen
