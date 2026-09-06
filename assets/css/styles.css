@@ -120,9 +120,8 @@ a:hover { text-decoration: underline; }
 /* Marken-Plakette · Glasfeld */
 .nav__brand {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
   padding: 6px 15px;
   border-radius: 14px;
   font-family: var(--font-mono);
@@ -134,6 +133,20 @@ a:hover { text-decoration: underline; }
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 .nav__brand:hover { text-decoration: none; }
+
+/* sichtbarer Zustand (Logo + Text) – zerfällt/entsteht im 6-Sekunden-Takt */
+.brand__solid {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: brandCycle 6s ease-in-out infinite;
+}
+@keyframes brandCycle {
+  0%, 60%   { opacity: 1; filter: blur(0);   transform: scale(1); }
+  67%       { opacity: 0; filter: blur(9px);  transform: scale(.82); }
+  82%       { opacity: 0; filter: blur(9px);  transform: scale(.82); }
+  90%, 100% { opacity: 1; filter: blur(0);   transform: scale(1); }
+}
 .nav__logo {
   height: 30px;
   width: auto;                  /* Seitenverhältnis erhalten – nichts abschneiden/stauchen */
@@ -146,6 +159,36 @@ a:hover { text-decoration: underline; }
   letter-spacing: 0.5px;
 }
 .nav__prompt { color: var(--accent); }
+
+/* Binärzahlen-Ebene: Logo+Text zerstäuben in 0/1 und formen sich wieder */
+.brand__bits {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.brand__bits i {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--accent);
+  text-shadow: 0 0 7px rgba(34, 211, 238, 0.65);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: brandBits 6s ease-in-out infinite;
+}
+@keyframes brandBits {
+  0%, 60%   { opacity: 0; transform: translate(0, 0) scale(.5); }
+  64%       { opacity: 1; transform: translate(0, 0) scale(1); }
+  72%       { opacity: .9; transform: translate(var(--tx), var(--ty)) scale(1.05); }
+  78%, 80%  { opacity: 0; transform: translate(calc(var(--tx) * 1.6), calc(var(--ty) * 1.6)) scale(.55); }
+  82%       { opacity: .95; transform: translate(var(--tx), var(--ty)) scale(1); }
+  88%       { opacity: 1; transform: translate(0, 0) scale(1); }
+  93%, 100% { opacity: 0; transform: translate(0, 0) scale(.5); }
+}
 
 /* Navi-Tasten · quadratisch mit runden Ecken, 10px Abstand, Glas */
 .nav__links {
@@ -990,4 +1033,6 @@ a:hover { text-decoration: underline; }
   }
   [data-reveal] { opacity: 1; transform: none; }
   .terminal__body .out[data-reveal] { opacity: 1; }
+  .brand__solid { animation: none; opacity: 1; filter: none; transform: none; }
+  .brand__bits { display: none; }
 }

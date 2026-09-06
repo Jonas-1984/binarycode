@@ -392,7 +392,44 @@
   })();
 
   /* ---------------------------------------------------------
-     10) Jahr im Footer
+     10) Marken-Logo: alle 6 s in Binärzahlen zerfallen und
+         wieder zum Logo + "binaryCode" zusammensetzen
+     --------------------------------------------------------- */
+  (function brandBinaryFx() {
+    var host = document.getElementById("brandBits");
+    if (!host || reduceMotion) return;
+
+    var COUNT = 30;
+    var bits = [];
+
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+
+    for (var i = 0; i < COUNT; i++) {
+      var b = document.createElement("i");
+      b.textContent = Math.random() < 0.5 ? "0" : "1";
+      /* Startposition quer über Logo + Schriftzug */
+      b.style.left = rnd(4, 96).toFixed(1) + "%";
+      b.style.top = rnd(10, 82).toFixed(1) + "%";
+      /* Streu-Vektor nach außen */
+      b.style.setProperty("--tx", rnd(-52, 52).toFixed(0) + "px");
+      b.style.setProperty("--ty", rnd(-17, 17).toFixed(0) + "px");
+      /* leichte Staffelung, Periode bleibt 6 s */
+      b.style.animationDelay = (-rnd(0, 0.22)).toFixed(2) + "s";
+      b.style.fontSize = rnd(9, 13).toFixed(0) + "px";
+      host.appendChild(b);
+      bits.push(b);
+    }
+
+    /* Ziffern gelegentlich neu würfeln, während sie zerstäubt sind */
+    setInterval(function () {
+      for (var k = 0; k < bits.length; k++) {
+        if (Math.random() < 0.5) bits[k].textContent = Math.random() < 0.5 ? "0" : "1";
+      }
+    }, 900);
+  })();
+
+  /* ---------------------------------------------------------
+     11) Jahr im Footer
      --------------------------------------------------------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
