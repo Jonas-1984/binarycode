@@ -83,7 +83,7 @@ a:hover { text-decoration: underline; }
   .scroll-progress__readout { display: none; } /* kollidiert sonst mit dem Menü-Knopf */
 }
 
-/* ---------- Navigation · Neumorphismus (Soft-UI) ---------- */
+/* ---------- Navigation · Liquid Glass ---------- */
 .nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -92,35 +92,54 @@ a:hover { text-decoration: underline; }
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 12px clamp(14px, 4vw, 40px);
-  background: #3b404c;                       /* Grundton = Tastenton, damit die weichen Schatten greifen */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
-  box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.55);
+  padding: 11px clamp(12px, 4vw, 40px);
+  background: linear-gradient(180deg, rgba(24, 30, 39, 0.72), rgba(14, 18, 25, 0.58));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    0 10px 34px -8px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+/* wandernder Glanz (liquid) */
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: -40% -10%;
+  background: radial-gradient(40% 60% at 30% 20%, rgba(34, 211, 238, 0.14), transparent 70%);
+  pointer-events: none;
+  animation: navSheen 14s ease-in-out infinite alternate;
+}
+@keyframes navSheen {
+  from { transform: translate3d(-8%, -4%, 0) rotate(0deg); }
+  to   { transform: translate3d(12%, 6%, 0) rotate(8deg); }
 }
 
-/* Marken-Plakette · eingelassen (weicher Innenschatten) */
+/* Marken-Plakette · Glasfeld */
 .nav__brand {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 7px 16px;
-  border-radius: 18px;
+  padding: 6px 15px;
+  border-radius: 14px;
   font-family: var(--font-mono);
   font-weight: 700;
-  color: #e7eef4;
+  color: #eef4f9;
   white-space: nowrap;
-  background: #3b404c;
-  box-shadow:
-    inset -5px 5px 11px #2c2f39,
-    inset 5px -5px 11px #4c5363;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 .nav__brand:hover { text-decoration: none; }
 .nav__logo {
-  height: 46px;
-  width: 46px;
+  height: 40px;
+  width: 40px;
   flex-shrink: 0;
   display: block;
-  filter: none;                 /* flach, ohne Beleuchtung/Glow */
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.35));
 }
 .nav__brand-text {
   font-size: 16px;
@@ -128,55 +147,73 @@ a:hover { text-decoration: underline; }
 }
 .nav__prompt { color: var(--accent); }
 
-/* Navi-Tasten · runde, erhabene Soft-UI-Knöpfe (nur Icons) */
+/* Navi-Tasten · quadratisch mit runden Ecken, 10px Abstand, Glas */
 .nav__links {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: clamp(14px, 2.6vw, 26px);
+  gap: 10px;
 }
-/* Gemeinsamer Soft-UI-Knopf (Menü + Social) */
+/* Gemeinsamer Glas-Knopf (Menü + Social) */
 .nav__ico,
 .soc {
-  --sz: 46px;
+  --sz: 42px;
+  position: relative;
   width: var(--sz);
   height: var(--sz);
   display: grid;
   place-items: center;
-  border-radius: 65px;
-  color: #c3cad4;
-  background: linear-gradient(225deg, #363b46, #404653);
+  border-radius: 13px;
+  color: #cdd6e0;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow:
-    -7px 7px 28px #2c2f39,
-    7px -7px 28px #4c5363;
-  transition: box-shadow .18s ease, color .16s ease, transform .06s ease;
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: transform .12s ease, box-shadow .18s ease, background .18s ease, color .16s ease, border-color .18s ease;
+}
+.nav__ico::after,
+.soc::after {                    /* Glanzlicht oben */
+  content: "";
+  position: absolute;
+  inset: 1px 1px 45%;
+  border-radius: 12px 12px 8px 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent);
+  pointer-events: none;
 }
 .nav__ico svg,
 .soc svg {
-  width: 20px;
-  height: 20px;
+  position: relative;
+  width: 19px;
+  height: 19px;
 }
 .nav__ico:hover,
 .soc:hover {
-  color: #eef6fb;
+  color: #ffffff;
   text-decoration: none;
+  transform: translateY(-1px);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.07));
+  border-color: rgba(255, 255, 255, 0.2);
   box-shadow:
-    -10px 10px 34px #2c2f39,
-    10px -10px 34px #4c5363;
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 8px 20px rgba(0, 0, 0, 0.35);
 }
 .nav__ico:active,
 .soc:active {
   transform: translateY(1px);
-  box-shadow:
-    inset -6px 6px 16px #2c2f39,
-    inset 6px -6px 16px #4c5363;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 .nav__ico.is-active {
   color: var(--accent);
-  background: linear-gradient(225deg, #333842, #3b414d);
+  background: linear-gradient(160deg, rgba(34, 211, 238, 0.22), rgba(34, 211, 238, 0.06));
+  border-color: rgba(34, 211, 238, 0.55);
   box-shadow:
-    inset -6px 6px 16px #2c2f39,
-    inset 6px -6px 16px #4c5363,
-    inset 0 0 10px rgba(34, 211, 238, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 0 14px rgba(34, 211, 238, 0.28),
+    0 0 16px rgba(34, 211, 238, 0.22);
 }
 
 /* ---------- Layout ---------- */
@@ -504,6 +541,166 @@ a:hover { text-decoration: underline; }
   padding: 2px 8px;
 }
 
+/* ---------- Werdegang · 3D-Coverflow-Karussell ---------- */
+.cf {
+  position: relative;
+  margin-top: 26px;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+.cf__stage {
+  position: relative;
+  width: 100%;
+  height: clamp(430px, 66vh, 520px);
+  perspective: 1500px;
+  overflow: hidden;
+}
+.cf__track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.cf__card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(600px, 92%);
+  transform: translate(-50%, -50%);
+  transition:
+    transform .6s cubic-bezier(.22, 1, .36, 1),
+    opacity .6s ease,
+    filter .6s ease;
+  will-change: transform, opacity, filter;
+}
+.cf__card .tl__card {
+  background: linear-gradient(180deg, #121a22, #0d141b);
+  padding: 20px 24px;
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.85);
+}
+.cf__card .tl__desc { margin: 0; }
+.cf__card .tl__desc li { margin: 4px 0; }
+.cf__card.is-current .tl__card {
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.3),
+    0 44px 90px -26px rgba(0, 0, 0, 0.9),
+    0 0 46px rgba(34, 211, 238, 0.16);
+}
+.cf__cat {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+/* liquid Fade oben/unten – liegt über den Nachbarkarten, unter der Mittelkarte */
+.cf__fade {
+  position: absolute;
+  left: -6%; right: -6%;
+  height: 30%;
+  z-index: 12;
+  pointer-events: none;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.cf__fade--top {
+  top: 0;
+  background: linear-gradient(180deg, var(--bg) 22%, rgba(7, 10, 13, 0.7) 60%, transparent);
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+          mask-image: linear-gradient(180deg, #000 55%, transparent);
+  animation: cfLiquid 9s ease-in-out infinite alternate;
+}
+.cf__fade--bot {
+  bottom: 0;
+  background: linear-gradient(0deg, var(--bg) 22%, rgba(7, 10, 13, 0.7) 60%, transparent);
+  -webkit-mask-image: linear-gradient(0deg, #000 55%, transparent);
+          mask-image: linear-gradient(0deg, #000 55%, transparent);
+  animation: cfLiquid 11s ease-in-out infinite alternate-reverse;
+}
+@keyframes cfLiquid {
+  0%   { transform: translate3d(0, 0, 0) scaleX(1); }
+  50%  { transform: translate3d(2%, 0, 0) scaleX(1.06); }
+  100% { transform: translate3d(-2%, 0, 0) scaleX(1.02); }
+}
+
+/* Pfeil-Tasten */
+.cf__nav {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  cursor: pointer;
+  color: #cdd6e0;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 6px 16px rgba(0, 0, 0, 0.35);
+  transition: transform .12s ease, color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.cf__nav svg { width: 22px; height: 22px; }
+.cf__nav:hover { color: #fff; transform: translateY(-1px); background: linear-gradient(160deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06)); }
+.cf__nav:active { transform: translateY(1px); box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45); }
+
+.cf__meter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+.cf__bar {
+  display: block;
+  width: 120px;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+.cf__bar i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 8px var(--accent);
+}
+.cf__bar i.run { transition: width 6s linear; }
+
+/* Vor JS-Init / ohne JS: einfache Liste */
+.cf:not(.cf--ready) .cf__stage {
+  height: auto;
+  perspective: none;
+  overflow: visible;
+  -webkit-mask-image: none;
+          mask-image: none;
+}
+.cf:not(.cf--ready) .cf__track {
+  position: static;
+  display: grid;
+  gap: 18px;
+}
+.cf:not(.cf--ready) .cf__card {
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.cf:not(.cf--ready) .cf__nav,
+.cf:not(.cf--ready) .cf__fade,
+.cf:not(.cf--ready) .cf__meter { display: none; }
+
 /* ---------- Zertifikate ---------- */
 .cert-grid {
   display: grid;
@@ -547,21 +744,35 @@ a:hover { text-decoration: underline; }
 .scroll-hint__arrow { animation: bob 1.8s ease-in-out infinite; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
-/* ---------- Footer ---------- */
+/* ---------- Footer · Liquid Glass ---------- */
 .footer {
   position: relative;
   z-index: 2;
-  padding: 26px clamp(16px, 5vw, 48px) 40px;
+  overflow: hidden;
+  padding: 24px clamp(16px, 5vw, 48px) 40px;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: #9aa7b4;
-  background: #3b404c;                 /* Soft-UI-Grund wie die Menüleiste */
-  border-top: 1px solid rgba(0, 0, 0, 0.35);
+  color: #aeb8c4;
+  background: linear-gradient(180deg, rgba(20, 25, 33, 0.6), rgba(12, 16, 22, 0.72));
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: -50% -10% auto -10%;
+  height: 160%;
+  background: radial-gradient(45% 55% at 75% 20%, rgba(34, 211, 238, 0.12), transparent 70%);
+  pointer-events: none;
+  animation: navSheen 16s ease-in-out infinite alternate;
 }
 .footer__binary {
+  position: relative;
   font-size: 11px;
   color: #cdd9e5;
-  opacity: 0.10;
+  opacity: 0.09;
   word-break: break-all;
   max-width: 700px;
   margin: 0 auto 18px;
@@ -569,27 +780,29 @@ a:hover { text-decoration: underline; }
   user-select: none;
 }
 .footer__rule {
+  position: relative;
   border: 0;
   height: 1px;
   margin: 0 0 22px;
-  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.4) 20%, rgba(76, 83, 99, 0.6) 80%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05) 15%, rgba(34, 211, 238, 0.4) 50%, rgba(255, 255, 255, 0.05) 85%, transparent);
 }
 .footer__grid {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 26px;
   flex-wrap: wrap;
 }
-/* Social-Buttons links unter der Linie */
+/* Social-Buttons links unter der Linie · 10px Abstand, Glas */
 .footer__social {
   list-style: none;
   display: flex;
-  gap: clamp(14px, 3vw, 24px);
+  gap: 10px;
   margin: 0;
   padding: 0;
 }
-.soc { --sz: 44px; }              /* erbt Soft-UI-Look von .nav__ico, .soc */
+.soc { --sz: 42px; }              /* erbt Glas-Look von .nav__ico, .soc */
 .soc:hover { color: var(--accent); }
 
 .footer__meta {
@@ -602,18 +815,16 @@ a:hover { text-decoration: underline; }
 .footer__logo {
   display: block;
   width: auto;
-  height: 58px;
-  opacity: 0.55;
-  filter: none;                    /* flach, ohne Glow */
+  height: 52px;
+  opacity: 0.7;
+  filter: none;
   transition: opacity .2s ease;
 }
-.footer:hover .footer__logo { opacity: 0.9; }
+.footer:hover .footer__logo { opacity: 1; }
 
 @media (max-width: 620px) {
   .footer__grid { justify-content: flex-start; gap: 22px; }
   .footer__meta { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .soc { --sz: 42px; box-shadow: -5px 5px 18px #2c2f39, 5px -5px 18px #4c5363; }
-  .soc:active { box-shadow: inset -4px 4px 11px #2c2f39, inset 4px -4px 11px #4c5363; }
 }
 
 /* ---------- Kontaktformular ---------- */
@@ -745,30 +956,17 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 620px) {
-  .nav { gap: 10px; padding: 10px 12px; }
-  .nav__brand {
-    padding: 6px 12px; gap: 8px; border-radius: 15px;
-    box-shadow: inset -4px 4px 9px #2c2f39, inset 4px -4px 9px #4c5363;
-  }
+  .nav { gap: 10px; padding: 9px 12px; }
+  .nav__brand { padding: 5px 11px; gap: 8px; border-radius: 12px; }
   .nav__brand-text { display: none; }   /* nur noch das Logo */
-  .nav__logo { height: 38px; width: 38px; }
-  .nav__ico {
-    --sz: 40px;
-    box-shadow: -5px 5px 18px #2c2f39, 5px -5px 18px #4c5363;
-  }
-  .nav__ico:hover { box-shadow: -7px 7px 24px #2c2f39, 7px -7px 24px #4c5363; }
-  .nav__ico:active {
-    box-shadow: inset -4px 4px 11px #2c2f39, inset 4px -4px 11px #4c5363;
-  }
-  .nav__ico.is-active {
-    box-shadow: inset -4px 4px 11px #2c2f39, inset 4px -4px 11px #4c5363, inset 0 0 8px rgba(34, 211, 238, 0.22);
-  }
-  .nav__ico svg { width: 18px; height: 18px; }
-  .nav__links { gap: clamp(10px, 3vw, 18px); }
+  .nav__logo { height: 34px; width: 34px; }
+  .nav__ico { --sz: 38px; border-radius: 11px; }
+  .nav__ico svg { width: 17px; height: 17px; }
+  .nav__links { gap: 8px; }
 }
 @media (max-width: 400px) {
-  .nav__ico { --sz: 36px; }
-  .nav__links { gap: 9px; }
+  .nav__ico { --sz: 34px; }
+  .nav__links { gap: 7px; }
 }
 
 /* ---------- Reduzierte Bewegung ---------- */

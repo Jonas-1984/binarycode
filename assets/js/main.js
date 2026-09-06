@@ -231,7 +231,168 @@
   })();
 
   /* ---------------------------------------------------------
-     9) Jahr im Footer
+     9) Werdegang · 3D-Coverflow-Karussell
+        - Pfeiltasten / Tastatur / Wischen zum Blättern
+        - im Leerlauf automatischer Wechsel alle 6 Sekunden
+     --------------------------------------------------------- */
+  (function werdegangCarousel() {
+    var root = document.getElementById("werdegangCarousel");
+    if (!root || reduceMotion) return;
+
+    var cards = Array.prototype.slice.call(root.querySelectorAll(".cf__card"));
+    var track = root.querySelector(".cf__track");
+    var counter = document.getElementById("cfCounter");
+    var bar = document.getElementById("cfBar");
+    var navs = root.querySelectorAll(".cf__nav");
+    var n = cards.length;
+    if (n < 2) return;
+
+    var active = 0;
+    var AUTO_MS = 6000;
+    var autoTimer = null;
+    var idleTimer = null;
+    var STEP = 116;
+
+    root.classList.add("cf--ready");
+
+    function layout() {
+      for (var i = 0; i < n; i++) {
+        var o = i - active;
+        if (o > n / 2) o -= n;
+        if (o < -n / 2) o += n;
+        var abs = Math.abs(o);
+        var card = cards[i];
+
+        if (abs > 2) {
+          card.style.opacity = "0";
+          card.style.visibility = "hidden";
+          card.style.pointerEvents = "none";
+          card.classList.remove("is-current");
+          card.setAttribute("aria-hidden", "true");
+          continue;
+        }
+        card.style.visibility = "visible";
+        card.style.pointerEvents = abs === 0 ? "auto" : "none";
+        card.style.transform =
+          "translate(-50%, -50%) " +
+          "translateY(" + (o * STEP) + "px) " +
+          "translateZ(" + (-abs * 140) + "px) " +
+          "rotateX(" + (o * -7) + "deg) " +
+          "scale(" + (1 - abs * 0.13) + ")";
+        card.style.opacity = abs === 0 ? "1" : abs === 1 ? "0.55" : "0.2";
+        card.style.filter = abs === 0 ? "none" : "blur(" + (abs * 2.4) + "px)";
+        card.style.zIndex = abs === 0 ? "30" : String(10 - abs);
+        card.classList.toggle("is-current", abs === 0);
+        card.setAttribute("aria-hidden", abs === 0 ? "false" : "true");
+      }
+      if (counter) counter.textContent = (active + 1) + " / " + n;
+    }
+
+    function go(dir) {
+      active = (active + dir + n) % n;
+      layout();
+    }
+    function goTo(i) {
+      active = ((i % n) + n) % n;
+      layout();
+    }
+
+    /* --- Autoplay + Leerlauf-Steuerung --- */
+    function restartBar() {
+      if (!bar) return;
+      bar.classList.remove("run");
+      bar.style.width = "0%";
+      /* reflow, dann Animation starten */
+      void bar.offsetWidth;
+      bar.classList.add("run");
+      bar.style.width = "100%";
+    }
+    function stopBar() {
+      if (!bar) return;
+      bar.classList.remove("run");
+      var w = getComputedStyle(bar).width;
+      bar.style.width = w;
+    }
+    function startAuto() {
+      stopAuto();
+      restartBar();
+      autoTimer = setInterval(function () {
+        go(1);
+        restartBar();
+      }, AUTO_MS);
+    }
+    function stopAuto() {
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+      stopBar();
+    }
+    function nudgeIdle() {
+      /* Nutzer war aktiv -> Autoplay pausieren, nach 6 s Leerlauf fortsetzen */
+      stopAuto();
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(startAuto, AUTO_MS);
+    }
+
+    /* --- Interaktionen --- */
+    Array.prototype.forEach.call(navs, function (b) {
+      b.addEventListener("click", function () {
+        go(parseInt(b.getAttribute("data-dir"), 10) || 1);
+        nudgeIdle();
+      });
+    });
+
+    root.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowUp" || e.key === "ArrowLeft") { go(-1); nudgeIdle(); e.preventDefault(); }
+      else if (e.key === "ArrowDown" || e.key === "ArrowRight") { go(1); nudgeIdle(); e.preventDefault(); }
+    });
+    root.setAttribute("tabindex", "0");
+
+    var wheelLock = false;
+    root.querySelector(".cf__stage").addEventListener("wheel", function (e) {
+      if (Math.abs(e.deltaY) < 8 || wheelLock) return;
+      e.preventDefault();
+      wheelLock = true;
+      go(e.deltaY > 0 ? 1 : -1);
+      nudgeIdle();
+      setTimeout(function () { wheelLock = false; }, 420);
+    }, { passive: false });
+
+    var ty = null;
+    root.addEventListener("touchstart", function (e) { ty = e.touches[0].clientY; }, { passive: true });
+    root.addEventListener("touchend", function (e) {
+      if (ty == null) return;
+      var dy = e.changedTouches[0].clientY - ty;
+      if (Math.abs(dy) > 40) { go(dy < 0 ? 1 : -1); nudgeIdle(); }
+      ty = null;
+    }, { passive: true });
+
+    cards.forEach(function (card, i) {
+      card.addEventListener("click", function () {
+        if (i !== active) { goTo(i); nudgeIdle(); }
+      });
+    });
+
+    root.addEventListener("pointerenter", stopAuto);
+    root.addEventListener("pointerleave", nudgeIdle);
+    root.addEventListener("focusin", stopAuto);
+    root.addEventListener("focusout", nudgeIdle);
+
+    /* Autoplay nur laufen lassen, wenn die Sektion sichtbar ist */
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) startAuto();
+          else stopAuto();
+        });
+      }, { threshold: 0.35 }).observe(root);
+    } else {
+      startAuto();
+    }
+
+    layout();
+  })();
+
+  /* ---------------------------------------------------------
+     10) Jahr im Footer
      --------------------------------------------------------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
