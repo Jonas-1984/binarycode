@@ -6,9 +6,7 @@
   <meta name="description" content="Jonas Shojaei – IT-Spezialist & IT-Systemadministrator in Hamburg. Werdegang als Timeline im Dark-/IT-Design." />
   <meta name="color-scheme" content="dark" />
   <title>binaryCode · Jonas Shojaei</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0e12'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' fill='%2322d3ee' text-anchor='middle'%3E01%3C/text%3E%3C/svg%3E" />
 </head>
@@ -509,6 +507,14 @@
               <span class="cform__label">&gt; nachricht</span>
               <textarea name="nachricht" rows="6" required placeholder="Deine Nachricht …"></textarea>
             </label>
+
+            <label class="cform__consent">
+              <input type="checkbox" name="datenschutz" id="convConsent" required />
+              <span>Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>
+              gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage
+              per E-Mail verarbeitet werden.</span>
+            </label>
+
             <div class="cform__foot">
               <button type="submit" class="btn btn--primary cform__send">Nachricht senden</button>
               <span class="cform__hint" id="cformHint">Öffnet dein E-Mail-Programm.</span>
@@ -547,7 +553,28 @@
         </p>
       </div>
     </div>
+    <nav class="footer__legal" aria-label="Rechtliches">
+      <a href="impressum.html">Impressum</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="datenschutz.html">Datenschutzerklärung</a>
+      <span aria-hidden="true">&middot;</span>
+      <button type="button" id="cookieSettings" class="footer__legal-btn">Cookie-Einstellungen</button>
+    </nav>
   </footer>
+
+  <!-- Consent-Hinweis -->
+  <div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Hinweis zu Cookies und Datenschutz" hidden>
+    <p class="consent__text">
+      Diese Website verwendet <strong>keine Tracking- oder Marketing-Cookies</strong> und bindet keine
+      externen Dienste ein. Es wird lediglich ein technisch notwendiger Eintrag im lokalen Speicher
+      deines Browsers abgelegt, um diesen Hinweis nicht erneut anzuzeigen. Details in der
+      <a href="datenschutz.html">Datenschutzerklärung</a>.
+    </p>
+    <div class="consent__actions">
+      <button type="button" class="btn" id="consentDecline">Nur Notwendiges</button>
+      <button type="button" class="btn btn--primary" id="consentAccept">Verstanden</button>
+    </div>
+  </div>
 
   <a href="#home" class="to-top" id="toTop" aria-label="Nach oben">[ &#9652; ]</a>
 

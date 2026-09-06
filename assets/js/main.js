@@ -487,18 +487,74 @@
   })();
 
   /* ---------------------------------------------------------
-     12) Tool-Dock: Icons für nahtlosen Endlos-Lauf verdoppeln
+     12) Tool-Dock: Endlos-Lauf; bei Hover sanft ausbremsen
      --------------------------------------------------------- */
   (function toolDock() {
     var dock = document.getElementById("dock");
     var track = document.getElementById("dockTrack");
     if (!dock || !track) return;
-    track.insertAdjacentHTML("beforeend", track.innerHTML); /* zweite Kopie */
-    if (!reduceMotion) dock.classList.add("dock--ready");
+
+    track.insertAdjacentHTML("beforeend", track.innerHTML); /* zweite Kopie für nahtlose Schleife */
+    if (reduceMotion) return;
+    dock.classList.add("dock--ready");
+
+    /* laufende CSS-Animation greifen und die Geschwindigkeit weich regeln */
+    var anim = track.getAnimations ? track.getAnimations()[0] : null;
+    if (!anim || typeof anim.updatePlaybackRate !== "function") {
+      /* Fallback: hartes Pausieren */
+      dock.addEventListener("pointerenter", function () { track.style.animationPlayState = "paused"; });
+      dock.addEventListener("pointerleave", function () { track.style.animationPlayState = "running"; });
+      return;
+    }
+
+    var current = 1;
+    var target = 1;
+    var raf = null;
+
+    function tick() {
+      current += (target - current) * 0.08;          /* exponentielle Annäherung -> dynamisch */
+      if (Math.abs(target - current) < 0.005) current = target;
+      anim.updatePlaybackRate(current);
+      if (current !== target) raf = requestAnimationFrame(tick);
+      else raf = null;
+    }
+    function ramp(to) {
+      target = to;
+      if (!raf) raf = requestAnimationFrame(tick);
+    }
+
+    dock.addEventListener("pointerenter", function () { ramp(0.12); });
+    dock.addEventListener("pointerleave", function () { ramp(1); });
+    dock.addEventListener("focusin", function () { ramp(0.12); });
+    dock.addEventListener("focusout", function () { ramp(1); });
   })();
 
   /* ---------------------------------------------------------
-     13) Jahr im Footer
+     13) Datenschutz-/Consent-Hinweis
+     --------------------------------------------------------- */
+  (function consentNotice() {
+    var box = document.getElementById("consent");
+    var openBtn = document.getElementById("cookieSettings");
+    if (!box && !openBtn) return;
+
+    var KEY = "bc_consent";
+    function store(val) { try { localStorage.setItem(KEY, val); } catch (e) {} }
+    function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+
+    function hide() { if (box) box.hidden = true; }
+    function show() { if (box) box.hidden = false; }
+
+    if (box && !read()) show();
+
+    var acc = document.getElementById("consentAccept");
+    var dec = document.getElementById("consentDecline");
+    if (acc) acc.addEventListener("click", function () { store("accepted"); hide(); });
+    if (dec) dec.addEventListener("click", function () { store("essential"); hide(); });
+    if (openBtn) openBtn.addEventListener("click", function (e) { e.preventDefault(); show(); });
+  })();
+
+  /* ---------------------------------------------------------
+     14) Jahr im Footer
      --------------------------------------------------------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
