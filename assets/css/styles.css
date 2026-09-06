@@ -135,8 +135,8 @@ a:hover { text-decoration: underline; }
 }
 .nav__brand:hover { text-decoration: none; }
 .nav__logo {
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: auto;                  /* Seitenverhältnis erhalten – nichts abschneiden/stauchen */
   flex-shrink: 0;
   display: block;
   filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.35));
@@ -271,14 +271,22 @@ a:hover { text-decoration: underline; }
   width: clamp(64px, 12vw, 104px);
   height: clamp(64px, 12vw, 104px);
   flex-shrink: 0;
-  object-fit: cover;
-  object-position: 50% 15%;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
   border: 1px solid var(--border);
-  filter: grayscale(0.12) contrast(1.03);
+  background: var(--bg-2);
   box-shadow:
     0 0 0 3px rgba(34, 211, 238, 0.14),
     0 0 26px rgba(34, 211, 238, 0.16);
+}
+.hero__avatar img {
+  width: 82%;                    /* Foto etwas kleiner im Kreis */
+  height: 82%;
+  object-fit: cover;
+  object-position: 50% 12%;
+  border-radius: 50%;
+  filter: grayscale(0.12) contrast(1.03);
 }
 .binary-strip {
   position: absolute;
@@ -802,7 +810,9 @@ a:hover { text-decoration: underline; }
   margin: 0;
   padding: 0;
 }
-.soc { --sz: 42px; }              /* erbt Glas-Look von .nav__ico, .soc */
+.soc { --sz: 34px; border-radius: 10px; }   /* kleiner als die Menü-Tasten */
+.soc svg { width: 15px; height: 15px; }
+.soc::after { border-radius: 9px 9px 7px 7px; }
 .soc:hover { color: var(--accent); }
 
 .footer__meta {
@@ -959,7 +969,7 @@ a:hover { text-decoration: underline; }
   .nav { gap: 10px; padding: 9px 12px; }
   .nav__brand { padding: 5px 11px; gap: 8px; border-radius: 12px; }
   .nav__brand-text { display: none; }   /* nur noch das Logo */
-  .nav__logo { height: 34px; width: 34px; }
+  .nav__logo { height: 26px; width: auto; }
   .nav__ico { --sz: 38px; border-radius: 11px; }
   .nav__ico svg { width: 17px; height: 17px; }
   .nav__links { gap: 8px; }

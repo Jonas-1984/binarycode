@@ -1,15 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 40" width="720" height="400"
-  color="#22d3ee" fill="none" stroke="currentColor" stroke-width="1.9"
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 48" width="800" height="480"
+  color="#22d3ee" fill="none" stroke="currentColor" stroke-width="2"
   stroke-linecap="round" stroke-linejoin="round">
-  <!-- Brille: zwei Glaeser + Steg + Buegelansaetze -->
-  <rect x="6" y="11" width="24" height="22" rx="7" />
-  <rect x="42" y="11" width="24" height="22" rx="7" />
-  <path d="M30 18c3-3 9-3 12 0" />
-  <path d="M6 16 1.5 12" />
-  <path d="M66 16 70.5 12" />
+  <!-- Brille: zwei Glaeser -->
+  <rect x="8" y="14" width="26" height="24" rx="8" />
+  <rect x="46" y="14" width="26" height="24" rx="8" />
+  <!-- Steg -->
+  <path d="M34 21c3.4-3.4 8.6-3.4 12 0" />
+  <!-- Buegelansaetze -->
+  <path d="M8 19 2.5 15" />
+  <path d="M72 19 77.5 15" />
   <!-- 0 im linken Glas -->
-  <ellipse cx="18" cy="22" rx="4.4" ry="6.8" />
+  <ellipse cx="21" cy="26" rx="5" ry="7.6" />
   <!-- 1 im rechten Glas -->
-  <path d="M51.5 16.8 55 14.8V29.2" />
-  <path d="M51 29.2h8" />
+  <path d="M50.6 20.4 55 17.8V33.6" />
+  <path d="M50 33.6h10" />
 </svg>
