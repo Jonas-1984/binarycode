@@ -243,21 +243,61 @@
       }
       if (!form.reportValidity()) return;
 
-      var betreff = "[binaryCode] " + (f.betreff.value || "Nachricht von der Webseite");
-      var body =
-        "Name: " + f.name.value + "\n" +
-        "E-Mail: " + f.email.value + "\n\n" +
-        f.nachricht.value + "\n";
+      var f2 = form.elements;
+      var keyEl = f2.access_key;
+      var key = keyEl ? keyEl.value.trim() : "";
+      var keySet = key && !/^DEIN_|ACCESS_KEY$/i.test(key) && key.length > 20;
 
-      window.location.href =
-        "mailto:" + mail +
-        "?subject=" + encodeURIComponent(betreff) +
-        "&body=" + encodeURIComponent(body);
-
-      if (hint) {
-        hint.textContent = "E-Mail-Programm wurde geöffnet. Falls nicht: " + mail;
-        hint.classList.add("is-ok");
+      function say(msg, ok) {
+        if (!hint) return;
+        hint.textContent = msg;
+        hint.classList.toggle("is-ok", !!ok);
+        hint.classList.toggle("is-bad", ok === false);
       }
+
+      /* --- Fallback: kein Web3Forms-Key gesetzt -> Mail-Programm öffnen --- */
+      if (!keySet) {
+        var betreff = "[binaryCode] " + (f2.betreff.value || "Nachricht von der Webseite");
+        var body =
+          "Name: " + f2.name.value + "\n" +
+          "E-Mail: " + f2.email.value + "\n\n" +
+          f2.nachricht.value + "\n";
+        window.location.href =
+          "mailto:" + mail +
+          "?subject=" + encodeURIComponent(betreff) +
+          "&body=" + encodeURIComponent(body);
+        say("E-Mail-Programm wurde geöffnet. Falls nicht: " + mail, true);
+        return;
+      }
+
+      /* --- Versand über Web3Forms --- */
+      var btn = form.querySelector(".cform__send");
+      var btnText = btn ? btn.textContent : "";
+      if (btn) { btn.disabled = true; btn.textContent = "sende …"; }
+      say("Wird gesendet …");
+
+      fetch(form.action, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: new FormData(form)
+      })
+        .then(function (r) { return r.json().catch(function () { return { success: r.ok }; }); })
+        .then(function (data) {
+          if (data && data.success) {
+            form.reset();
+            var c = form.querySelector(".neo-toggle-container");
+            if (c) c.classList.remove("is-required");
+            say("Danke! Deine Nachricht ist angekommen – ich melde mich zeitnah.", true);
+          } else {
+            say("Senden hat nicht geklappt. Bitte direkt per E-Mail: " + mail, false);
+          }
+        })
+        .catch(function () {
+          say("Keine Verbindung. Bitte direkt per E-Mail: " + mail, false);
+        })
+        .then(function () {
+          if (btn) { btn.disabled = false; btn.textContent = btnText; }
+        });
     });
   })();
 

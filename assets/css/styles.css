@@ -1049,6 +1049,8 @@ a:hover { text-decoration: underline; }
   color: var(--muted);
 }
 .cform__hint.is-ok { color: var(--ok); }
+.cform__hint.is-bad { color: #ff8a8a; }
+.cform__botcheck { position: absolute; left: -9999px; width: 0; height: 0; opacity: 0; }
 
 /* Datenschutz-Zustimmung im Formular */
 .cform__consent {

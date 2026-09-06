@@ -485,10 +485,19 @@
         <p class="section__lead">Schreib mir &ndash; ich melde mich zeitnah zurück.</p>
 
         <div class="cform-wrap">
-          <!-- Kontaktformular. action per E-Mail; bei Absenden wird das Mail-Programm
-               mit vorausgefüllter Nachricht geöffnet (kein Server nötig). -->
+          <!-- Kontaktformular.
+               Versand über Web3Forms (https://web3forms.com) direkt an dein Postfach.
+               ===== BEARBEITEN: 1) auf web3forms.com mit info@binarycode.de einen
+               kostenlosen Access Key holen  2) unten value="…" ersetzen.
+               Solange der Platzhalter steht, öffnet sich als Fallback das
+               E-Mail-Programm des Besuchers.
+               HINWEIS: Vor Aktivierung § 5 der Datenschutzerklärung um Web3Forms ergänzen. -->
           <form class="cform" id="contactForm"
-                action="mailto:shojaei.de@gmail.com" method="post" enctype="text/plain">
+                action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY" />
+            <input type="hidden" name="from_name" value="binaryCode Kontaktformular" />
+            <input type="hidden" name="subject" value="Neue Nachricht über binaryCode" />
+            <input type="checkbox" name="botcheck" class="cform__botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <div class="cform__row">
               <label class="cform__field">
                 <span class="cform__label">&gt; name</span>
@@ -554,7 +563,7 @@
 
             <div class="cform__foot">
               <button type="submit" class="btn btn--primary cform__send">Nachricht senden</button>
-              <span class="cform__hint" id="cformHint">Öffnet dein E-Mail-Programm.</span>
+              <span class="cform__hint" id="cformHint">Geht direkt an mein Postfach.</span>
             </div>
           </form>
         </div>
