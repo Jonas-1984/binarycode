@@ -429,7 +429,76 @@
   })();
 
   /* ---------------------------------------------------------
-     11) Jahr im Footer
+     11) Zahlensystem-Umrechner  BIN <-> DEC <-> HEX
+     --------------------------------------------------------- */
+  (function numberConverter() {
+    var bin = document.getElementById("convBin");
+    var dec = document.getElementById("convDec");
+    var hex = document.getElementById("convHex");
+    var hint = document.getElementById("convHint");
+    if (!bin || !dec || !hex) return;
+
+    var DEFAULT_HINT = hint ? hint.innerHTML : "";
+    var fields = [bin, dec, hex];
+
+    function setHint(msg, bad) {
+      if (!hint) return;
+      if (msg) hint.textContent = msg;
+      else hint.innerHTML = DEFAULT_HINT;
+      hint.classList.toggle("is-bad", !!bad);
+    }
+
+    function update(src, radix, re) {
+      var raw = src.value.trim();
+      src.classList.remove("is-bad");
+
+      if (raw === "") {
+        fields.forEach(function (f) { if (f !== src) { f.value = ""; f.classList.remove("is-bad"); } });
+        setHint("");
+        return;
+      }
+      if (!re.test(raw)) {
+        src.classList.add("is-bad");
+        fields.forEach(function (f) { if (f !== src) f.value = ""; });
+        setHint("Ungültige Eingabe für dieses Zahlensystem.", true);
+        return;
+      }
+
+      var v;
+      try {
+        v = radix === 2 ? BigInt("0b" + raw)
+          : radix === 16 ? BigInt("0x" + raw)
+          : BigInt(raw);
+      } catch (e) {
+        src.classList.add("is-bad");
+        setHint("Zahl zu groß oder ungültig.", true);
+        return;
+      }
+
+      if (src !== bin) bin.value = v.toString(2);
+      if (src !== dec) dec.value = v.toString(10);
+      if (src !== hex) hex.value = v.toString(16).toUpperCase();
+      setHint("");
+    }
+
+    bin.addEventListener("input", function () { update(bin, 2, /^[01]+$/); });
+    dec.addEventListener("input", function () { update(dec, 10, /^[0-9]+$/); });
+    hex.addEventListener("input", function () { update(hex, 16, /^[0-9a-fA-F]+$/); });
+  })();
+
+  /* ---------------------------------------------------------
+     12) Tool-Dock: Icons für nahtlosen Endlos-Lauf verdoppeln
+     --------------------------------------------------------- */
+  (function toolDock() {
+    var dock = document.getElementById("dock");
+    var track = document.getElementById("dockTrack");
+    if (!dock || !track) return;
+    track.insertAdjacentHTML("beforeend", track.innerHTML); /* zweite Kopie */
+    if (!reduceMotion) dock.classList.add("dock--ready");
+  })();
+
+  /* ---------------------------------------------------------
+     13) Jahr im Footer
      --------------------------------------------------------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
