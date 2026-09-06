@@ -105,15 +105,13 @@ a:hover { text-decoration: underline; }
 }
 .nav__brand:hover { text-decoration: none; }
 .nav__logo {
-  width: 46px;
-  height: 26px;
+  height: 24px;
+  width: auto;
   flex-shrink: 0;
-  background-color: var(--accent);
-  -webkit-mask: url(../../logo.svg) left center / contain no-repeat;
-  mask: url(../../logo.svg) left center / contain no-repeat;
+  display: block;
   transition: opacity .2s ease;
 }
-.nav__brand:hover .nav__logo { opacity: .75; }
+.nav__brand:hover .nav__logo { opacity: .7; }
 .nav__brand-text {
   font-size: 15px;
   letter-spacing: 0.5px;
@@ -276,9 +274,10 @@ a:hover { text-decoration: underline; }
 .hero__role {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: clamp(1rem, 3.5vw, 1.5rem);
+  font-size: clamp(0.82rem, 3.2vw, 1.5rem);
   margin: 0 0 28px;
   color: var(--muted);
+  overflow-wrap: anywhere;
 }
 .hero__cta {
   display: flex;
@@ -568,15 +567,13 @@ a:hover { text-decoration: underline; }
 }
 .footer__logo {
   display: block;
-  width: 92px;
-  height: 52px;
+  width: auto;
+  height: 40px;
   margin: 0 auto 14px;
-  background-color: var(--muted);
-  -webkit-mask: url(../../logo.svg) center / contain no-repeat;
-  mask: url(../../logo.svg) center / contain no-repeat;
-  transition: background-color .2s ease;
+  opacity: 0.4;
+  transition: opacity .2s ease;
 }
-.footer:hover .footer__logo { background-color: var(--accent); }
+.footer:hover .footer__logo { opacity: 0.8; }
 
 /* ---------- Nach oben ---------- */
 .to-top {
