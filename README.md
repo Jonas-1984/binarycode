@@ -35,6 +35,7 @@ Wichtigste Stellen:
 
 | Was | Wo |
 |-----|-----|
+| Logo / Markenname im Header | `<a class="nav__brand">` – Bit-Grid-SVG + Text „binaryCode"; Größe/Farbe in `styles.css` unter `.nav__logo` |
 | Name | `<h1 class="hero__name">` |
 | Titel / Rolle | `<h2 class="hero__role">` und Terminal-Ausgabe darunter |
 | Über mich | Sektion `#about` |
