@@ -205,13 +205,44 @@
     var form = document.getElementById("contactForm");
     if (!form) return;
     var hint = document.getElementById("cformHint");
+    var hintDefault = hint ? hint.textContent : "";
     var mail = "shojaei.de@gmail.com";
+
+    var consent = form.elements.datenschutz;
+    if (consent) {
+      consent.addEventListener("change", function () {
+        if (consent.checked) {
+          var c = form.querySelector(".neo-toggle-container");
+          if (c) c.classList.remove("is-required");
+          if (hint && hint.classList.contains("is-bad")) {
+            hint.classList.remove("is-bad");
+            hint.textContent = hintDefault;
+          }
+        }
+      });
+    }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      if (!form.reportValidity()) return;
 
       var f = form.elements;
+
+      /* Datenschutz-Zustimmung (Neo-Toggle) muss aktiv sein */
+      if (f.datenschutz && !f.datenschutz.checked) {
+        var cont = form.querySelector(".neo-toggle-container");
+        if (cont) {
+          cont.classList.add("is-required");
+          cont.scrollIntoView({ block: "center", behavior: "smooth" });
+        }
+        if (hint) {
+          hint.textContent = "Bitte der Datenschutzerklärung zustimmen.";
+          hint.classList.remove("is-ok");
+          hint.classList.add("is-bad");
+        }
+        return;
+      }
+      if (!form.reportValidity()) return;
+
       var betreff = "[binaryCode] " + (f.betreff.value || "Nachricht von der Webseite");
       var body =
         "Name: " + f.name.value + "\n" +
@@ -509,24 +540,37 @@
 
     var current = 1;
     var target = 1;
+    var hovering = false;
     var raf = null;
 
     function tick() {
-      current += (target - current) * 0.08;          /* exponentielle Annäherung -> dynamisch */
-      if (Math.abs(target - current) < 0.005) current = target;
+      current += (target - current) * 0.09;          /* exponentielle Annäherung -> dynamisch */
+      if (Math.abs(target - current) < 0.004) current = target;
       anim.updatePlaybackRate(current);
-      if (current !== target) raf = requestAnimationFrame(tick);
+      if (current !== target || hovering) raf = requestAnimationFrame(tick);
       else raf = null;
     }
-    function ramp(to) {
-      target = to;
-      if (!raf) raf = requestAnimationFrame(tick);
+    function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+    function setTarget(v) { target = v; kick(); }
+
+    /* Maus in der Leiste: Position steuert Richtung + Tempo
+       Mitte = fast still, rechts = vorwärts (nach links), links = rückwärts */
+    function fromPointer(e) {
+      var r = dock.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width;          /* 0..1 */
+      var t = (x - 0.5) * 2;                            /* -1..1 */
+      if (Math.abs(t) < 0.14) t = 0;                    /* Totzone in der Mitte */
+      var sign = t < 0 ? -1 : 1;
+      var mag = (Math.abs(t) - 0.14) / 0.86;            /* 0..1 nach Totzone */
+      target = sign * mag * mag * 2.6;                  /* sanfter Anlauf, max ~2.6x */
+      kick();
     }
 
-    dock.addEventListener("pointerenter", function () { ramp(0.12); });
-    dock.addEventListener("pointerleave", function () { ramp(1); });
-    dock.addEventListener("focusin", function () { ramp(0.12); });
-    dock.addEventListener("focusout", function () { ramp(1); });
+    dock.addEventListener("pointerenter", function () { hovering = true; kick(); });
+    dock.addEventListener("pointermove", function (e) { if (hovering) fromPointer(e); });
+    dock.addEventListener("pointerleave", function () { hovering = false; setTarget(1); });
+    dock.addEventListener("focusin", function () { hovering = true; setTarget(0.1); });
+    dock.addEventListener("focusout", function () { hovering = false; setTarget(1); });
   })();
 
   /* ---------------------------------------------------------

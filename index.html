@@ -508,12 +508,49 @@
               <textarea name="nachricht" rows="6" required placeholder="Deine Nachricht …"></textarea>
             </label>
 
-            <label class="cform__consent">
-              <input type="checkbox" name="datenschutz" id="convConsent" required />
-              <span>Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>
-              gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage
-              per E-Mail verarbeitet werden.</span>
-            </label>
+            <div class="cform__consent">
+              <div class="neo-toggle-container">
+                <input class="neo-toggle-input" type="checkbox" name="datenschutz" id="convConsent" required />
+                <label class="neo-toggle" for="convConsent" aria-label="Der Datenschutzerklärung zustimmen">
+                  <div class="neo-track">
+                    <div class="neo-background-layer"></div>
+                    <div class="neo-grid-layer"></div>
+                    <div class="neo-spectrum-analyzer">
+                      <div class="neo-spectrum-bar"></div>
+                      <div class="neo-spectrum-bar"></div>
+                      <div class="neo-spectrum-bar"></div>
+                      <div class="neo-spectrum-bar"></div>
+                      <div class="neo-spectrum-bar"></div>
+                    </div>
+                    <div class="neo-track-highlight"></div>
+                  </div>
+                  <div class="neo-thumb">
+                    <div class="neo-thumb-ring"></div>
+                    <div class="neo-thumb-core">
+                      <div class="neo-thumb-icon"><div class="neo-thumb-wave"></div></div>
+                      <div class="neo-thumb-pulse"></div>
+                    </div>
+                  </div>
+                  <div class="neo-gesture-area"></div>
+                  <div class="neo-interaction-feedback">
+                    <div class="neo-ripple"></div>
+                    <div class="neo-progress-arc"></div>
+                  </div>
+                  <div class="neo-status">
+                    <div class="neo-status-indicator">
+                      <div class="neo-status-dot"></div>
+                      <div class="neo-status-text"></div>
+                    </div>
+                  </div>
+                </label>
+                <div class="neo-value-display"><span class="neo-value-text">OK</span></div>
+              </div>
+              <p class="cform__consent-text">
+                Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>
+                gelesen und bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage
+                per E-Mail verarbeitet werden.
+              </p>
+            </div>
 
             <div class="cform__foot">
               <button type="submit" class="btn btn--primary cform__send">Nachricht senden</button>
