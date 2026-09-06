@@ -199,7 +199,39 @@
   })();
 
   /* ---------------------------------------------------------
-     8) Jahr im Footer
+     8) Kontaktformular -> E-Mail-Programm mit vorausgefüllter Nachricht
+     --------------------------------------------------------- */
+  (function contactForm() {
+    var form = document.getElementById("contactForm");
+    if (!form) return;
+    var hint = document.getElementById("cformHint");
+    var mail = "shojaei.de@gmail.com";
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+
+      var f = form.elements;
+      var betreff = "[binaryCode] " + (f.betreff.value || "Nachricht von der Webseite");
+      var body =
+        "Name: " + f.name.value + "\n" +
+        "E-Mail: " + f.email.value + "\n\n" +
+        f.nachricht.value + "\n";
+
+      window.location.href =
+        "mailto:" + mail +
+        "?subject=" + encodeURIComponent(betreff) +
+        "&body=" + encodeURIComponent(body);
+
+      if (hint) {
+        hint.textContent = "E-Mail-Programm wurde geöffnet. Falls nicht: " + mail;
+        hint.classList.add("is-ok");
+      }
+    });
+  })();
+
+  /* ---------------------------------------------------------
+     9) Jahr im Footer
      --------------------------------------------------------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();

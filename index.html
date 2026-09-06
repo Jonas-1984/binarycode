@@ -29,16 +29,25 @@
       <img class="nav__logo" src="logo.svg" width="540" height="540" alt="" aria-hidden="true" />
       <span class="nav__brand-text">binary<span class="accent">Code</span></span>
     </a>
-    <button class="nav__toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
     <nav class="nav__links" id="navLinks">
-      <a href="#home">Start</a>
-      <a href="#about">Über&nbsp;mich</a>
-      <a href="#skills">Skills</a>
-      <a href="#timeline">Werdegang</a>
-      <a href="#profil">Sprachen</a>
-      <a href="#contact">Kontakt</a>
+      <a href="#home" class="nav__ico" aria-label="Start" title="Start">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      </a>
+      <a href="#about" class="nav__ico" aria-label="Über mich" title="Über mich">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+      </a>
+      <a href="#skills" class="nav__ico" aria-label="Skills" title="Skills">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 8-4 4 4 4"/><path d="m15 8 4 4-4 4"/></svg>
+      </a>
+      <a href="#timeline" class="nav__ico" aria-label="Werdegang" title="Werdegang">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>
+      </a>
+      <a href="#profil" class="nav__ico" aria-label="Sprachen" title="Sprachen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.4 4 5.7 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.7-4-9s1.4-6.6 4-9z"/></svg>
+      </a>
+      <a href="#contact" class="nav__ico" aria-label="Kontakt" title="Kontakt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+      </a>
     </nav>
   </header>
 
@@ -48,10 +57,13 @@
     <!-- ============================================================= -->
     <section id="home" class="section hero">
       <div class="binary-strip" aria-hidden="true"></div>
-      <div class="container hero__grid">
-       <div class="hero__text">
+      <div class="container">
         <p class="hero__hi">01001010 01010011 &nbsp;//&nbsp; Jonas Shojaei</p>
-        <h1 class="hero__name" data-name>Jonas Shojaei</h1>
+        <div class="hero__head">
+          <img class="hero__avatar" src="assets/img/jonas.jpg" width="640" height="864"
+               alt="Porträtfoto von Jonas Shojaei" loading="eager" decoding="async" />
+          <h1 class="hero__name" data-name>Jonas Shojaei</h1>
+        </div>
         <h2 class="hero__role">
           <span class="accent">IT-Spezialist</span> &amp; <span class="accent">IT-Systemadministrator</span>
         </h2>
@@ -75,14 +87,6 @@
           <a class="btn btn--primary" href="#timeline">./werdegang.sh</a>
           <a class="btn" href="#contact">Kontakt aufnehmen</a>
         </div>
-       </div>
-
-       <figure class="hero__portrait">
-         <img src="assets/img/jonas.jpg" width="640" height="864"
-              alt="Porträtfoto von Jonas Shojaei" loading="eager" decoding="async" />
-         <span class="hero__portrait-ring" aria-hidden="true"></span>
-         <figcaption aria-hidden="true">01001010&nbsp;01010011</figcaption>
-       </figure>
       </div>
       <a href="#about" class="scroll-hint" aria-label="Nach unten scrollen">
         <span>scroll</span>
@@ -441,18 +445,45 @@
     <section id="contact" class="section">
       <div class="container">
         <h2 class="section__title"><span class="section__index">101</span> ./contact.sh</h2>
-        <div class="terminal">
-          <div class="terminal__bar">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span class="terminal__title">bash — contact</span>
-          </div>
-          <pre class="terminal__body"><code><span class="line"><span class="prompt">jonas@hamburg:~$</span> ./contact.sh</span>
-<span class="out">E-Mail......: <a href="mailto:shojaei.de@gmail.com">shojaei.de@gmail.com</a></span>
-<span class="out">Telefon.....: <a href="tel:+491743833724">+49 174 3833 724</a></span>
-<span class="out">Standort....: Treptower Str. 84C, 22147 Hamburg</span>
-<span class="out">GitHub......: <a href="https://github.com/Jonas-1984" target="_blank" rel="noopener">github.com/Jonas-1984</a></span>
-<span class="out">LinkedIn....: <a href="#" target="_blank" rel="noopener">linkedin.com/in/&lt;profil-eintragen&gt;</a></span>
-<span class="line"><span class="prompt">jonas@hamburg:~$</span> <span class="cursor">&#9608;</span></span></code></pre>
+        <p class="section__lead">Schreib mir &ndash; ich melde mich zeitnah zurück.</p>
+
+        <div class="cform-wrap">
+          <!-- Kontaktformular. action per E-Mail; bei Absenden wird das Mail-Programm
+               mit vorausgefüllter Nachricht geöffnet (kein Server nötig). -->
+          <form class="cform" id="contactForm"
+                action="mailto:shojaei.de@gmail.com" method="post" enctype="text/plain">
+            <div class="cform__row">
+              <label class="cform__field">
+                <span class="cform__label">&gt; name</span>
+                <input type="text" name="name" autocomplete="name" required placeholder="Vor- und Nachname" />
+              </label>
+              <label class="cform__field">
+                <span class="cform__label">&gt; email</span>
+                <input type="email" name="email" autocomplete="email" required placeholder="name@domain.de" />
+              </label>
+            </div>
+            <label class="cform__field">
+              <span class="cform__label">&gt; betreff</span>
+              <input type="text" name="betreff" required placeholder="Worum geht es?" />
+            </label>
+            <label class="cform__field">
+              <span class="cform__label">&gt; nachricht</span>
+              <textarea name="nachricht" rows="6" required placeholder="Deine Nachricht …"></textarea>
+            </label>
+            <div class="cform__foot">
+              <button type="submit" class="btn btn--primary cform__send">Nachricht senden</button>
+              <span class="cform__hint" id="cformHint">Öffnet dein E-Mail-Programm.</span>
+            </div>
+          </form>
+
+          <aside class="cform__aside">
+            <p class="cform__aside-title">// direkt</p>
+            <ul class="cform__links">
+              <li><a href="mailto:shojaei.de@gmail.com">shojaei.de@gmail.com</a></li>
+              <li><a href="https://github.com/Jonas-1984" target="_blank" rel="noopener">github.com/Jonas-1984</a></li>
+              <li><a href="#" target="_blank" rel="noopener">linkedin.com/in/&lt;profil&gt;</a></li>
+            </ul>
+          </aside>
         </div>
       </div>
     </section>

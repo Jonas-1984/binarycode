@@ -35,16 +35,17 @@ Wichtigste Stellen:
 
 | Was | Wo |
 |-----|-----|
-| Logo | [`logo.svg`](logo.svg) – aus dem eingereichten Monogramm freigestellt; wird per CSS-`mask` im Header (`.nav__logo`) und Footer (`.footer__logo`) in der Akzentfarbe angezeigt |
-| Markenname im Header | `<span class="nav__brand-text">` – „binaryCode" |
-| Porträtfoto | `assets/img/jonas.jpg` (640×864, aus `face.png` verkleinert); eingebunden im Hero unter `<figure class="hero__portrait">` |
+| Logo | [`logo.svg`](logo.svg) – „Brille mit 0/1-Gläsern", Strich-Icon in Akzentfarbe (`currentColor` → `#22d3ee`); Größe per CSS in `.nav__logo` / `.footer__logo` |
+| Markenname im Header | `<span class="nav__brand-text">` – „binaryCode" (auf kleinen Screens ausgeblendet) |
+| Menüleiste | nur Icons (`.nav__ico`), runde Metallknöpfe; Icons als Inline-SVG in `index.html` |
+| Porträtfoto | `assets/img/jonas.jpg`; im Hero als `<img class="hero__avatar">` **vor** dem Namen (`.hero__head`) |
 | Name | `<h1 class="hero__name">` |
 | Titel / Rolle | `<h2 class="hero__role">` und Terminal-Ausgabe darunter |
 | Über mich | Sektion `#about` |
 | Skills | Sektion `#skills` – `<article class="skill-card">` kopieren/anpassen |
 | **Werdegang / Timeline** | Sektion `#timeline` – zwei Blöcke (`Berufserfahrung`, `Bildungsweg`), je Station ein `<li class="tl__item">` |
 | Sprachen & Eckdaten | Sektion `#profil` |
-| Kontakt (E-Mail, Telefon, GitHub, LinkedIn) | Sektion `#contact` |
+| Kontaktformular | Sektion `#contact` – `<form id="contactForm">`; Absenden öffnet das Mail-Programm (`mailto:`, kein Server). Für Zustellung direkt ins Postfach `action` auf einen Formspree-/FormSubmit-Endpunkt ändern. Keine Adresse/Telefonnummer auf der Seite. |
 | Footer-Name / Jahr | `<footer>` (Jahr wird automatisch gesetzt) |
 
 ### Neue Timeline-Station hinzufügen
