@@ -1,87 +1,123 @@
-# binarycode
+# binaryCode
 
-Persönliche One-Page-Webseite von **Jonas Shojaei – IT-Spezialist & IT-Systemadministrator** (Hamburg).
-Dark-/IT-Theme, durchgängig mit Binärcode (0/1) gestaltet, Werdegang + Bildungsweg als Timeline.
-Reines HTML/CSS/JavaScript – kein Build, kein Framework.
+Persönliche One-Page-Website von **Jonas Shojaei – IT-Spezialist & IT-Systemadministrator** (Hamburg).
+Dark-/IT-Theme, durchgängig mit Binärcode (0/1) gestaltet. Reines HTML/CSS/JavaScript –
+**kein Build, kein Framework, keine externen Laufzeit-Abhängigkeiten**.
 
-Inhalte stammen aus dem Lebenslauf. **Noch offen:** LinkedIn-URL in Sektion `#contact` eintragen.
+Live (nach Aktivierung von GitHub Pages): `https://jonas-1984.github.io/binarycode/`
+Remote: `https://github.com/Jonas-1984/binarycode.git`
+
+---
 
 ## Vorschau
 
-Einfach `index.html` im Browser öffnen. Für ein realistisches Setup (relative Pfade):
+`index.html` direkt im Browser öffnen genügt. Für saubere relative Pfade / `fetch`:
 
 ```bash
-# Python 3
-python -m http.server 8080
-# dann http://localhost:8080 aufrufen
+python -m http.server 8080   # -> http://localhost:8080
 ```
 
-## Struktur
+## Dateien
 
 ```
-index.html            # gesamte Seite (alle Sektionen)
-assets/css/styles.css # Design – Farben oben als CSS-Variablen
-assets/js/main.js     # Binär-Regen, Tipp-Animation, Scroll-Effekte
-.nojekyll             # nötig für GitHub Pages (kein Jekyll-Processing)
+index.html            One-Page mit allen Sektionen
+impressum.html        Rechtstext
+datenschutz.html      Rechtstext
+logo.svg              Marken-Logo (gefüllte Flächen, fill: currentColor -> #22d3ee)
+.nojekyll             GitHub Pages: kein Jekyll-Processing
+
+assets/css/styles.css Gesamtes Design; Farben ganz oben im :root-Block
+assets/js/main.js      Alle Interaktionen (nummerierte Module 1..14)
+assets/img/jonas.jpg   Porträtfoto (640x864, ~45 KB)
+assets/fonts/          Selbst gehostete Schriften (Inter, JetBrains Mono) + fonts.css
+                       -> keine Verbindung zu Google Fonts, kein IP-Transfer
 ```
 
-## Inhalte bearbeiten
+## Sektionen (index.html)
 
-Alle Texte stehen direkt in [`index.html`](index.html). Suche nach den Kommentaren:
+| Anker | Inhalt |
+|-------|--------|
+| `#home` | Hero: Binär-Regen (Canvas), kleines rundes Porträt **vor** dem Namen, `whoami`-Terminal mit Tipp-Animation, CTA-Buttons, **Tool-Dock** |
+| `#about` | Freitext-Panel + **Zahlensystem-Umrechner** BIN ⇄ DEC ⇄ HEX |
+| `#skills` | 6 Skill-Karten |
+| `#timeline` | Werdegang + Bildungsweg als **3D-Coverflow-Karussell** (`#werdegangCarousel`) |
+| `#profil` | Sprachen & Eckdaten (`cat ~/profil.txt`) |
+| `#contact` | Kontaktformular mit Neo-Toggle-Zustimmung |
+| `<footer>` | Social-Icons, Logo, Copyright, Rechts-Links, „Cookie-Einstellungen" |
 
-- `<!-- ===== BEARBEITEN: ... ===== -->`
+## Interaktive Bausteine
 
-Wichtigste Stellen:
+**Kopfleiste (Liquid Glass)** – frosted-glass Bar; Logo + „binaryCode" ohne Kasten.
+Alle 6 s zerfällt die Marke in fliegende 0/1-Ziffern und setzt sich wieder zusammen
+(CSS-Keyframes `brandCycle` / `brandBits`, Ziffern per JS erzeugt). Navi = 6 quadratische
+Glas-Icon-Buttons (`.nav__ico`), 10 px Abstand.
+
+**Tool-Dock** (`#dock`) – Endlos-Band verlinkter Tech-Icons, läuft rechts → links.
+Bei Hover steuert die **Maus-X-Position** Richtung und Tempo (Mitte = still, rechts =
+vorwärts, links = rückwärts; WAAPI `playbackRate`). Icons werden per JS für die
+nahtlose Schleife verdoppelt.
+Neues Icon: `<a class="dock__item" href="…" target="_blank" rel="noopener" title="…">`
+mit Inline-`<svg>` in `#dockTrack` einfügen. SVGs mit eigenen `<defs>` brauchen
+**eindeutige `id`-Präfixe** (sonst Verlaufs-/Mask-Kollisionen).
+
+**Werdegang-Karussell** – Mittelkarte scharf, Nachbarn 3D-gekippt/geblurrt, obere/untere
+„Liquid"-Fade-Ebenen. Pfeiltasten, Tastatur (↑/↓), Wischen, Mausrad. Im Leerlauf
+automatischer Wechsel alle 6 s (pausiert bei Interaktion/Hover, läuft nur bei sichtbarer
+Sektion). Ohne JS / `prefers-reduced-motion`: einfache Liste als Fallback.
+Neue Station: ein `<li class="cf__card"><article class="tl__card"> … </article></li>`
+in `#werdegangCarousel > .cf__track > .cf__track`-Liste; Reihenfolge neu → alt.
+
+**Zahlensystem-Umrechner** – Eingabe in einem Feld (BIN/DEC/HEX) berechnet die anderen
+zwei sofort in beide Richtungen (BigInt, Fehleranzeige bei ungültiger Eingabe).
+
+**Trennlinien** – dünne, weiche Verlaufslinien (`.section::after`, wie `.footer__rule`).
+
+## Kontaktformular (`#contact`)
+
+Vorbereitet für **Web3Forms** (`api.web3forms.com`), mit `mailto:`-Fallback.
+
+- Solange `<input name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY">` der Platzhalter
+  ist → Klick auf „Senden" öffnet das E-Mail-Programm des Besuchers.
+- Mit echtem Key → AJAX-Versand direkt ans Postfach, Button-Status, Erfolg-/Fehlermeldung,
+  Formular wird geleert.
+- Pflicht-**Neo-Toggle** (Datenschutz-Zustimmung, `#convConsent`) – ohne Aktivierung kein
+  Versand. Honeypot-Feld `botcheck`.
+
+**Aktivieren:** 1) Domain + Postfach `info@binarycode.de` einrichten · 2) auf
+`web3forms.com` mit dieser Adresse kostenlosen Access Key holen · 3) Platzhalter in
+[index.html](index.html) ersetzen · 4) **§ 5 der Datenschutzerklärung um Web3Forms
+ergänzen**, bevor der Key live geht.
+
+## Rechtstexte
+
+`impressum.html` und `datenschutz.html` teilen sich `styles.css`. Adresse ist als
+`<!-- BEARBEITEN -->`-Platzhalter markiert (für ein vollständiges Impressum rechtlich
+erforderlich). Consent-Hinweis unten setzt nur den technisch notwendigen
+`localStorage`-Schlüssel `bc_consent`. Texte sind Standardvorlagen – für volle
+Rechtssicherheit anwaltlich prüfen lassen.
+
+## Anpassen
 
 | Was | Wo |
 |-----|-----|
-| Logo | [`logo.svg`](logo.svg) – „Brille mit 0/1-Gläsern", Strich-Icon in Akzentfarbe (`currentColor` → `#22d3ee`); Größe per CSS in `.nav__logo` / `.footer__logo` |
-| Markenname im Header | `<span class="nav__brand-text">` – „binaryCode" (auf kleinen Screens ausgeblendet) |
-| Menüleiste | nur Icons (`.nav__ico`), runde Metallknöpfe; Icons als Inline-SVG in `index.html` |
-| Porträtfoto | `assets/img/jonas.jpg`; im Hero als `<img class="hero__avatar">` **vor** dem Namen (`.hero__head`) |
-| Name | `<h1 class="hero__name">` |
-| Titel / Rolle | `<h2 class="hero__role">` und Terminal-Ausgabe darunter |
-| Über mich | Sektion `#about` |
-| Skills | Sektion `#skills` – `<article class="skill-card">` kopieren/anpassen |
-| **Werdegang / Timeline** | Sektion `#timeline` – zwei Blöcke (`Berufserfahrung`, `Bildungsweg`), je Station ein `<li class="tl__item">` |
-| Sprachen & Eckdaten | Sektion `#profil` |
-| Kontaktformular | Sektion `#contact` – `<form id="contactForm">`; Absenden öffnet das Mail-Programm (`mailto:`, kein Server). Für Zustellung direkt ins Postfach `action` auf einen Formspree-/FormSubmit-Endpunkt ändern. Keine Adresse/Telefonnummer auf der Seite. |
-| Footer-Name / Jahr | `<footer>` (Jahr wird automatisch gesetzt) |
+| Akzent-/Hintergrundfarbe | `:root` in `assets/css/styles.css` (`--accent`, `--bg`, …) |
+| Neo-Toggle-Farbe | `.neo-toggle-container { --toggle-on-color: … }` |
+| Logo-Farbe | `logo.svg` Attribut `color="…"` |
+| Logo-Größe | `.nav__logo` / `.footer__logo` in `styles.css` |
+| Texte | direkt in `index.html`, Kommentare `<!-- ===== BEARBEITEN: … ===== -->` |
+| Social-URLs | `<ul class="footer__social">` (aktuell `href="#"`-Platzhalter) |
+| LinkedIn im Formular-Bereich | – (Direkt-Links wurden entfernt) |
 
-### Neue Timeline-Station hinzufügen
+## Noch offen
 
-```html
-<li class="tl__item" data-reveal>
-  <div class="tl__node" aria-hidden="true"></div>
-  <div class="tl__card">
-    <span class="tl__date">2014 &ndash; 2016</span>
-    <h3 class="tl__title">Positionsbezeichnung</h3>
-    <p class="tl__org">Firma &middot; Ort</p>
-    <ul class="tl__desc">
-      <li>Aufgabe / Erfolg 1</li>
-      <li>Aufgabe / Erfolg 2</li>
-    </ul>
-    <ul class="tl__tags"><li>Tag</li><li>Tag</li></ul>
-  </div>
-</li>
-```
+- Echte Profil-URLs für die 4 Social-Buttons im Footer.
+- Web3Forms-Access-Key (+ Datenschutz-Ergänzung) für echten Formularversand.
+- Optional: Domain `binarycode.de` + Hosting; Impressum/Datenschutz auf finale Daten setzen.
 
-Stationen stehen von **neu nach alt**.
+## GitHub Pages veröffentlichen
 
-## Farben ändern
-
-In [`assets/css/styles.css`](assets/css/styles.css) ganz oben im `:root`-Block, z. B.:
-
-```css
---accent:   #22d3ee;  /* Akzentfarbe (Cyan) */
---bg:       #070a0d;   /* Hintergrund */
-```
-
-## Veröffentlichen mit GitHub Pages
-
-1. Repo pushen (siehe unten).
-2. Auf GitHub: **Settings → Pages → Build and deployment → Source: „Deploy from a branch“**, Branch `main`, Ordner `/ (root)`.
-3. Nach ~1 Minute erreichbar unter `https://jonas-1984.github.io/binarycode/`.
+**Settings → Pages → Source: „Deploy from a branch"**, Branch `main`, Ordner `/ (root)`.
+`.nojekyll` ist bereits vorhanden. Nach ~1 Minute live.
 
 ## Git
 
@@ -90,5 +126,3 @@ git add -A
 git commit -m "Update Inhalte"
 git push
 ```
-
-Remote: `https://github.com/Jonas-1984/binarycode.git`
