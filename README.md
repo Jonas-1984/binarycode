@@ -129,13 +129,13 @@ feststeht. Consent-Hinweis setzt nur den technisch notwendigen `localStorage`-Sc
 | Logo-Farbe | `logo.svg` Attribut `color="…"` |
 | Logo-Größe | `.nav__logo` / `.footer__logo` in `styles.css` |
 | Texte | direkt in `index.html`, Kommentare `<!-- ===== BEARBEITEN: … ===== -->` |
-| Social-Links | `#SocailIcons` im Footer – Instagram + LinkedIn gesetzt; WhatsApp (`wa.me/49…`) + YouTube-Kanal noch `href="#"` |
+| Social-Links | `#SocailIcons` im Footer – Instagram + LinkedIn = echte Profile; WhatsApp/YouTube zeigen vorerst auf `whatsapp.com` / `youtube.com` (später `wa.me/49…` bzw. Kanal-URL) |
 
 ## Noch offen
 
 - **Auslieferungsweg für `binarycodes.de` festlegen** (siehe „Veröffentlichen").
 - `datenschutz.html` Abschnitt 2 auf den tatsächlichen Hoster anpassen.
-- WhatsApp-`href` (`https://wa.me/49…`) und YouTube-Kanal-`href` im Footer setzen.
+- WhatsApp-`href` auf `https://wa.me/49…` und YouTube-`href` auf die Kanal-URL umstellen (aktuell Startseiten).
 - Web3Forms-Access-Key (+ Datenschutz-Ergänzung) für echten Formularversand.
 
 ## Veröffentlichen (`binarycodes.de`)
