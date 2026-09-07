@@ -422,19 +422,20 @@ a:hover { text-decoration: underline; }
 }
 .dock__item svg { width: 100%; height: 100%; display: block; }
 
-/* Sprung-Tasten zu den Rechnern (unter dem Dock) */
+/* Sprung-Tasten zu den Rechnern (unter dem Dock, rechtsbündig) */
 .hero__jump {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 10px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 .jumpbtn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 8px 14px 8px 8px;
-  border-radius: 999px;
+  border-radius: 11px;                 /* eckig mit runden Ecken */
   font-family: var(--font-mono);
   font-size: 12.5px;
   color: #cdd6e0;
@@ -457,7 +458,7 @@ a:hover { text-decoration: underline; }
   place-items: center;
   width: 24px;
   height: 24px;
-  border-radius: 50%;
+  border-radius: 7px;                  /* passend zur Tastenform */
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.5px;
