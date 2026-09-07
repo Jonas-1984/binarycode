@@ -1,9 +1,11 @@
-# binaryCode
+# binaryCodes
 
 Persönliche One-Page-Website von **Jonas Shojaei – IT-Spezialist & IT-Systemadministrator** (Hamburg).
 Dark-/IT-Theme, durchgängig mit Binärcode (0/1) gestaltet. Reines HTML/CSS/JavaScript –
 **kein Build, kein Framework, keine externen Laufzeit-Abhängigkeiten**.
+Zweisprachig **DE / EN** (Umschalter im Header) und mit **Seiten-Zoom-Regler** am Hero-Terminal.
 
+Domain: `binarycodes.de`
 Live (nach Aktivierung von GitHub Pages): `https://jonas-1984.github.io/binarycode/`
 Remote: `https://github.com/Jonas-1984/binarycode.git`
 
@@ -27,9 +29,9 @@ logo.svg              Marken-Logo (gefüllte Flächen, fill: currentColor -> #22
 .nojekyll             GitHub Pages: kein Jekyll-Processing
 
 assets/css/styles.css Gesamtes Design; Farben ganz oben im :root-Block
-assets/js/main.js      Alle Interaktionen (nummerierte Module 1..14)
+assets/js/main.js      Alle Interaktionen (nummerierte Module 1..16)
 assets/img/jonas.jpg   Porträtfoto (640x864, ~45 KB)
-assets/fonts/          Selbst gehostete Schriften (Inter, JetBrains Mono) + fonts.css
+assets/fonts/          Selbst gehostete Schriften (Inter, IBM Plex Mono) + fonts.css
                        -> keine Verbindung zu Google Fonts, kein IP-Transfer
 ```
 
@@ -47,10 +49,22 @@ assets/fonts/          Selbst gehostete Schriften (Inter, JetBrains Mono) + font
 
 ## Interaktive Bausteine
 
-**Kopfleiste (Liquid Glass)** – frosted-glass Bar; Logo + „binaryCode" ohne Kasten.
-Alle 6 s zerfällt die Marke in fliegende 0/1-Ziffern und setzt sich wieder zusammen
-(CSS-Keyframes `brandCycle` / `brandBits`, Ziffern per JS erzeugt). Navi = 6 quadratische
-Glas-Icon-Buttons (`.nav__ico`), 10 px Abstand.
+**Kopfleiste (Liquid Glass)** – frosted-glass Bar; Logo + „binaryCodes" ohne Kasten.
+Alle 6 s dreht sich jedes Zeichen (und das Logo) im 3D-Flip um die eigene Achse,
+klappt zur Binärziffer (0/1) und wieder zurück (CSS-Keyframes `brandFlip`, `.ch`-Spans
+per JS erzeugt – Modul 10). Navi = 6 quadratische Glas-Icon-Buttons (`.nav__ico`) +
+**Sprachumschalter** `#langToggle` (DE/EN als Toggle mit Kreis-Knopf).
+
+**Mehrsprachigkeit (DE / EN)** – `#langToggle` im Header. Alle übersetzbaren Texte tragen
+`data-en` (Inhalt) bzw. `data-en-al` / `data-en-tt` / `data-en-ph` (aria-label / title /
+placeholder). Modul 15 sichert die deutschen Originale, tauscht bei Klick, setzt
+`<html lang>` und speichert die Wahl in `localStorage` (`bc_lang`). Dynamische Rechner-
+Texte laufen über `window.i18n.t(de, en)` + `window.i18n.onChange`. Impressum/Datenschutz
+bleiben aus rechtlichen Gründen deutsch.
+
+**Seiten-Zoom-Regler** (`#zoomCtl`, Modul 16) – vertikale Leiste rechts neben dem Hero-
+Terminal (Lupe-Icon, `+` / `−`, Füllstands-Anzeige). 5 Stufen ~90–150 %, skaliert die
+ganze Seite via CSS `zoom` auf `<html>`; Wahl in `localStorage` (`bc_zoom`).
 
 **Tool-Dock** (`#dock`) – Endlos-Band verlinkter Tech-Icons, läuft rechts → links.
 Bei Hover steuert die **Maus-X-Position** Richtung und Tempo (Mitte = still, rechts =
@@ -83,7 +97,7 @@ Vorbereitet für **Web3Forms** (`api.web3forms.com`), mit `mailto:`-Fallback.
 - Pflicht-**Neo-Toggle** (Datenschutz-Zustimmung, `#convConsent`) – ohne Aktivierung kein
   Versand. Honeypot-Feld `botcheck`.
 
-**Aktivieren:** 1) Domain + Postfach `info@binarycode.de` einrichten · 2) auf
+**Aktivieren:** 1) Domain + Postfach `info@binarycodes.de` einrichten · 2) auf
 `web3forms.com` mit dieser Adresse kostenlosen Access Key holen · 3) Platzhalter in
 [index.html](index.html) ersetzen · 4) **§ 5 der Datenschutzerklärung um Web3Forms
 ergänzen**, bevor der Key live geht.
@@ -112,7 +126,7 @@ Rechtssicherheit anwaltlich prüfen lassen.
 
 - Echte Profil-URLs für die 4 Social-Buttons im Footer.
 - Web3Forms-Access-Key (+ Datenschutz-Ergänzung) für echten Formularversand.
-- Optional: Domain `binarycode.de` + Hosting; Impressum/Datenschutz auf finale Daten setzen.
+- Optional: Domain `binarycodes.de` + Hosting; Impressum/Datenschutz auf finale Daten setzen.
 
 ## GitHub Pages veröffentlichen
 

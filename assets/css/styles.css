@@ -194,10 +194,20 @@ a:hover { text-decoration: underline; }
 }
 
 /* Navi-Tasten · quadratisch mit runden Ecken, 10px Abstand, Glas */
+.nav__end {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px 10px;
+  min-width: 0;
+}
 .nav__links {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 10px;
 }
 /* Gemeinsamer Glas-Knopf (Menü + Social) */
@@ -260,6 +270,159 @@ a:hover { text-decoration: underline; }
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
     inset 0 0 14px rgba(34, 211, 238, 0.28),
     0 0 16px rgba(34, 211, 238, 0.22);
+}
+
+/* ---------- Sprachumschalter DE / EN (Toggle mit Kreis) ---------- */
+.langtog {
+  --h: 30px;
+  position: relative;
+  flex: 0 0 58px;
+  width: 58px;
+  min-width: 58px;
+  height: var(--h);
+  margin-left: 2px;
+  padding: 0;
+  -webkit-appearance: none;
+          appearance: none;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.langtog:hover { border-color: rgba(34, 211, 238, 0.4); }
+.langtog__opt {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  transition: color .18s ease, opacity .18s ease;
+  pointer-events: none;
+}
+.langtog__opt--de { left: 0; }
+.langtog__opt--en { right: 0; }
+.langtog__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(var(--h) - 4px);
+  height: calc(var(--h) - 4px);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(160deg, rgba(34, 211, 238, 0.95), rgba(34, 211, 238, 0.7));
+  color: #06222b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 12px rgba(34, 211, 238, 0.4);
+  transition: transform .2s cubic-bezier(.4, 0, .2, 1);
+}
+.langtog[aria-checked="true"] .langtog__knob { transform: translateX(28px); }
+.langtog[aria-checked="false"] .langtog__opt--de { color: transparent; }
+.langtog[aria-checked="true"]  .langtog__opt--en { color: transparent; }
+.langtog:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Zoom-Regler neben dem Terminal ---------- */
+.term-wrap {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.term-wrap .terminal { width: 100%; max-width: none; }
+.zoomctl {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  bottom: 0;
+  margin-left: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 9px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);   /* die vertikale Linie */
+  border-radius: 12px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.zoomctl__ico {
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.zoomctl__ico svg { width: 100%; height: 100%; }
+.zoomctl__btn {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+  color: #dbe6f0;
+  font: 700 16px/1 var(--font-mono);
+  cursor: pointer;
+  transition: transform .1s ease, background .16s ease, color .16s ease, border-color .16s ease;
+}
+.zoomctl__btn:hover { color: var(--accent); border-color: rgba(34, 211, 238, 0.5); }
+.zoomctl__btn:active { transform: translateY(1px); }
+.zoomctl__btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.zoomctl__gauge {
+  flex: 1 1 auto;
+  width: 8px;
+  min-height: 54px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  position: relative;
+  overflow: hidden;
+}
+.zoomctl__gauge i {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: var(--zg, 40%);
+  background: linear-gradient(0deg, var(--accent), rgba(34, 211, 238, 0.5));
+  transition: height .18s ease, width .18s ease;
+}
+.zoomctl__val {
+  font: 500 10px var(--font-mono);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+/* Ab ~880px kein Platz mehr rechts -> Regler unter das Terminal */
+@media (max-width: 880px) {
+  .zoomctl {
+    position: static;
+    margin: 12px 0 0;
+    flex-direction: row;
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0 0 12px 12px;
+    justify-content: center;
+  }
+  .zoomctl__gauge { width: 54px; min-height: 0; height: 8px; flex: 0 1 120px; }
+  .zoomctl__gauge i { inset: 0 auto 0 0; width: var(--zg, 40%); height: auto; }
 }
 
 /* ---------- Layout ---------- */
@@ -1627,17 +1790,43 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 620px) {
-  .nav { gap: 10px; padding: 6px 12px; }
-  .nav__brand { padding: 2px; gap: 8px; }
-  .nav__brand-text { display: none; }   /* nur noch das Logo */
-  .nav__logo { height: 42px; width: auto; }
-  .nav__ico { --sz: 38px; border-radius: 11px; }
+  /* Blocklayout: Logo Zeile 1, Icon-/Sprach-Leiste Zeile 2.
+     Icons teilen sich die Breite (flex: 1) und schrumpfen mit,
+     der Sprachschalter behält feste Breite -> passt auf jedes Handy. */
+  .nav { display: block; padding: 6px 10px; overflow: visible; }
+  .nav::before { inset: 0; }
+  .nav__brand { display: inline-flex; padding: 2px; gap: 8px; }
+  .nav__brand-text { display: none; }
+  .nav__logo { height: 36px; width: auto; }
+  /* Marken-Flip auf Mobil ruhig stellen (Schriftzug ist ausgeblendet) */
+  .nav__brand .ch { animation: none !important; transform: none !important; will-change: auto; }
+  .nav__brand .ch__bit { display: none; }
+  .nav__end {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .nav__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav__ico { --sz: 36px; border-radius: 10px; }
   .nav__ico svg { width: 17px; height: 17px; }
-  .nav__links { gap: 8px; }
+  .langtog { --h: 28px; width: 50px; min-width: 50px; margin: 0; }
+  .langtog__opt { font-size: 9px; }
+  .langtog[aria-checked="true"] .langtog__knob { transform: translateX(22px); }
 }
-@media (max-width: 400px) {
-  .nav__ico { --sz: 34px; }
-  .nav__links { gap: 7px; }
+@media (max-width: 360px) {
+  .nav__ico { --sz: 32px; }
+  .nav__ico svg { width: 15px; height: 15px; }
+  .langtog { --h: 26px; width: 44px; min-width: 44px; }
+  .langtog[aria-checked="true"] .langtog__knob { transform: translateX(20px); }
 }
 
 /* ---------- Reduzierte Bewegung ---------- */

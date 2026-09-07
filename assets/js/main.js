@@ -10,6 +10,14 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* Sprach-Status: von den Modulen fuer dynamische Texte genutzt,
+     vom Sprachumschalter (Modul 15) gesetzt. */
+  var i18n = window.i18n = {
+    lang: "de",
+    t: function (de, en) { return this.lang === "en" ? en : de; },
+    onChange: []   /* Callbacks: fn(lang) – z. B. Rechner neu rendern */
+  };
+
   /* ---------------------------------------------------------
      1) Binär-Regen (Matrix-Stil, in Cyan)
      --------------------------------------------------------- */
@@ -219,6 +227,12 @@
     var hintDefault = hint ? hint.textContent : "";
     var mail = "shojaei.de@gmail.com";
 
+    /* Bei Sprachwechsel hat der Umschalter den Hinweis-Text im DOM schon
+       ersetzt – nur den gecachten Standardwert nachziehen. */
+    i18n.onChange.push(function () {
+      if (hint) hintDefault = hint.textContent;
+    });
+
     var consent = form.elements.datenschutz;
     if (consent) {
       consent.addEventListener("change", function () {
@@ -246,7 +260,7 @@
           cont.scrollIntoView({ block: "center", behavior: "smooth" });
         }
         if (hint) {
-          hint.textContent = "Bitte der Datenschutzerklärung zustimmen.";
+          hint.textContent = i18n.t("Bitte der Datenschutzerklärung zustimmen.", "Please accept the privacy policy.");
           hint.classList.remove("is-ok");
           hint.classList.add("is-bad");
         }
@@ -268,7 +282,7 @@
 
       /* --- Fallback: kein Web3Forms-Key gesetzt -> Mail-Programm öffnen --- */
       if (!keySet) {
-        var betreff = "[binaryCode] " + (f2.betreff.value || "Nachricht von der Webseite");
+        var betreff = "[binaryCodes] " + (f2.betreff.value || i18n.t("Nachricht von der Webseite", "Message from the website"));
         var body =
           "Name: " + f2.name.value + "\n" +
           "E-Mail: " + f2.email.value + "\n\n" +
@@ -277,15 +291,15 @@
           "mailto:" + mail +
           "?subject=" + encodeURIComponent(betreff) +
           "&body=" + encodeURIComponent(body);
-        say("E-Mail-Programm wurde geöffnet. Falls nicht: " + mail, true);
+        say(i18n.t("E-Mail-Programm wurde geöffnet. Falls nicht: ", "Your email app was opened. If not: ") + mail, true);
         return;
       }
 
       /* --- Versand über Web3Forms --- */
       var btn = form.querySelector(".cform__send");
       var btnText = btn ? btn.textContent : "";
-      if (btn) { btn.disabled = true; btn.textContent = "sende …"; }
-      say("Wird gesendet …");
+      if (btn) { btn.disabled = true; btn.textContent = i18n.t("sende …", "sending …"); }
+      say(i18n.t("Wird gesendet …", "Sending …"));
 
       fetch(form.action, {
         method: "POST",
@@ -298,13 +312,16 @@
             form.reset();
             var c = form.querySelector(".neo-toggle-container");
             if (c) c.classList.remove("is-required");
-            say("Danke! Deine Nachricht ist angekommen – ich melde mich zeitnah.", true);
+            say(i18n.t("Danke! Deine Nachricht ist angekommen – ich melde mich zeitnah.",
+                       "Thanks! Your message arrived – I'll get back to you soon."), true);
           } else {
-            say("Senden hat nicht geklappt. Bitte direkt per E-Mail: " + mail, false);
+            say(i18n.t("Senden hat nicht geklappt. Bitte direkt per E-Mail: ",
+                       "Sending failed. Please email directly: ") + mail, false);
           }
         })
         .catch(function () {
-          say("Keine Verbindung. Bitte direkt per E-Mail: " + mail, false);
+          say(i18n.t("Keine Verbindung. Bitte direkt per E-Mail: ",
+                     "No connection. Please email directly: ") + mail, false);
         })
         .then(function () {
           if (btn) { btn.disabled = false; btn.textContent = btnText; }
@@ -503,7 +520,7 @@
     logo.parentNode.replaceChild(logoCh, logo);
 
     /* Schriftzug in einzelne Zeichen zerlegen; "Code" behält Akzentfarbe */
-    var full = (textEl.getAttribute("data-text") || textEl.textContent || "binaryCode");
+    var full = (textEl.getAttribute("data-text") || textEl.textContent || "binaryCodes");
     var accentFrom = full.toLowerCase().indexOf("code");
     textEl.textContent = "";
     var textBits = [];
@@ -535,6 +552,10 @@
     var DEFAULT_HINT = hint ? hint.innerHTML : "";
     var fields = [bin, dec, hex];
 
+    i18n.onChange.push(function () {
+      if (hint) DEFAULT_HINT = hint.innerHTML;
+    });
+
     function setHint(msg, bad) {
       if (!hint) return;
       if (msg) hint.textContent = msg;
@@ -554,7 +575,7 @@
       if (!re.test(raw)) {
         src.classList.add("is-bad");
         fields.forEach(function (f) { if (f !== src) f.value = ""; });
-        setHint("Ungültige Eingabe für dieses Zahlensystem.", true);
+        setHint(i18n.t("Ungültige Eingabe für dieses Zahlensystem.", "Invalid input for this number system."), true);
         return;
       }
 
@@ -565,7 +586,7 @@
           : BigInt(raw);
       } catch (e) {
         src.classList.add("is-bad");
-        setHint("Zahl zu groß oder ungültig.", true);
+        setHint(i18n.t("Zahl zu groß oder ungültig.", "Number too large or invalid."), true);
         return;
       }
 
@@ -591,6 +612,11 @@
     if (!addrEl || !maskEl || !out) return;
 
     var HINT_DEFAULT = hint ? hint.textContent : "";
+
+    i18n.onChange.push(function () {
+      if (hint) HINT_DEFAULT = hint.textContent;
+      calc();            /* Ausgabe in neuer Sprache neu aufbauen */
+    });
 
     function u32(n) { return n >>> 0; }
     function toDotted(n) {
@@ -630,34 +656,34 @@
     }
 
     function ipClass(firstOctet) {
-      if (firstOctet === 0) return "„this network“ (0.0.0.0/8)";
-      if (firstOctet === 127) return "A – reserviert für Loopback";
+      if (firstOctet === 0) return i18n.t("„this network“ (0.0.0.0/8)", '"this network" (0.0.0.0/8)');
+      if (firstOctet === 127) return i18n.t("A – reserviert für Loopback", "A – reserved for loopback");
       if (firstOctet <= 127) return "A";
       if (firstOctet <= 191) return "B";
       if (firstOctet <= 223) return "C";
-      if (firstOctet <= 239) return "D – Multicast";
-      return "E – reserviert / experimentell";
+      if (firstOctet <= 239) return i18n.t("D – Multicast", "D – multicast");
+      return i18n.t("E – reserviert / experimentell", "E – reserved / experimental");
     }
     function ipType(ip) {
       function inNet(net, pfx) {
         var mm = prefixToMask(pfx);
         return u32(ip & mm) === u32(parseOctets(net) & mm);
       }
-      if (inNet("10.0.0.0", 8)) return "privat (RFC 1918)";
-      if (inNet("172.16.0.0", 12)) return "privat (RFC 1918)";
-      if (inNet("192.168.0.0", 16)) return "privat (RFC 1918)";
-      if (inNet("127.0.0.0", 8)) return "Loopback (RFC 1122)";
+      if (inNet("10.0.0.0", 8)) return i18n.t("privat (RFC 1918)", "private (RFC 1918)");
+      if (inNet("172.16.0.0", 12)) return i18n.t("privat (RFC 1918)", "private (RFC 1918)");
+      if (inNet("192.168.0.0", 16)) return i18n.t("privat (RFC 1918)", "private (RFC 1918)");
+      if (inNet("127.0.0.0", 8)) return i18n.t("Loopback (RFC 1122)", "loopback (RFC 1122)");
       if (inNet("169.254.0.0", 16)) return "Link-Local / APIPA (RFC 3927)";
       if (inNet("100.64.0.0", 10)) return "Carrier-Grade NAT (RFC 6598)";
-      if (inNet("192.0.2.0", 24) || inNet("198.51.100.0", 24) || inNet("203.0.113.0", 24)) return "Dokumentation (RFC 5737)";
-      if (inNet("224.0.0.0", 4)) return "Multicast (RFC 5771)";
-      if (inNet("240.0.0.0", 4)) return "reserviert (RFC 1112)";
-      if (inNet("0.0.0.0", 8)) return "„this network“";
-      return "öffentlich (global routbar)";
+      if (inNet("192.0.2.0", 24) || inNet("198.51.100.0", 24) || inNet("203.0.113.0", 24)) return i18n.t("Dokumentation (RFC 5737)", "documentation (RFC 5737)");
+      if (inNet("224.0.0.0", 4)) return i18n.t("Multicast (RFC 5771)", "multicast (RFC 5771)");
+      if (inNet("240.0.0.0", 4)) return i18n.t("reserviert (RFC 1112)", "reserved (RFC 1112)");
+      if (inNet("0.0.0.0", 8)) return i18n.t("„this network“", '"this network"');
+      return i18n.t("öffentlich (global routbar)", "public (globally routable)");
     }
 
     function row(k, v) {
-      var pad = (k + " ".repeat(20)).slice(0, 20);
+      var pad = (k + " ".repeat(22)).slice(0, 22);
       return '<span class="k">' + pad + "</span>: <b>" + v + "</b>\n";
     }
 
@@ -686,7 +712,7 @@
       if (ip === null) {
         addrEl.classList.add("is-bad");
         out.innerHTML = "";
-        setHint("Ungültige IPv4-Adresse (z. B. 192.168.10.42).", true);
+        setHint(i18n.t("Ungültige IPv4-Adresse (z. B. 192.168.10.42).", "Invalid IPv4 address (e.g. 192.168.10.42)."), true);
         return;
       }
 
@@ -696,12 +722,12 @@
         prefix = 24; /* Standardannahme */
       } else if (/^\d{1,2}$/.test(m)) {
         prefix = parseInt(m, 10);
-        if (prefix > 32) { maskEl.classList.add("is-bad"); out.innerHTML = ""; setHint("CIDR-Präfix muss 0–32 sein.", true); return; }
+        if (prefix > 32) { maskEl.classList.add("is-bad"); out.innerHTML = ""; setHint(i18n.t("CIDR-Präfix muss 0–32 sein.", "CIDR prefix must be 0–32."), true); return; }
       } else {
         var mi = parseOctets(m);
-        if (mi === null) { maskEl.classList.add("is-bad"); out.innerHTML = ""; setHint("Ungültige Subnetzmaske oder CIDR.", true); return; }
+        if (mi === null) { maskEl.classList.add("is-bad"); out.innerHTML = ""; setHint(i18n.t("Ungültige Subnetzmaske oder CIDR.", "Invalid subnet mask or CIDR."), true); return; }
         prefix = maskToPrefix(mi);
-        if (prefix < 0) { maskEl.classList.add("is-bad"); out.innerHTML = ""; setHint("Maske ist nicht zusammenhängend (z. B. 255.255.255.0).", true); return; }
+        if (prefix < 0) { maskEl.classList.add("is-bad"); out.innerHTML = ""; setHint(i18n.t("Maske ist nicht zusammenhängend (z. B. 255.255.255.0).", "Mask is not contiguous (e.g. 255.255.255.0)."), true); return; }
       }
 
       var mask = prefixToMask(prefix);
@@ -722,24 +748,25 @@
       }
       var firstOctet = (ip >>> 24) & 255;
 
+      var loc = i18n.lang === "en" ? "en-US" : "de-DE";
       var html = "";
-      html += row("Adresse", toDotted(ip));
-      html += row("CIDR-Notation", toDotted(network) + "/" + prefix);
-      html += row("Subnetzmaske", toDotted(mask) + "  (/" + prefix + ")");
-      html += row("Wildcard-Maske", toDotted(wild));
-      html += row("Netzadresse", toDotted(network));
-      html += row("Broadcast-Adresse", toDotted(broadcast));
-      html += row("Erste Host-Adresse", toDotted(first));
-      html += row("Letzte Host-Adresse", toDotted(last));
-      html += row("Gateway (üblich)", toDotted(first) + "  (Konvention)");
-      html += row("Adressen gesamt", total.toLocaleString("de-DE"));
-      html += row("Nutzbare Hosts", usable.toLocaleString("de-DE"));
-      html += row("IPv4-Klasse", ipClass(firstOctet));
-      html += row("Adresstyp", ipType(ip));
+      html += row(i18n.t("Adresse", "Address"), toDotted(ip));
+      html += row(i18n.t("CIDR-Notation", "CIDR notation"), toDotted(network) + "/" + prefix);
+      html += row(i18n.t("Subnetzmaske", "Subnet mask"), toDotted(mask) + "  (/" + prefix + ")");
+      html += row(i18n.t("Wildcard-Maske", "Wildcard mask"), toDotted(wild));
+      html += row(i18n.t("Netzadresse", "Network address"), toDotted(network));
+      html += row(i18n.t("Broadcast-Adresse", "Broadcast address"), toDotted(broadcast));
+      html += row(i18n.t("Erste Host-Adresse", "First host address"), toDotted(first));
+      html += row(i18n.t("Letzte Host-Adresse", "Last host address"), toDotted(last));
+      html += row(i18n.t("Gateway (üblich)", "Gateway (typical)"), toDotted(first) + i18n.t("  (Konvention)", "  (convention)"));
+      html += row(i18n.t("Adressen gesamt", "Total addresses"), total.toLocaleString(loc));
+      html += row(i18n.t("Nutzbare Hosts", "Usable hosts"), usable.toLocaleString(loc));
+      html += row(i18n.t("IPv4-Klasse", "IPv4 class"), ipClass(firstOctet));
+      html += row(i18n.t("Adresstyp", "Address type"), ipType(ip));
       html += "\n";
-      html += row("Adresse  (binär)", toBin(ip));
-      html += row("Maske    (binär)", toBin(mask));
-      html += row("Netz     (binär)", toBin(network));
+      html += row(i18n.t("Adresse  (binär)", "Address  (binary)"), toBin(ip));
+      html += row(i18n.t("Maske    (binär)", "Mask     (binary)"), toBin(mask));
+      html += row(i18n.t("Netz     (binär)", "Network  (binary)"), toBin(network));
 
       out.innerHTML = html;
       setHint("");
@@ -834,4 +861,104 @@
      --------------------------------------------------------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* ---------------------------------------------------------
+     15) Sprachumschalter DE / EN
+         - tauscht Texte/Attribute aller [data-en*]-Elemente
+         - Auswahl in localStorage (bc_lang)
+         - benachrichtigt i18n.onChange (dynamische Rechner-Texte)
+     --------------------------------------------------------- */
+  (function langToggle() {
+    var btn = document.getElementById("langToggle");
+    var KEY = "bc_lang";
+    var SEL = "[data-en],[data-en-al],[data-en-tt],[data-en-ph],[data-en-alt]";
+    var nodes = Array.prototype.slice.call(document.querySelectorAll(SEL));
+
+    /* Deutsche Originale einmalig sichern (aktueller DOM-Zustand = Deutsch) */
+    nodes.forEach(function (el) {
+      el.__de = {
+        html: el.hasAttribute("data-en") ? el.innerHTML : null,
+        al: el.getAttribute("aria-label"),
+        tt: el.getAttribute("title"),
+        ph: el.getAttribute("placeholder"),
+        alt: el.getAttribute("alt")
+      };
+    });
+
+    function swap(el, en) {
+      if (el.hasAttribute("data-en")) el.innerHTML = en ? el.getAttribute("data-en") : el.__de.html;
+      if (el.hasAttribute("data-en-al")) el.setAttribute("aria-label", en ? el.getAttribute("data-en-al") : el.__de.al);
+      if (el.hasAttribute("data-en-tt")) el.setAttribute("title", en ? el.getAttribute("data-en-tt") : el.__de.tt);
+      if (el.hasAttribute("data-en-ph")) el.setAttribute("placeholder", en ? el.getAttribute("data-en-ph") : el.__de.ph);
+      if (el.hasAttribute("data-en-alt")) el.setAttribute("alt", en ? el.getAttribute("data-en-alt") : el.__de.alt);
+    }
+
+    function apply(lang, save) {
+      var en = lang === "en";
+      i18n.lang = en ? "en" : "de";
+      document.documentElement.lang = i18n.lang;
+      nodes.forEach(function (el) { swap(el, en); });
+      if (btn) {
+        btn.setAttribute("aria-checked", en ? "true" : "false");
+        var knob = btn.querySelector(".langtog__knob");
+        if (knob) knob.textContent = en ? "EN" : "DE";
+      }
+      var y = document.getElementById("year");
+      if (y) y.textContent = new Date().getFullYear();
+      i18n.onChange.forEach(function (fn) { try { fn(i18n.lang); } catch (e) {} });
+      if (save) { try { localStorage.setItem(KEY, i18n.lang); } catch (e) {} }
+    }
+
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    if (saved === "en") apply("en", false);
+
+    if (btn) {
+      btn.addEventListener("click", function () {
+        apply(i18n.lang === "en" ? "de" : "en", true);
+      });
+    }
+  })();
+
+  /* ---------------------------------------------------------
+     16) Seiten-Zoom-Regler (neben dem Hero-Terminal)
+         - 5 Stufen ~90–150 %, skaliert die ganze Seite (CSS zoom)
+         - Auswahl in localStorage (bc_zoom)
+     --------------------------------------------------------- */
+  (function pageZoom() {
+    var ctl = document.getElementById("zoomCtl");
+    if (!ctl) return;
+    var fill = ctl.querySelector(".zoomctl__gauge i");
+    var val = document.getElementById("zoomVal");
+    var up = ctl.querySelector('[data-zoom="up"]');
+    var down = ctl.querySelector('[data-zoom="down"]');
+    var LEVELS = [0.9, 1, 1.15, 1.3, 1.5];
+    var KEY = "bc_zoom";
+    var idx = 1;
+
+    try {
+      var s = localStorage.getItem(KEY);
+      if (s !== null) { var k = LEVELS.indexOf(parseFloat(s)); if (k >= 0) idx = k; }
+    } catch (e) {}
+
+    function apply(save) {
+      var z = LEVELS[idx];
+      try { document.documentElement.style.zoom = z === 1 ? "" : String(z); } catch (e) {}
+      if (fill) fill.style.setProperty("--zg", ((idx + 1) / LEVELS.length * 100).toFixed(0) + "%");
+      if (val) val.textContent = Math.round(z * 100) + "%";
+      if (up) up.disabled = idx >= LEVELS.length - 1;
+      if (down) down.disabled = idx <= 0;
+      if (save) { try { localStorage.setItem(KEY, String(z)); } catch (e) {} }
+    }
+
+    ctl.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-zoom]");
+      if (!b) return;
+      idx += b.getAttribute("data-zoom") === "up" ? 1 : -1;
+      idx = Math.max(0, Math.min(LEVELS.length - 1, idx));
+      apply(true);
+    });
+
+    apply(false);
+  })();
 })();

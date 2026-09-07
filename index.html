@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Jonas Shojaei – IT-Spezialist & IT-Systemadministrator in Hamburg. Werdegang als Timeline im Dark-/IT-Design." />
   <meta name="color-scheme" content="dark" />
-  <title>binaryCode · Jonas Shojaei</title>
+  <title>binaryCodes · Jonas Shojaei</title>
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -24,32 +24,40 @@
 
   <!-- Navigation -->
   <header class="nav" id="nav">
-    <a class="nav__brand" href="#home" aria-label="binaryCode – Startseite">
+    <a class="nav__brand" href="#home" aria-label="binaryCodes – Startseite" data-en-al="binaryCodes – Home">
       <span class="brand__solid">
         <img class="nav__logo" src="logo.svg" width="139" height="139" alt="" aria-hidden="true" />
-        <span class="nav__brand-text" data-text="binaryCode">binary<span class="accent">Code</span></span>
+        <span class="nav__brand-text" data-text="binaryCodes">binary<span class="accent">Codes</span></span>
       </span>
     </a>
+    <div class="nav__end">
     <nav class="nav__links" id="navLinks">
-      <a href="#home" class="nav__ico" aria-label="Start" title="Start">
+      <a href="#home" class="nav__ico" aria-label="Start" title="Start" data-en-al="Home" data-en-tt="Home">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
       </a>
-      <a href="#about" class="nav__ico" aria-label="Über mich" title="Über mich">
+      <a href="#about" class="nav__ico" aria-label="Über mich" title="Über mich" data-en-al="About" data-en-tt="About">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6.5 8-6.5s8 2.5 8 6.5"/></svg>
       </a>
-      <a href="#skills" class="nav__ico" aria-label="Skills" title="Skills">
+      <a href="#skills" class="nav__ico" aria-label="Skills" title="Skills" data-en-al="Skills" data-en-tt="Skills">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 8-4 4 4 4"/><path d="m15 8 4 4-4 4"/></svg>
       </a>
-      <a href="#timeline" class="nav__ico" aria-label="Werdegang" title="Werdegang">
+      <a href="#timeline" class="nav__ico" aria-label="Werdegang" title="Werdegang" data-en-al="Career" data-en-tt="Career">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>
       </a>
-      <a href="#profil" class="nav__ico" aria-label="Sprachen" title="Sprachen">
+      <a href="#profil" class="nav__ico" aria-label="Sprachen" title="Sprachen" data-en-al="Languages" data-en-tt="Languages">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.4 4 5.7 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.7-4-9s1.4-6.6 4-9z"/></svg>
       </a>
-      <a href="#contact" class="nav__ico" aria-label="Kontakt" title="Kontakt">
+      <a href="#contact" class="nav__ico" aria-label="Kontakt" title="Kontakt" data-en-al="Contact" data-en-tt="Contact">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
       </a>
     </nav>
+    <button type="button" class="langtog" id="langToggle" role="switch" aria-checked="false"
+            aria-label="Sprache umschalten" data-en-al="Switch language" title="Deutsch / English">
+      <span class="langtog__opt langtog__opt--de">DE</span>
+      <span class="langtog__opt langtog__opt--en">EN</span>
+      <span class="langtog__knob" aria-hidden="true">DE</span>
+    </button>
+    </div>
   </header>
 
   <main>
@@ -67,32 +75,44 @@
           </span>
           <h1 class="hero__name" data-name>Jonas Shojaei</h1>
         </div>
-        <h2 class="hero__role">
+        <h2 class="hero__role" data-en='<span class="accent">IT Specialist</span> &amp; <span class="accent">IT Systems Administrator</span>'>
           <span class="accent">IT-Spezialist</span> &amp; <span class="accent">IT-Systemadministrator</span>
         </h2>
 
-        <div class="terminal" role="img" aria-label="Terminalfenster mit whoami-Ausgabe">
+        <div class="term-wrap">
+        <div class="terminal" role="img" aria-label="Terminalfenster mit whoami-Ausgabe" data-en-al="Terminal window with whoami output">
           <div class="terminal__bar">
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
             <span class="terminal__title">bash — whoami</span>
           </div>
           <pre class="terminal__body"><code><span class="line"><span class="prompt">jonas@hamburg:~$</span> <span class="cmd" data-type="whoami --full"></span><span class="cursor">&#9608;</span></span>
 <span class="out" data-reveal>Name.........: Jonas Shojaei</span>
-<span class="out" data-reveal>Rolle........: IT-Spezialist / IT-Systemadministrator</span>
-<span class="out" data-reveal>Fokus........: IT-Support &middot; Netzwerkadministration &middot; Netzwerksicherheit</span>
-<span class="out" data-reveal>Stack........: Windows Server &middot; Microsoft 365 &middot; Intune &middot; PowerShell &middot; Virtualisierung</span>
-<span class="out" data-reveal>Standort.....: Hamburg, DE</span>
-<span class="out" data-reveal>Sprachen.....: DE verhandlungssicher &middot; EN fließend &middot; FA Muttersprache</span>
-<span class="out" data-reveal>Status.......: <span class="ok">beruflich gut eingebunden</span> &middot; erreichbar ausschließlich per E-Mail</span></code></pre>
+<span class="out" data-reveal data-en="Role.........: IT Specialist / IT Systems Administrator">Rolle........: IT-Spezialist / IT-Systemadministrator</span>
+<span class="out" data-reveal data-en="Focus........: IT support &middot; Network administration &middot; Network security">Fokus........: IT-Support &middot; Netzwerkadministration &middot; Netzwerksicherheit</span>
+<span class="out" data-reveal data-en="Stack........: Windows Server &middot; Microsoft 365 &middot; Intune &middot; PowerShell &middot; Virtualization">Stack........: Windows Server &middot; Microsoft 365 &middot; Intune &middot; PowerShell &middot; Virtualisierung</span>
+<span class="out" data-reveal data-en="Location.....: Hamburg, DE">Standort.....: Hamburg, DE</span>
+<span class="out" data-reveal data-en="Languages....: DE fluent (business) &middot; EN fluent &middot; FA native">Sprachen.....: DE verhandlungssicher &middot; EN fließend &middot; FA Muttersprache</span>
+<span class="out" data-reveal data-en='Status.......: <span class="ok">currently well engaged professionally</span> &middot; reachable exclusively by email'>Status.......: <span class="ok">beruflich gut eingebunden</span> &middot; erreichbar ausschließlich per E-Mail</span></code></pre>
+        </div>
+
+        <div class="zoomctl" id="zoomCtl" role="group" aria-label="Seiten-Zoom" data-en-al="Page zoom">
+          <span class="zoomctl__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
+          <button type="button" class="zoomctl__btn" data-zoom="up" aria-label="Größer" data-en-al="Zoom in">+</button>
+          <span class="zoomctl__gauge" aria-hidden="true"><i></i></span>
+          <button type="button" class="zoomctl__btn" data-zoom="down" aria-label="Kleiner" data-en-al="Zoom out">&minus;</button>
+          <span class="zoomctl__val" id="zoomVal" aria-live="polite">100%</span>
+        </div>
         </div>
 
         <div class="hero__cta">
-          <a class="btn btn--primary" href="#timeline">./werdegang.sh</a>
-          <a class="btn" href="#contact">Kontakt aufnehmen</a>
+          <a class="btn btn--primary" href="#timeline" data-en="./career.sh">./werdegang.sh</a>
+          <a class="btn" href="#contact" data-en="Get in touch">Kontakt aufnehmen</a>
         </div>
 
         <!-- Tool-Dock: läuft endlos von rechts nach links, jedes Icon verlinkt -->
-        <div class="dock" id="dock" aria-label="Tools &amp; Technologien">
+        <div class="dock" id="dock" aria-label="Tools &amp; Technologien" data-en-al="Tools &amp; technologies">
           <div class="dock__track" id="dockTrack">
             <a class="dock__item" href="https://claude.ai" target="_blank" rel="noopener" title="Claude" aria-label="Claude">
               <svg fill="#D97757" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg>
@@ -148,14 +168,14 @@
 
         <div class="hero__jump">
           <a class="jumpbtn" href="#binrechner">
-            <span class="jumpbtn__ico">01</span> Binär-Rechner
+            <span class="jumpbtn__ico">01</span> <span data-en="Binary calculator">Binär-Rechner</span>
           </a>
           <a class="jumpbtn" href="#iprechner">
-            <span class="jumpbtn__ico">IP</span> IPv4-Rechner
+            <span class="jumpbtn__ico">IP</span> <span data-en="IPv4 calculator">IPv4-Rechner</span>
           </a>
         </div>
       </div>
-      <a href="#about" class="scroll-hint" aria-label="Nach unten scrollen">
+      <a href="#about" class="scroll-hint" aria-label="Nach unten scrollen" data-en-al="Scroll down">
         <span>scroll</span>
         <span class="scroll-hint__arrow">&#9662;</span>
       </a>
@@ -168,19 +188,19 @@
       <div class="container">
         <h2 class="section__title"><span class="section__index">01</span> cat about.txt</h2>
         <div class="panel">
-          <p>
+          <p data-en="For several years my professional focus has been on running modern IT infrastructures, first- and second-level support, and administering secure network environments.">
             Mein beruflicher Schwerpunkt liegt seit mehreren Jahren auf der Betreuung
             moderner IT-Infrastrukturen, dem First- und Second-Level-Support sowie der
             Administration sicherer Netzwerkumgebungen.
           </p>
-          <p>
+          <p data-en="At SYNIOS GmbH I currently look after an entire site in first- and second-level support and take on network administration tasks &ndash; jointly responsible for the security and stability of the company network. Day-to-day work includes analysing and fixing technical faults, running Microsoft 365 and Intune environments, and PowerShell automation.">
             Aktuell betreue ich bei der SYNIOS GmbH einen gesamten Standort im First- und
             Second-Level-Support und übernehme Aufgaben in der Netzwerkadministration &ndash;
             mitverantwortlich für Sicherheit und Stabilität des Firmennetzwerks. Zum Alltag
             gehören die Analyse und Behebung technischer Störungen, die Betreuung von
             Microsoft-365- und Intune-Umgebungen sowie PowerShell-Automatisierungen.
           </p>
-          <p>
+          <p data-en="During my apprenticeship at Hamburger Software GmbH I worked with Active Directory, VPN, Linux servers and virtualization solutions and built modern workplace environments in line with current data-protection rules. Regular training keeps expanding my technical knowledge.">
             Während meiner Ausbildung bei der Hamburger Software GmbH habe ich mit Active
             Directory, VPN, Linux-Servern und Virtualisierungslösungen gearbeitet und
             moderne Arbeitsplatzumgebungen unter Berücksichtigung aktueller
@@ -188,18 +208,18 @@
             mein technisches Wissen kontinuierlich.
           </p>
           <ul class="chips">
-            <li>Netzwerktechnik</li>
-            <li>Netzwerksicherheit</li>
-            <li>Virtualisierung</li>
+            <li data-en="Network engineering">Netzwerktechnik</li>
+            <li data-en="Network security">Netzwerksicherheit</li>
+            <li data-en="Virtualization">Virtualisierung</li>
             <li>Microsoft 365 &amp; Intune</li>
-            <li>PowerShell-Automatisierung</li>
-            <li>1st/2nd-Level-Support</li>
+            <li data-en="PowerShell automation">PowerShell-Automatisierung</li>
+            <li data-en="1st/2nd-level support">1st/2nd-Level-Support</li>
           </ul>
         </div>
 
         <!-- Zahlensystem-Umrechner: Binär <-> Dezimal <-> Hex -->
-        <div class="conv" id="binrechner" aria-label="Zahlensystem-Umrechner Binär, Dezimal, Hexadezimal">
-          <span class="conv__prompt">$ echo &lt;wert&gt; | base -bin -dec -hex</span>
+        <div class="conv" id="binrechner" aria-label="Zahlensystem-Umrechner Binär, Dezimal, Hexadezimal" data-en-al="Number system converter: binary, decimal, hexadecimal">
+          <span class="conv__prompt">$ echo &lt;<span data-en="value">wert</span>&gt; | base -bin -dec -hex</span>
           <div class="conv__row">
             <label class="conv__field">
               <span class="conv__tag">BIN<small>&#8322;</small></span>
@@ -214,7 +234,7 @@
               <input id="convHex" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="A" />
             </label>
           </div>
-          <p class="conv__hint" id="convHint">Tippe in ein Feld &ndash; die anderen zwei werden sofort berechnet.</p>
+          <p class="conv__hint" id="convHint" data-en="Type in one field &ndash; the other two are calculated instantly.">Tippe in ein Feld &ndash; die anderen zwei werden sofort berechnet.</p>
         </div>
       </div>
     </section>
@@ -227,12 +247,12 @@
         <h2 class="section__title"><span class="section__index">10</span> ls -la /skills</h2>
         <div class="skills-grid">
           <article class="skill-card">
-            <h3><span class="skill-card__bin">0001</span> Netzwerk</h3>
+            <h3><span class="skill-card__bin">0001</span> <span data-en="Network">Netzwerk</span></h3>
             <ul>
-              <li>Netzwerktechnik &amp; -administration</li>
-              <li>Netzwerksicherheit / Firewalling</li>
-              <li>VPN-Konfiguration &amp; -Betrieb</li>
-              <li>Netzwerk-Monitoring</li>
+              <li data-en="Network engineering &amp; administration">Netzwerktechnik &amp; -administration</li>
+              <li data-en="Network security / firewalling">Netzwerksicherheit / Firewalling</li>
+              <li data-en="VPN configuration &amp; operation">VPN-Konfiguration &amp; -Betrieb</li>
+              <li data-en="Network monitoring">Netzwerk-Monitoring</li>
             </ul>
           </article>
           <article class="skill-card">
@@ -245,38 +265,38 @@
             </ul>
           </article>
           <article class="skill-card">
-            <h3><span class="skill-card__bin">0011</span> Server &amp; Virtualisierung</h3>
+            <h3><span class="skill-card__bin">0011</span> <span data-en="Server &amp; virtualization">Server &amp; Virtualisierung</span></h3>
             <ul>
               <li>Windows Server (MCSA/MCSE)</li>
-              <li>Linux-Server</li>
-              <li>Virtualisierungslösungen</li>
-              <li>Speichersysteme &amp; Datensicherung</li>
+              <li data-en="Linux servers">Linux-Server</li>
+              <li data-en="Virtualization solutions">Virtualisierungslösungen</li>
+              <li data-en="Storage systems &amp; backup">Speichersysteme &amp; Datensicherung</li>
             </ul>
           </article>
           <article class="skill-card">
             <h3><span class="skill-card__bin">0100</span> Client &amp; Endpoint</h3>
             <ul>
               <li>End-Point Management</li>
-              <li>Aufbau moderner Arbeitsplätze</li>
-              <li>Hardware-Management</li>
-              <li>Rollouts &amp; Inbetriebnahme</li>
+              <li data-en="Building modern workplaces">Aufbau moderner Arbeitsplätze</li>
+              <li data-en="Hardware management">Hardware-Management</li>
+              <li data-en="Rollouts &amp; commissioning">Rollouts &amp; Inbetriebnahme</li>
             </ul>
           </article>
           <article class="skill-card">
-            <h3><span class="skill-card__bin">0101</span> Automatisierung</h3>
+            <h3><span class="skill-card__bin">0101</span> <span data-en="Automation">Automatisierung</span></h3>
             <ul>
-              <li>PowerShell-Skripting</li>
-              <li>Automatisierung wiederkehrender Aufgaben</li>
-              <li>Arbeiten mit digitalen Tools</li>
+              <li data-en="PowerShell scripting">PowerShell-Skripting</li>
+              <li data-en="Automating recurring tasks">Automatisierung wiederkehrender Aufgaben</li>
+              <li data-en="Working with digital tools">Arbeiten mit digitalen Tools</li>
             </ul>
           </article>
           <article class="skill-card">
-            <h3><span class="skill-card__bin">0110</span> Support &amp; Betrieb</h3>
+            <h3><span class="skill-card__bin">0110</span> <span data-en="Support &amp; operations">Support &amp; Betrieb</span></h3>
             <ul>
               <li>First-Level-Support</li>
               <li>Second-Level-Support</li>
-              <li>System-Monitoring</li>
-              <li>Datenschutz (DSGVO) im IT-Betrieb</li>
+              <li data-en="System monitoring">System-Monitoring</li>
+              <li data-en="Data protection (GDPR) in IT operations">Datenschutz (DSGVO) im IT-Betrieb</li>
             </ul>
           </article>
         </div>
@@ -289,160 +309,160 @@
     <section id="timeline" class="section">
       <div class="container">
         <h2 class="section__title"><span class="section__index">11</span> git log --all --oneline</h2>
-        <p class="section__lead">Beruflicher Werdegang und Bildungsweg &ndash; von aktuell nach früher.</p>
+        <p class="section__lead" data-en="Career path and education &ndash; newest first.">Beruflicher Werdegang und Bildungsweg &ndash; von aktuell nach früher.</p>
 
-        <div class="cf" id="werdegangCarousel" aria-roledescription="Karussell" aria-label="Werdegang – Berufserfahrung und Bildungsweg">
-          <button class="cf__nav cf__nav--up" type="button" data-dir="-1" aria-label="Vorherige Station">
+        <div class="cf" id="werdegangCarousel" aria-roledescription="Karussell" aria-label="Werdegang – Berufserfahrung und Bildungsweg" data-en-al="Career – experience and education">
+          <button class="cf__nav cf__nav--up" type="button" data-dir="-1" aria-label="Vorherige Station" data-en-al="Previous entry">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
           </button>
 
           <div class="cf__stage">
             <ul class="cf__track">
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Berufserfahrung</span>
-                <span class="tl__date">seit 05/2025</span>
-                <h3 class="tl__title">IT-Systemadministrator</h3>
+                <span class="cf__cat" data-en="Experience">Berufserfahrung</span>
+                <span class="tl__date" data-en="since 05/2025">seit 05/2025</span>
+                <h3 class="tl__title" data-en="IT Systems Administrator">IT-Systemadministrator</h3>
                 <p class="tl__org"><span class="org__name" data-org="synios">SYNIOS GmbH &ndash; Document and Workflow Management</span> &middot; Hamburg</p>
                 <ul class="tl__desc">
-                  <li>Betreuung eines gesamten Standorts im First- und Second-Level-Support im IT-Team.</li>
-                  <li>Netzwerkadministration &ndash; mitverantwortlich für Sicherheit und Stabilität des Firmennetzwerks.</li>
-                  <li>Analyse und Behebung technischer Störungen.</li>
-                  <li>Betreuung von Microsoft-365- und Intune-Umgebungen, PowerShell-Automatisierungen.</li>
+                  <li data-en="Running an entire site in first- and second-level support within the IT team.">Betreuung eines gesamten Standorts im First- und Second-Level-Support im IT-Team.</li>
+                  <li data-en="Network administration &ndash; jointly responsible for the security and stability of the company network.">Netzwerkadministration &ndash; mitverantwortlich für Sicherheit und Stabilität des Firmennetzwerks.</li>
+                  <li data-en="Analysing and fixing technical faults.">Analyse und Behebung technischer Störungen.</li>
+                  <li data-en="Running Microsoft 365 and Intune environments, PowerShell automation.">Betreuung von Microsoft-365- und Intune-Umgebungen, PowerShell-Automatisierungen.</li>
                 </ul>
-                <ul class="tl__tags"><li>Microsoft 365</li><li>Intune</li><li>PowerShell</li><li>Netzwerk</li><li>IT-Security</li></ul>
+                <ul class="tl__tags"><li>Microsoft 365</li><li>Intune</li><li>PowerShell</li><li data-en="Network">Netzwerk</li><li>IT-Security</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Berufserfahrung</span>
+                <span class="cf__cat" data-en="Experience">Berufserfahrung</span>
                 <span class="tl__date">11/2023 &ndash; 02/2025</span>
-                <h3 class="tl__title">Fachinformatiker Systemintegration (Interne IT)</h3>
+                <h3 class="tl__title" data-en="IT Specialist for System Integration (Internal IT)">Fachinformatiker Systemintegration (Interne IT)</h3>
                 <p class="tl__org"><span class="org__name" data-org="hsw">Hamburger Software</span> &middot; Hamburg</p>
                 <ul class="tl__desc">
-                  <li>First- und Second-Level-Support, Systemadministration.</li>
-                  <li>Virtualisierung und Netzwerk-Monitoring.</li>
-                  <li>Speichersysteme und Hardware-Management.</li>
-                  <li>Arbeiten mit Active Directory, VPN, Linux-Servern; Aufbau moderner Arbeitsplatzumgebungen (DSGVO-konform).</li>
+                  <li data-en="First- and second-level support, system administration.">First- und Second-Level-Support, Systemadministration.</li>
+                  <li data-en="Virtualization and network monitoring.">Virtualisierung und Netzwerk-Monitoring.</li>
+                  <li data-en="Storage systems and hardware management.">Speichersysteme und Hardware-Management.</li>
+                  <li data-en="Working with Active Directory, VPN, Linux servers; building modern workplace environments (GDPR-compliant).">Arbeiten mit Active Directory, VPN, Linux-Servern; Aufbau moderner Arbeitsplatzumgebungen (DSGVO-konform).</li>
                 </ul>
-                <ul class="tl__tags"><li>Active Directory</li><li>VPN</li><li>Linux</li><li>Virtualisierung</li><li>Monitoring</li><li>Storage</li></ul>
+                <ul class="tl__tags"><li>Active Directory</li><li>VPN</li><li>Linux</li><li data-en="Virtualization">Virtualisierung</li><li>Monitoring</li><li>Storage</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Berufserfahrung</span>
+                <span class="cf__cat" data-en="Experience">Berufserfahrung</span>
                 <span class="tl__date">12/2018 &ndash; 06/2022</span>
-                <h3 class="tl__title">Freiberufliche Tätigkeit &amp; Weiterbildung</h3>
-                <p class="tl__org">Privater Rahmen &middot; Hamburg</p>
+                <h3 class="tl__title" data-en="Freelance work &amp; further training">Freiberufliche Tätigkeit &amp; Weiterbildung</h3>
+                <p class="tl__org" data-en="Private &middot; Hamburg">Privater Rahmen &middot; Hamburg</p>
                 <ul class="tl__desc">
-                  <li>Selbstständige Weiterbildung mit digitalen Tools.</li>
-                  <li>Teilnahme an Deutschkursen.</li>
-                  <li>Kurzfristige Einsätze in verschiedenen Branchen.</li>
+                  <li data-en="Self-directed further training with digital tools.">Selbstständige Weiterbildung mit digitalen Tools.</li>
+                  <li data-en="Attending German language courses.">Teilnahme an Deutschkursen.</li>
+                  <li data-en="Short-term assignments across various industries.">Kurzfristige Einsätze in verschiedenen Branchen.</li>
                 </ul>
-                <ul class="tl__tags"><li>Weiterbildung</li><li>Deutschkurs</li></ul>
+                <ul class="tl__tags"><li data-en="Further training">Weiterbildung</li><li data-en="German course">Deutschkurs</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Berufserfahrung</span>
+                <span class="cf__cat" data-en="Experience">Berufserfahrung</span>
                 <span class="tl__date">11/2016</span>
-                <h3 class="tl__title">Einreise nach Deutschland</h3>
-                <p class="tl__org">Umzug von Teheran nach Hamburg</p>
+                <h3 class="tl__title" data-en="Immigration to Germany">Einreise nach Deutschland</h3>
+                <p class="tl__org" data-en="Relocation from Tehran to Hamburg">Umzug von Teheran nach Hamburg</p>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Berufserfahrung</span>
+                <span class="cf__cat" data-en="Experience">Berufserfahrung</span>
                 <span class="tl__date">03/2013 &ndash; 06/2016</span>
                 <h3 class="tl__title">IT System Engineer</h3>
-                <p class="tl__org"><span class="org__name" data-org="aria">Aria IT Solutions &ndash; Faraz Network</span> &middot; Teheran (Iran)</p>
+                <p class="tl__org"><span class="org__name" data-org="aria">Aria IT Solutions &ndash; Faraz Network</span> &middot; <span data-en="Tehran (Iran)">Teheran (Iran)</span></p>
                 <ul class="tl__desc">
-                  <li>IT-Infrastrukturmanagement.</li>
-                  <li>IT-Support und Systemadministration.</li>
-                  <li>Server-Management und Systemsicherheit.</li>
-                  <li>Hardware- und Netzwerkmanagement.</li>
+                  <li data-en="IT infrastructure management.">IT-Infrastrukturmanagement.</li>
+                  <li data-en="IT support and system administration.">IT-Support und Systemadministration.</li>
+                  <li data-en="Server management and system security.">Server-Management und Systemsicherheit.</li>
+                  <li data-en="Hardware and network management.">Hardware- und Netzwerkmanagement.</li>
                 </ul>
-                <ul class="tl__tags"><li>Infrastruktur</li><li>Server</li><li>Netzwerk</li><li>IT-Security</li><li>Hardware</li></ul>
+                <ul class="tl__tags"><li data-en="Infrastructure">Infrastruktur</li><li>Server</li><li data-en="Network">Netzwerk</li><li>IT-Security</li><li>Hardware</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Berufserfahrung</span>
+                <span class="cf__cat" data-en="Experience">Berufserfahrung</span>
                 <span class="tl__date">01/2011 &ndash; 03/2013</span>
                 <h3 class="tl__title">IT Operations Specialist</h3>
-                <p class="tl__org"><span class="org__name" data-org="pars">Pars IT Co.</span> &middot; Teheran (Iran)</p>
+                <p class="tl__org"><span class="org__name" data-org="pars">Pars IT Co.</span> &middot; <span data-en="Tehran (Iran)">Teheran (Iran)</span></p>
                 <ul class="tl__desc">
-                  <li>System-Monitoring und Systemadministration.</li>
-                  <li>Netzwerkmanagement.</li>
-                  <li>Datensicherung.</li>
-                  <li>First- und Second-Level-Support.</li>
+                  <li data-en="System monitoring and system administration.">System-Monitoring und Systemadministration.</li>
+                  <li data-en="Network management.">Netzwerkmanagement.</li>
+                  <li data-en="Data backup.">Datensicherung.</li>
+                  <li data-en="First- and second-level support.">First- und Second-Level-Support.</li>
                 </ul>
-                <ul class="tl__tags"><li>Monitoring</li><li>Backup</li><li>Netzwerk</li><li>Support</li></ul>
+                <ul class="tl__tags"><li>Monitoring</li><li>Backup</li><li data-en="Network">Netzwerk</li><li>Support</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Berufserfahrung</span>
+                <span class="cf__cat" data-en="Experience">Berufserfahrung</span>
                 <span class="tl__date">01/2009 &ndash; 01/2011</span>
                 <h3 class="tl__title">Managing Director of Sales</h3>
-                <p class="tl__org"><span class="org__name" data-org="foka">Foka Company</span> &middot; Teheran (Iran)</p>
+                <p class="tl__org"><span class="org__name" data-org="foka">Foka Company</span> &middot; <span data-en="Tehran (Iran)">Teheran (Iran)</span></p>
                 <ul class="tl__desc">
-                  <li>Vertriebsleitung, Interior Design.</li>
+                  <li data-en="Head of sales, interior design.">Vertriebsleitung, Interior Design.</li>
                   <li>Production and Service.</li>
                 </ul>
-                <ul class="tl__tags"><li>Vertrieb</li><li>Interior Design</li></ul>
+                <ul class="tl__tags"><li data-en="Sales">Vertrieb</li><li>Interior Design</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Bildungsweg</span>
+                <span class="cf__cat" data-en="Education">Bildungsweg</span>
                 <span class="tl__date">01/2023 &ndash; 01/2025</span>
-                <h3 class="tl__title">Ausbildung zum Fachinformatiker &ndash; Systemintegration</h3>
+                <h3 class="tl__title" data-en="Apprenticeship as IT Specialist &ndash; System Integration">Ausbildung zum Fachinformatiker &ndash; Systemintegration</h3>
                 <p class="tl__org">Hamburg</p>
                 <ul class="tl__desc">
                   <li>Hamburger Software &middot; 11/2023 &ndash; 01/2025</li>
                   <li>Akademie My School &ndash; Campus Eilbek &middot; 01/2023 &ndash; 11/2023</li>
                 </ul>
-                <ul class="tl__tags"><li>IHK</li><li>Systemintegration</li></ul>
+                <ul class="tl__tags"><li>IHK</li><li data-en="System integration">Systemintegration</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Bildungsweg</span>
+                <span class="cf__cat" data-en="Education">Bildungsweg</span>
                 <span class="tl__date">02/2018 &ndash; 11/2020</span>
-                <h3 class="tl__title">Deutsch-Sprachkurs</h3>
+                <h3 class="tl__title" data-en="German language course">Deutsch-Sprachkurs</h3>
                 <p class="tl__org">Grone Institut &middot; Hamburg</p>
-                <ul class="tl__desc"><li>Niveau B1 &ndash; C1.</li></ul>
+                <ul class="tl__desc"><li data-en="Level B1 &ndash; C1.">Niveau B1 &ndash; C1.</li></ul>
                 <ul class="tl__tags"><li>B1&ndash;C1</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Bildungsweg</span>
+                <span class="cf__cat" data-en="Education">Bildungsweg</span>
                 <span class="tl__date">01/2016 &ndash; 06/2016</span>
-                <h3 class="tl__title">MCSA / MCSE &ndash; Microsoft Windows Server (Fortbildung)</h3>
-                <p class="tl__org">Teheran IT Academy &middot; Teheran (Iran)</p>
-                <ul class="tl__desc"><li>MCSA/MCSE für Windows Server.</li></ul>
+                <h3 class="tl__title" data-en="MCSA / MCSE &ndash; Microsoft Windows Server (training)">MCSA / MCSE &ndash; Microsoft Windows Server (Fortbildung)</h3>
+                <p class="tl__org">Teheran IT Academy &middot; <span data-en="Tehran (Iran)">Teheran (Iran)</span></p>
+                <ul class="tl__desc"><li data-en="MCSA/MCSE for Windows Server.">MCSA/MCSE für Windows Server.</li></ul>
                 <ul class="tl__tags"><li>Windows Server</li><li>MCSA</li><li>MCSE</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Bildungsweg</span>
+                <span class="cf__cat" data-en="Education">Bildungsweg</span>
                 <span class="tl__date">01/2004 &ndash; 12/2008</span>
-                <h3 class="tl__title">B.Sc. Architektur</h3>
-                <p class="tl__org">Azad Universität &middot; Teheran (Iran)</p>
+                <h3 class="tl__title" data-en="B.Sc. Architecture">B.Sc. Architektur</h3>
+                <p class="tl__org">Azad <span data-en="University">Universität</span> &middot; <span data-en="Tehran (Iran)">Teheran (Iran)</span></p>
                 <ul class="tl__desc">
-                  <li>Schwerpunkt: Smart-Building-IT-Architektur.</li>
-                  <li>Abschlussprojekt: IT-Sicherheitsarchitektur für Smart Buildings.</li>
+                  <li data-en="Focus: smart-building IT architecture.">Schwerpunkt: Smart-Building-IT-Architektur.</li>
+                  <li data-en="Final project: IT security architecture for smart buildings.">Abschlussprojekt: IT-Sicherheitsarchitektur für Smart Buildings.</li>
                 </ul>
-                <ul class="tl__tags"><li>Smart Building</li><li>IT-Sicherheitsarchitektur</li></ul>
+                <ul class="tl__tags"><li>Smart Building</li><li data-en="IT security architecture">IT-Sicherheitsarchitektur</li></ul>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Bildungsweg</span>
+                <span class="cf__cat" data-en="Education">Bildungsweg</span>
                 <span class="tl__date">10/2002 &ndash; 10/2004</span>
-                <h3 class="tl__title">Militärdienst</h3>
-                <p class="tl__org">Teheran (Iran)</p>
+                <h3 class="tl__title" data-en="Military service">Militärdienst</h3>
+                <p class="tl__org" data-en="Tehran (Iran)">Teheran (Iran)</p>
               </article></li>
 
               <li class="cf__card"><article class="tl__card">
-                <span class="cf__cat">Bildungsweg</span>
+                <span class="cf__cat" data-en="Education">Bildungsweg</span>
                 <span class="tl__date">09/1990 &ndash; 07/2002</span>
-                <h3 class="tl__title">Schulabschluss</h3>
-                <p class="tl__org">Teheran (Iran)</p>
+                <h3 class="tl__title" data-en="School education">Schulabschluss</h3>
+                <p class="tl__org" data-en="Tehran (Iran)">Teheran (Iran)</p>
                 <ul class="tl__desc">
-                  <li>1998 &ndash; 2002 Gymnasium.</li>
-                  <li>1995 &ndash; 1998 Hauptschule.</li>
+                  <li data-en="1998 &ndash; 2002 upper secondary school.">1998 &ndash; 2002 Gymnasium.</li>
+                  <li data-en="1995 &ndash; 1998 secondary school.">1995 &ndash; 1998 Hauptschule.</li>
                 </ul>
               </article></li>
             </ul>
@@ -451,7 +471,7 @@
             <div class="cf__fade cf__fade--bot" aria-hidden="true"></div>
           </div>
 
-          <button class="cf__nav cf__nav--down" type="button" data-dir="1" aria-label="Nächste Station">
+          <button class="cf__nav cf__nav--down" type="button" data-dir="1" aria-label="Nächste Station" data-en-al="Next entry">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </button>
 
@@ -472,31 +492,31 @@
             <span class="terminal__title">bash — profil</span>
           </div>
           <pre class="terminal__body"><code><span class="line"><span class="prompt">jonas@hamburg:~$</span> cat ~/profil.txt</span>
-<span class="out">Sprachen............: Deutsch (verhandlungssicher)</span>
-<span class="out">                      Englisch (fließend)</span>
-<span class="out">                      Persisch (Muttersprache)</span>
-<span class="out">Führerschein........: Klasse B</span>
-<span class="out">Staatsangehörigkeit.: deutsch / iranisch</span>
-<span class="out">In Deutschland seit.: 11/2016</span>
-<span class="out">Standort............: Hamburg</span>
+<span class="out" data-en="Languages...........: German (fluent, business level)">Sprachen............: Deutsch (verhandlungssicher)</span>
+<span class="out" data-en="                      English (fluent)">                      Englisch (fließend)</span>
+<span class="out" data-en="                      Persian (native)">                      Persisch (Muttersprache)</span>
+<span class="out" data-en="Driving licence.....: Class B">Führerschein........: Klasse B</span>
+<span class="out" data-en="Citizenship.........: German / Iranian">Staatsangehörigkeit.: deutsch / iranisch</span>
+<span class="out" data-en="In Germany since....: 11/2016">In Deutschland seit.: 11/2016</span>
+<span class="out" data-en="Location............: Hamburg">Standort............: Hamburg</span>
 <span class="line"><span class="prompt">jonas@hamburg:~$</span> <span class="cursor">&#9608;</span></span></code></pre>
         </div>
 
         <!-- IPv4-Subnetzrechner -->
-        <div class="ipc" id="iprechner" aria-label="IPv4-Subnetzrechner">
-          <span class="ipc__prompt">$ ipcalc &lt;ip&gt; &lt;maske|/cidr&gt;</span>
+        <div class="ipc" id="iprechner" aria-label="IPv4-Subnetzrechner" data-en-al="IPv4 subnet calculator">
+          <span class="ipc__prompt">$ ipcalc &lt;ip&gt; &lt;<span data-en="mask">maske</span>|/cidr&gt;</span>
           <div class="ipc__row">
             <label class="ipc__field">
-              <span class="ipc__tag">IPv4-Adresse</span>
+              <span class="ipc__tag" data-en="IPv4 address">IPv4-Adresse</span>
               <input id="ipcAddr" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="192.168.10.42" />
             </label>
             <label class="ipc__field">
-              <span class="ipc__tag">Subnetzmaske / CIDR</span>
-              <input id="ipcMask" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="255.255.255.0  oder  /24" />
+              <span class="ipc__tag" data-en="Subnet mask / CIDR">Subnetzmaske / CIDR</span>
+              <input id="ipcMask" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="255.255.255.0  oder  /24" data-en-ph="255.255.255.0  or  /24" />
             </label>
           </div>
           <pre class="ipc__out" id="ipcOut" aria-live="polite"></pre>
-          <p class="ipc__hint" id="ipcHint">IP und Maske eingeben &ndash; Netz, Broadcast, Bereich, Klasse &amp; mehr werden berechnet.</p>
+          <p class="ipc__hint" id="ipcHint" data-en="Enter IP and mask &ndash; network, broadcast, range, class &amp; more are calculated.">IP und Maske eingeben &ndash; Netz, Broadcast, Bereich, Klasse &amp; mehr werden berechnet.</p>
         </div>
       </div>
     </section>
@@ -508,12 +528,12 @@
     <section id="contact" class="section">
       <div class="container">
         <h2 class="section__title"><span class="section__index">101</span> ./contact.sh</h2>
-        <p class="section__lead">Schreib mir &ndash; ich melde mich zeitnah zurück.</p>
+        <p class="section__lead" data-en="Drop me a line &ndash; I'll get back to you soon.">Schreib mir &ndash; ich melde mich zeitnah zurück.</p>
 
         <div class="cform-wrap">
           <!-- Kontaktformular.
                Versand über Web3Forms (https://web3forms.com) direkt an dein Postfach.
-               ===== BEARBEITEN: 1) auf web3forms.com mit info@binarycode.de einen
+               ===== BEARBEITEN: 1) auf web3forms.com mit info@binarycodes.de einen
                kostenlosen Access Key holen  2) unten value="…" ersetzen.
                Solange der Platzhalter steht, öffnet sich als Fallback das
                E-Mail-Programm des Besuchers.
@@ -521,13 +541,13 @@
           <form class="cform" id="contactForm"
                 action="https://api.web3forms.com/submit" method="POST">
             <input type="hidden" name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY" />
-            <input type="hidden" name="from_name" value="binaryCode Kontaktformular" />
-            <input type="hidden" name="subject" value="Neue Nachricht über binaryCode" />
+            <input type="hidden" name="from_name" value="binaryCodes Kontaktformular" />
+            <input type="hidden" name="subject" value="Neue Nachricht über binaryCodes" />
             <input type="checkbox" name="botcheck" class="cform__botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <div class="cform__row">
               <label class="cform__field">
                 <span class="cform__label">&gt; name</span>
-                <input type="text" name="name" autocomplete="name" required placeholder="Vor- und Nachname" />
+                <input type="text" name="name" autocomplete="name" required placeholder="Vor- und Nachname" data-en-ph="First and last name" />
               </label>
               <label class="cform__field">
                 <span class="cform__label">&gt; email</span>
@@ -535,18 +555,18 @@
               </label>
             </div>
             <label class="cform__field">
-              <span class="cform__label">&gt; betreff</span>
-              <input type="text" name="betreff" required placeholder="Worum geht es?" />
+              <span class="cform__label" data-en="&gt; subject">&gt; betreff</span>
+              <input type="text" name="betreff" required placeholder="Worum geht es?" data-en-ph="What's it about?" />
             </label>
             <label class="cform__field">
-              <span class="cform__label">&gt; nachricht</span>
-              <textarea name="nachricht" rows="6" required placeholder="Deine Nachricht …"></textarea>
+              <span class="cform__label" data-en="&gt; message">&gt; nachricht</span>
+              <textarea name="nachricht" rows="6" required placeholder="Deine Nachricht …" data-en-ph="Your message …"></textarea>
             </label>
 
             <div class="cform__consent">
               <div class="neo-toggle-container">
                 <input class="neo-toggle-input" type="checkbox" name="datenschutz" id="convConsent" required />
-                <label class="neo-toggle" for="convConsent" aria-label="Der Datenschutzerklärung zustimmen">
+                <label class="neo-toggle" for="convConsent" aria-label="Der Datenschutzerklärung zustimmen" data-en-al="Accept the privacy policy">
                   <div class="neo-track">
                     <div class="neo-background-layer"></div>
                     <div class="neo-grid-layer"></div>
@@ -580,7 +600,7 @@
                 </label>
                 <div class="neo-value-display"><span class="neo-value-text">OK</span></div>
               </div>
-              <p class="cform__consent-text">
+              <p class="cform__consent-text" data-en='I have read the <a href="datenschutz.html" target="_blank" rel="noopener">privacy policy</a> and agree that my details may be processed by email to handle my enquiry.'>
                 Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>
                 gelesen und bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage
                 per E-Mail verarbeitet werden.
@@ -588,8 +608,8 @@
             </div>
 
             <div class="cform__foot">
-              <button type="submit" class="btn btn--primary cform__send">Nachricht senden</button>
-              <span class="cform__hint" id="cformHint">Geht direkt an mein Postfach.</span>
+              <button type="submit" class="btn btn--primary cform__send" data-en="Send message">Nachricht senden</button>
+              <span class="cform__hint" id="cformHint" data-en="Goes straight to my inbox.">Geht direkt an mein Postfach.</span>
             </div>
           </form>
         </div>
@@ -630,37 +650,37 @@
       </div>
 
       <div class="footer__meta">
-        <img class="footer__logo" src="logo.svg" width="139" height="139" alt="binaryCode Logo" />
-        <p>
+        <img class="footer__logo" src="logo.svg" width="139" height="139" alt="binaryCodes Logo" />
+        <p data-en='<span class="accent">&lt;/&gt;</span> &copy; <span id="year">2026</span> Jonas Shojaei &middot; built with HTML, CSS &amp; a&nbsp;little&nbsp;JavaScript'>
           <span class="accent">&lt;/&gt;</span>
           &copy; <span id="year">2026</span> Jonas Shojaei &middot; gebaut mit HTML, CSS &amp; ein&nbsp;bisschen&nbsp;JavaScript
         </p>
       </div>
     </div>
-    <nav class="footer__legal" aria-label="Rechtliches">
-      <a href="impressum.html">Impressum</a>
+    <nav class="footer__legal" aria-label="Rechtliches" data-en-al="Legal">
+      <a href="impressum.html" data-en="Legal notice">Impressum</a>
       <span aria-hidden="true">&middot;</span>
-      <a href="datenschutz.html">Datenschutzerklärung</a>
+      <a href="datenschutz.html" data-en="Privacy policy">Datenschutzerklärung</a>
       <span aria-hidden="true">&middot;</span>
-      <button type="button" id="cookieSettings" class="footer__legal-btn">Cookie-Einstellungen</button>
+      <button type="button" id="cookieSettings" class="footer__legal-btn" data-en="Cookie settings">Cookie-Einstellungen</button>
     </nav>
   </footer>
 
   <!-- Consent-Hinweis -->
-  <div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Hinweis zu Cookies und Datenschutz" hidden>
-    <p class="consent__text">
+  <div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Hinweis zu Cookies und Datenschutz" data-en-al="Notice about cookies and privacy" hidden>
+    <p class="consent__text" data-en='This website uses <strong>no tracking or marketing cookies</strong> and embeds no external services. It only stores one technically necessary entry in your browser&rsquo;s local storage so this notice is not shown again. Details in the <a href="datenschutz.html">privacy policy</a>.'>
       Diese Website verwendet <strong>keine Tracking- oder Marketing-Cookies</strong> und bindet keine
       externen Dienste ein. Es wird lediglich ein technisch notwendiger Eintrag im lokalen Speicher
       deines Browsers abgelegt, um diesen Hinweis nicht erneut anzuzeigen. Details in der
       <a href="datenschutz.html">Datenschutzerklärung</a>.
     </p>
     <div class="consent__actions">
-      <button type="button" class="btn" id="consentDecline">Nur Notwendiges</button>
-      <button type="button" class="btn btn--primary" id="consentAccept">Verstanden</button>
+      <button type="button" class="btn" id="consentDecline" data-en="Essential only">Nur Notwendiges</button>
+      <button type="button" class="btn btn--primary" id="consentAccept" data-en="Got it">Verstanden</button>
     </div>
   </div>
 
-  <a href="#home" class="to-top" id="toTop" aria-label="Nach oben">[ &#9652; ]</a>
+  <a href="#home" class="to-top" id="toTop" aria-label="Nach oben" data-en-al="Back to top">[ &#9652; ]</a>
 
   <script src="assets/js/main.js" defer></script>
 </body>
