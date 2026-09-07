@@ -32,6 +32,8 @@
     resize();
     window.addEventListener("resize", resize);
 
+    var glyphFont = fontSize + 'px "IBM Plex Mono", ui-monospace, Consolas, monospace';
+
     var last = 0;
     function draw(now) {
       requestAnimationFrame(draw);
@@ -41,7 +43,7 @@
       ctx.fillStyle = "rgba(7, 10, 13, 0.12)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.font = fontSize + 'px "IBM Plex Mono", ui-monospace, Consolas, monospace';
+      ctx.font = glyphFont;
       for (var i = 0; i < drops.length; i++) {
         var char = Math.random() > 0.5 ? "1" : "0";
         var x = i * fontSize;
@@ -57,7 +59,16 @@
         drops[i]++;
       }
     }
-    requestAnimationFrame(draw);
+
+    // Canvas-Text nutzt Webfonts erst, wenn sie geladen sind – sonst
+    // faellt er still auf Consolas zurueck (dessen 0 einen Punkt hat).
+    function startRain() { requestAnimationFrame(draw); }
+    if (document.fonts && document.fonts.load) {
+      document.fonts.load('400 ' + fontSize + 'px "IBM Plex Mono"')
+        .then(startRain, startRain);
+    } else {
+      startRain();
+    }
   })();
 
   /* ---------------------------------------------------------
