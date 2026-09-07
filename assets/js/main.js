@@ -41,7 +41,7 @@
       ctx.fillStyle = "rgba(7, 10, 13, 0.12)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.font = fontSize + "px monospace";
+      ctx.font = fontSize + 'px "IBM Plex Mono", ui-monospace, Consolas, monospace';
       for (var i = 0; i < drops.length; i++) {
         var char = Math.random() > 0.5 ? "1" : "0";
         var x = i * fontSize;
