@@ -944,49 +944,52 @@ a:hover { text-decoration: underline; }
   gap: 26px;
   flex-wrap: wrap;
 }
-/* Social-Icons (Uiverse.io / MrBishtji) – an den Footer angepasst */
+/* Social-Icons (Uiverse.io / MrBishtji) – Liquid-Glass-Variante, im Footer */
 #SocailIcons {
   position: static;
   transform: none;
   min-width: 0;
   display: flex;
-  gap: 16px;
+  gap: 14px;
   flex: 0 0 auto;
 }
 #SocailIcons .icons {
   position: relative;
-  width: 42px;
-  height: 42px;
-  background: #fff;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  outline: none;
-  border: none;
-  z-index: 0;
-  text-align: center;
 }
+
+/* Hilfstext als Glas-Pille */
 #SocailIcons .iconName {
   position: absolute;
   left: 50%;
-  top: -34px;
-  font-size: 11px;
-  color: #fff;
+  top: -30px;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  color: #eef4f9;
   transform: translateX(-50%) scale(0);
   transform-origin: bottom center;
-  border-radius: 4px;
+  border-radius: 999px;
   white-space: nowrap;
-  text-align: center;
-  padding: 3px 7px;
+  padding: 3px 9px;
   pointer-events: none;
-  transition: transform 0.3s ease;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 18px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 #SocailIcons .icons:hover .iconName { transform: translateX(-50%) scale(1); }
-#SocailIcons .instaIcon:hover .iconName { background: linear-gradient(30deg, #0000ff, #f56040); }
-#SocailIcons .linkedin:hover .iconName { background: #0274b3; }
-#SocailIcons .whatsapp:hover .iconName { background: #25d366; }
-#SocailIcons .youtube:hover .iconName { background: #ff0000; }
+#SocailIcons .instaIcon:hover .iconName { background: linear-gradient(30deg, rgba(0, 0, 255, 0.35), rgba(245, 96, 64, 0.35)); border-color: rgba(245, 96, 64, 0.55); }
+#SocailIcons .linkedin:hover .iconName { background: rgba(2, 116, 179, 0.38); border-color: rgba(2, 116, 179, 0.6); }
+#SocailIcons .whatsapp:hover .iconName { background: rgba(37, 211, 102, 0.35); border-color: rgba(37, 211, 102, 0.6); }
+#SocailIcons .youtube:hover .iconName { background: rgba(255, 0, 0, 0.35); border-color: rgba(255, 0, 0, 0.6); }
+
+/* Glas-Kreis */
 #SocailIcons .icon {
-  z-index: 1;
   display: grid;
   place-items: center;
   width: 100%;
@@ -994,13 +997,17 @@ a:hover { text-decoration: underline; }
   border-radius: 50%;
   position: relative;
   overflow: hidden;
-  border: none;
-  outline: none;
-  transition: color 0.3s ease;
-  color: #0c0c0c;
+  color: #dfe6ee;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(9px) saturate(150%);
+  -webkit-backdrop-filter: blur(9px) saturate(150%);
+  transition: color 0.3s ease, transform 0.25s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
-#SocailIcons .icon svg { width: 20px; height: 20px; position: relative; z-index: 2; }
-#SocailIcons .icon:hover { color: #fff; box-shadow: 5px 5px 10px rgba(24, 23, 23, 0.8); }
+#SocailIcons .icon svg { width: 15px; height: 15px; position: relative; z-index: 2; }
+
+/* aufsteigende Glas-Tönung in der Markenfarbe */
 #SocailIcons .icon::before {
   content: "";
   position: absolute;
@@ -1009,18 +1016,25 @@ a:hover { text-decoration: underline; }
   width: 100%;
   height: 0;
   border-radius: 50%;
-  transition: height 0.3s ease;
+  transition: height 0.35s ease;
   z-index: 1;
 }
-#SocailIcons .icon:hover::before { height: 100%; }
-#SocailIcons .icon.tube::before  { background: #ff0000; }
-#SocailIcons .icon.insta::before { background: linear-gradient(40deg, #0000ff, #f56040); }
-#SocailIcons .icon.link::before  { background: #0274b3; }
-#SocailIcons .icon.whats::before { background: #25d366; }
+#SocailIcons .icons:hover .icon {
+  color: #fff;
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 10px 24px rgba(0, 0, 0, 0.42);
+}
+#SocailIcons .icons:hover .icon::before { height: 100%; }
+#SocailIcons .icon.insta::before { background: linear-gradient(40deg, rgba(0, 0, 255, 0.45), rgba(245, 96, 64, 0.45)); }
+#SocailIcons .icon.link::before  { background: rgba(2, 116, 179, 0.5); }
+#SocailIcons .icon.whats::before { background: rgba(37, 211, 102, 0.46); }
+#SocailIcons .icon.tube::before  { background: rgba(255, 0, 0, 0.46); }
+
 @media (max-width: 620px) {
-  #SocailIcons { gap: 12px; }
-  #SocailIcons .icons { width: 38px; height: 38px; }
-  #SocailIcons .icon svg { width: 18px; height: 18px; }
+  #SocailIcons { gap: 11px; }
+  #SocailIcons .icons { width: 30px; height: 30px; }
+  #SocailIcons .icon svg { width: 14px; height: 14px; }
 }
 
 .footer__meta {
