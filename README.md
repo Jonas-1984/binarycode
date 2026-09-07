@@ -129,14 +129,12 @@ feststeht. Consent-Hinweis setzt nur den technisch notwendigen `localStorage`-Sc
 | Logo-Farbe | `logo.svg` Attribut `color="…"` |
 | Logo-Größe | `.nav__logo` / `.footer__logo` in `styles.css` |
 | Texte | direkt in `index.html`, Kommentare `<!-- ===== BEARBEITEN: … ===== -->` |
-| Social-URLs | `<ul class="footer__social">` (aktuell `href="#"`-Platzhalter) |
-| LinkedIn im Formular-Bereich | – (Direkt-Links wurden entfernt) |
+| Social-Links | `#SocailIcons` im Footer – aktuell Instagram + LinkedIn (WhatsApp/YouTube entfernt) |
 
 ## Noch offen
 
 - **Auslieferungsweg für `binarycodes.de` festlegen** (siehe „Veröffentlichen").
 - `datenschutz.html` Abschnitt 2 auf den tatsächlichen Hoster anpassen.
-- Echte Profil-URLs für die 4 Social-Buttons im Footer.
 - Web3Forms-Access-Key (+ Datenschutz-Ergänzung) für echten Formularversand.
 
 ## Veröffentlichen (`binarycodes.de`)
