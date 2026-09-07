@@ -5,9 +5,12 @@ Dark-/IT-Theme, durchgängig mit Binärcode (0/1) gestaltet. Reines HTML/CSS/Jav
 **kein Build, kein Framework, keine externen Laufzeit-Abhängigkeiten**.
 Zweisprachig **DE / EN** (Umschalter im Header) und mit **Seiten-Zoom-Regler** am Hero-Terminal.
 
-Domain: `binarycodes.de`
-Live (nach Aktivierung von GitHub Pages): `https://jonas-1984.github.io/binarycode/`
+Domain (gekauft, inkl. Webspace): `https://binarycodes.de/` — Auslieferungsweg noch offen
+(eigener Webspace per FTP **oder** GitHub Pages + Custom Domain).
 Remote: `https://github.com/Jonas-1984/binarycode.git`
+
+Kanonische URL, Open-Graph-/Twitter-Tags, `robots.txt` und `sitemap.xml` sind bereits auf
+`https://binarycodes.de/` gesetzt.
 
 ---
 
@@ -104,11 +107,18 @@ ergänzen**, bevor der Key live geht.
 
 ## Rechtstexte
 
-`impressum.html` und `datenschutz.html` teilen sich `styles.css`. Adresse ist als
-`<!-- BEARBEITEN -->`-Platzhalter markiert (für ein vollständiges Impressum rechtlich
-erforderlich). Consent-Hinweis unten setzt nur den technisch notwendigen
-`localStorage`-Schlüssel `bc_consent`. Texte sind Standardvorlagen – für volle
-Rechtssicherheit anwaltlich prüfen lassen.
+`impressum.html` und `datenschutz.html` teilen sich `styles.css`.
+
+**Keine Anschrift, keine Telefonnummer** – auf ausdrücklichen Wunsch des Betreibers
+stehen weder Straßenanschrift noch Telefonnummer irgendwo im Projekt. Impressum und
+Datenschutz nennen nur Name, „Hamburg" und die E-Mail-Adresse. Ein `<!-- BEARBEITEN -->`-
+Kommentar im Impressum weist auf das rechtliche Risiko hin: für geschäftsmäßige / nicht
+rein private Angebote ist eine ladungsfähige Anschrift Pflicht (§ 5 DDG, § 18 MStV).
+
+`datenschutz.html` Abschnitt 2 („Hosting") ist als `<!-- BEARBEITEN -->` markiert und
+muss angepasst werden, sobald der Auslieferungsweg (eigener Webspace vs. GitHub Pages)
+feststeht. Consent-Hinweis setzt nur den technisch notwendigen `localStorage`-Schlüssel
+`bc_consent`. Texte sind Standardvorlagen – für volle Rechtssicherheit anwaltlich prüfen.
 
 ## Anpassen
 
@@ -124,14 +134,27 @@ Rechtssicherheit anwaltlich prüfen lassen.
 
 ## Noch offen
 
+- **Auslieferungsweg für `binarycodes.de` festlegen** (siehe „Veröffentlichen").
+- `datenschutz.html` Abschnitt 2 auf den tatsächlichen Hoster anpassen.
 - Echte Profil-URLs für die 4 Social-Buttons im Footer.
 - Web3Forms-Access-Key (+ Datenschutz-Ergänzung) für echten Formularversand.
-- Optional: Domain `binarycodes.de` + Hosting; Impressum/Datenschutz auf finale Daten setzen.
 
-## GitHub Pages veröffentlichen
+## Veröffentlichen (`binarycodes.de`)
 
-**Settings → Pages → Source: „Deploy from a branch"**, Branch `main`, Ordner `/ (root)`.
-`.nojekyll` ist bereits vorhanden. Nach ~1 Minute live.
+Domain + Webspace sind gekauft. Zwei Wege:
+
+**a) Eigener Webspace (FTP/SFTP)** – alle Dateien aus dem Repo-Root in das
+Web-Wurzelverzeichnis hochladen (`index.html`, `impressum.html`, `datenschutz.html`,
+`favicon.svg`, `logo.svg`, `robots.txt`, `sitemap.xml`, Ordner `assets/`).
+`.nojekyll` kann mit hoch, stört nicht. Domain-DNS (A-Record) zeigt bereits auf den
+Hoster. Danach `datenschutz.html` Abschnitt 2 auf den Hoster + AV-Vertrag umschreiben.
+
+**b) GitHub Pages + Custom Domain** – Repo → **Settings → Pages → Deploy from a branch**,
+Branch `main`, Ordner `/ (root)`; unter „Custom domain" `binarycodes.de` eintragen,
+„Enforce HTTPS" anhaken. Beim Domain-Anbieter: `CNAME www → jonas-1984.github.io` plus
+die vier A-Records der GitHub-Pages-Apex-IPs. GitHub legt dann automatisch eine
+`CNAME`-Datei im Repo an (oder vorab selbst anlegen: Datei `CNAME` mit Inhalt
+`binarycodes.de`). `.nojekyll` ist bereits vorhanden. Nach ~1 Minute live.
 
 ## Git
 
