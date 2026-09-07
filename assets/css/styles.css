@@ -785,6 +785,13 @@ a:hover { text-decoration: underline; }
 }
 .tl__title { margin: 4px 0 2px; font-size: 1.1rem; color: var(--text); }
 .tl__org { margin: 0 0 10px; color: var(--muted); font-family: var(--font-mono); font-size: 13px; }
+/* Firmenname in der jeweiligen Markenfarbe (auf dunklem Karton lesbar gehalten) */
+.org__name { color: var(--text); font-weight: 500; }
+.org__name[data-org="synios"] { color: #f77f00; }                 /* SYNIOS – Orange */
+.org__name[data-org="hsw"]    { color: #00afb9; }                 /* Hamburger Software – Türkis */
+.org__name[data-org="aria"]   { color: #6b9080; }                 /* Aria IT – Salbeigrün */
+.org__name[data-org="pars"]   { color: #5183c7; }                 /* Pars IT – Blau (aufgehellt aus #1e447c) */
+.org__name[data-org="foka"]   { color: #e23b3b; }                 /* Foka – Rot */
 .tl__desc { margin: 0; padding-left: 18px; }
 .tl__desc li { color: var(--text); margin: 5px 0; }
 .tl__desc li::marker { color: var(--accent); }
