@@ -558,6 +558,175 @@
   })();
 
   /* ---------------------------------------------------------
+     11b) IPv4-Subnetzrechner
+     --------------------------------------------------------- */
+  (function ipCalc() {
+    var addrEl = document.getElementById("ipcAddr");
+    var maskEl = document.getElementById("ipcMask");
+    var out = document.getElementById("ipcOut");
+    var hint = document.getElementById("ipcHint");
+    if (!addrEl || !maskEl || !out) return;
+
+    var HINT_DEFAULT = hint ? hint.textContent : "";
+
+    function u32(n) { return n >>> 0; }
+    function toDotted(n) {
+      return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join(".");
+    }
+    function toBin(n) {
+      var s = "";
+      for (var i = 3; i >= 0; i--) {
+        var o = (n >>> (i * 8)) & 255;
+        s += ("00000000" + o.toString(2)).slice(-8);
+        if (i) s += ".";
+      }
+      return s;
+    }
+    function parseOctets(str) {
+      var p = str.trim().split(".");
+      if (p.length !== 4) return null;
+      var n = 0;
+      for (var i = 0; i < 4; i++) {
+        if (!/^\d{1,3}$/.test(p[i])) return null;
+        var o = parseInt(p[i], 10);
+        if (o > 255) return null;
+        n = (n << 8) | o;
+      }
+      return u32(n);
+    }
+    function maskToPrefix(m) {
+      /* Maske muss zusammenhängend sein (1en dann 0en) */
+      var inv = u32(~m);
+      if ((inv & (inv + 1)) !== 0) return -1;
+      var p = 0, x = m;
+      while (x & 0x80000000) { p++; x = u32(x << 1); }
+      return p;
+    }
+    function prefixToMask(p) {
+      return p === 0 ? 0 : u32(0xffffffff << (32 - p));
+    }
+
+    function ipClass(firstOctet) {
+      if (firstOctet === 0) return "„this network“ (0.0.0.0/8)";
+      if (firstOctet === 127) return "A – reserviert für Loopback";
+      if (firstOctet <= 127) return "A";
+      if (firstOctet <= 191) return "B";
+      if (firstOctet <= 223) return "C";
+      if (firstOctet <= 239) return "D – Multicast";
+      return "E – reserviert / experimentell";
+    }
+    function ipType(ip) {
+      function inNet(net, pfx) {
+        var mm = prefixToMask(pfx);
+        return u32(ip & mm) === u32(parseOctets(net) & mm);
+      }
+      if (inNet("10.0.0.0", 8)) return "privat (RFC 1918)";
+      if (inNet("172.16.0.0", 12)) return "privat (RFC 1918)";
+      if (inNet("192.168.0.0", 16)) return "privat (RFC 1918)";
+      if (inNet("127.0.0.0", 8)) return "Loopback (RFC 1122)";
+      if (inNet("169.254.0.0", 16)) return "Link-Local / APIPA (RFC 3927)";
+      if (inNet("100.64.0.0", 10)) return "Carrier-Grade NAT (RFC 6598)";
+      if (inNet("192.0.2.0", 24) || inNet("198.51.100.0", 24) || inNet("203.0.113.0", 24)) return "Dokumentation (RFC 5737)";
+      if (inNet("224.0.0.0", 4)) return "Multicast (RFC 5771)";
+      if (inNet("240.0.0.0", 4)) return "reserviert (RFC 1112)";
+      if (inNet("0.0.0.0", 8)) return "„this network“";
+      return "öffentlich (global routbar)";
+    }
+
+    function row(k, v) {
+      var pad = (k + " ".repeat(20)).slice(0, 20);
+      return '<span class="k">' + pad + "</span>: <b>" + v + "</b>\n";
+    }
+
+    function setHint(msg, bad) {
+      if (!hint) return;
+      hint.textContent = msg || HINT_DEFAULT;
+      hint.classList.toggle("is-bad", !!bad);
+    }
+
+    function calc() {
+      var rawAddr = addrEl.value.trim();
+      var rawMask = maskEl.value.trim();
+      addrEl.classList.remove("is-bad");
+      maskEl.classList.remove("is-bad");
+
+      /* CIDR direkt im Adressfeld erlaubt: 192.168.1.10/24 */
+      var slash = rawAddr.indexOf("/");
+      if (slash !== -1) {
+        if (!rawMask) rawMask = rawAddr.slice(slash);
+        rawAddr = rawAddr.slice(0, slash);
+      }
+
+      if (!rawAddr && !rawMask) { out.innerHTML = ""; setHint(""); return; }
+
+      var ip = parseOctets(rawAddr);
+      if (ip === null) {
+        addrEl.classList.add("is-bad");
+        out.innerHTML = "";
+        setHint("Ungültige IPv4-Adresse (z. B. 192.168.10.42).", true);
+        return;
+      }
+
+      var prefix;
+      var m = rawMask.replace(/^\//, "").trim();
+      if (m === "") {
+        prefix = 24; /* Standardannahme */
+      } else if (/^\d{1,2}$/.test(m)) {
+        prefix = parseInt(m, 10);
+        if (prefix > 32) { maskEl.classList.add("is-bad"); out.innerHTML = ""; setHint("CIDR-Präfix muss 0–32 sein.", true); return; }
+      } else {
+        var mi = parseOctets(m);
+        if (mi === null) { maskEl.classList.add("is-bad"); out.innerHTML = ""; setHint("Ungültige Subnetzmaske oder CIDR.", true); return; }
+        prefix = maskToPrefix(mi);
+        if (prefix < 0) { maskEl.classList.add("is-bad"); out.innerHTML = ""; setHint("Maske ist nicht zusammenhängend (z. B. 255.255.255.0).", true); return; }
+      }
+
+      var mask = prefixToMask(prefix);
+      var wild = u32(~mask);
+      var network = u32(ip & mask);
+      var broadcast = u32(network | wild);
+      var hostBits = 32 - prefix;
+      var total = Math.pow(2, hostBits);
+      var usable, first, last;
+      if (prefix >= 31) {
+        usable = prefix === 32 ? 1 : 2;
+        first = network;
+        last = broadcast;
+      } else {
+        usable = total - 2;
+        first = u32(network + 1);
+        last = u32(broadcast - 1);
+      }
+      var firstOctet = (ip >>> 24) & 255;
+
+      var html = "";
+      html += row("Adresse", toDotted(ip));
+      html += row("CIDR-Notation", toDotted(network) + "/" + prefix);
+      html += row("Subnetzmaske", toDotted(mask) + "  (/" + prefix + ")");
+      html += row("Wildcard-Maske", toDotted(wild));
+      html += row("Netzadresse", toDotted(network));
+      html += row("Broadcast-Adresse", toDotted(broadcast));
+      html += row("Erste Host-Adresse", toDotted(first));
+      html += row("Letzte Host-Adresse", toDotted(last));
+      html += row("Gateway (üblich)", toDotted(first) + "  (Konvention)");
+      html += row("Adressen gesamt", total.toLocaleString("de-DE"));
+      html += row("Nutzbare Hosts", usable.toLocaleString("de-DE"));
+      html += row("IPv4-Klasse", ipClass(firstOctet));
+      html += row("Adresstyp", ipType(ip));
+      html += "\n";
+      html += row("Adresse  (binär)", toBin(ip));
+      html += row("Maske    (binär)", toBin(mask));
+      html += row("Netz     (binär)", toBin(network));
+
+      out.innerHTML = html;
+      setHint("");
+    }
+
+    addrEl.addEventListener("input", calc);
+    maskEl.addEventListener("input", calc);
+  })();
+
+  /* ---------------------------------------------------------
      12) Tool-Dock: Endlos-Lauf; bei Hover sanft ausbremsen
      --------------------------------------------------------- */
   (function toolDock() {

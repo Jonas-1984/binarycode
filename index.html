@@ -472,6 +472,23 @@
 <span class="out">Standort............: Hamburg</span>
 <span class="line"><span class="prompt">jonas@hamburg:~$</span> <span class="cursor">&#9608;</span></span></code></pre>
         </div>
+
+        <!-- IPv4-Subnetzrechner -->
+        <div class="ipc" aria-label="IPv4-Subnetzrechner">
+          <span class="ipc__prompt">$ ipcalc &lt;ip&gt; &lt;maske|/cidr&gt;</span>
+          <div class="ipc__row">
+            <label class="ipc__field">
+              <span class="ipc__tag">IPv4-Adresse</span>
+              <input id="ipcAddr" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="192.168.10.42" />
+            </label>
+            <label class="ipc__field">
+              <span class="ipc__tag">Subnetzmaske / CIDR</span>
+              <input id="ipcMask" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="255.255.255.0  oder  /24" />
+            </label>
+          </div>
+          <pre class="ipc__out" id="ipcOut" aria-live="polite"></pre>
+          <p class="ipc__hint" id="ipcHint">IP und Maske eingeben &ndash; Netz, Broadcast, Bereich, Klasse &amp; mehr werden berechnet.</p>
+        </div>
       </div>
     </section>
 
