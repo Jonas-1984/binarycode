@@ -130,18 +130,14 @@ a:hover { text-decoration: underline; }
 }
 .nav__brand:hover { text-decoration: none; }
 
-/* sichtbarer Zustand (Logo + Text) – zerfällt/entsteht im 6-Sekunden-Takt */
+/* sichtbarer Zustand (Logo + Schriftzug)
+   6-Sekunden-Takt: jedes Zeichen + das Logo drehen sich im Platz,
+   klappen zur Binärziffer um, halten kurz, drehen zurück. */
 .brand__solid {
   display: flex;
   align-items: center;
   gap: 10px;
-  animation: brandCycle 6s ease-in-out infinite;
-}
-@keyframes brandCycle {
-  0%, 60%   { opacity: 1; filter: blur(0);   transform: scale(1); }
-  67%       { opacity: 0; filter: blur(9px);  transform: scale(.82); }
-  82%       { opacity: 0; filter: blur(9px);  transform: scale(.82); }
-  90%, 100% { opacity: 1; filter: blur(0);   transform: scale(1); }
+  perspective: 720px;
 }
 .nav__logo {
   height: 54px;                 /* rund doppelt so groß */
@@ -150,39 +146,51 @@ a:hover { text-decoration: underline; }
   display: block;
 }
 .nav__brand-text {
+  display: inline-flex;
+  gap: 0.5px;
   font-size: 17px;
   letter-spacing: 0.5px;
 }
 .nav__prompt { color: var(--accent); }
 
-/* Binärzahlen-Ebene: Logo+Text zerstäuben in 0/1 und formen sich wieder */
-.brand__bits {
-  position: absolute;
-  inset: 0;
-  overflow: visible;
-  pointer-events: none;
+/* Zeichen-/Logo-Flip */
+.ch {
+  position: relative;
+  display: inline-block;
+  transform-style: preserve-3d;
+  will-change: transform;
+  animation: brandFlip 6s cubic-bezier(.55, 0, .45, 1) infinite;
+  animation-delay: calc(var(--i, 0) * 0.04s);
 }
-.brand__bits i {
+.ch--accent .ch__face { color: var(--accent); }
+.ch__face,
+.ch__bit {
+  display: inline-block;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+.ch__bit {
   position: absolute;
-  font-family: var(--font-mono);
-  font-style: normal;
-  font-weight: 700;
-  font-size: 11px;
-  line-height: 1;
+  left: 0; right: 0; top: 0;
+  text-align: center;
+  transform: rotateY(180deg);
   color: var(--accent);
-  text-shadow: 0 0 7px rgba(34, 211, 238, 0.65);
-  opacity: 0;
-  will-change: transform, opacity;
-  animation: brandBits 6s ease-in-out infinite;
+  text-shadow: 0 0 9px rgba(34, 211, 238, 0.65);
 }
-@keyframes brandBits {
-  0%, 60%   { opacity: 0; transform: translate(0, 0) scale(.5); }
-  64%       { opacity: 1; transform: translate(0, 0) scale(1); }
-  72%       { opacity: .9; transform: translate(var(--tx), var(--ty)) scale(1.05); }
-  78%, 80%  { opacity: 0; transform: translate(calc(var(--tx) * 1.6), calc(var(--ty) * 1.6)) scale(.55); }
-  82%       { opacity: .95; transform: translate(var(--tx), var(--ty)) scale(1); }
-  88%       { opacity: 1; transform: translate(0, 0) scale(1); }
-  93%, 100% { opacity: 0; transform: translate(0, 0) scale(.5); }
+.ch--logo { margin-right: 2px; }
+.ch--logo .ch__bit {
+  top: 50%;
+  transform: translateY(-50%) rotateY(180deg);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+}
+@keyframes brandFlip {
+  0%, 46%   { transform: rotateY(0deg); }
+  56%       { transform: rotateY(360deg); }   /* Drehung im Platz */
+  64%, 80%  { transform: rotateY(540deg); }   /* -> Binärziffer */
+  90%, 100% { transform: rotateY(720deg); }   /* zurück zum Zeichen */
 }
 
 /* Navi-Tasten · quadratisch mit runden Ecken, 10px Abstand, Glas */
@@ -1643,6 +1651,6 @@ a:hover { text-decoration: underline; }
   }
   [data-reveal] { opacity: 1; transform: none; }
   .terminal__body .out[data-reveal] { opacity: 1; }
-  .brand__solid { animation: none; opacity: 1; filter: none; transform: none; }
-  .brand__bits { display: none; }
+  .ch { animation: none !important; transform: none !important; }
+  .ch__bit { display: none; }
 }

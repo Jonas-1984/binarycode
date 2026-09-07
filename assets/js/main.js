@@ -463,40 +463,52 @@
   })();
 
   /* ---------------------------------------------------------
-     10) Marken-Logo: alle 6 s in Binärzahlen zerfallen und
-         wieder zum Logo + "binaryCode" zusammensetzen
+     10) Marke: jedes Zeichen + Logo drehen sich im Platz und
+         klappen im 6-Sekunden-Takt zur Binärziffer um (und zurück)
      --------------------------------------------------------- */
-  (function brandBinaryFx() {
-    var host = document.getElementById("brandBits");
-    if (!host || reduceMotion) return;
+  (function brandFlip() {
+    var textEl = document.querySelector(".nav__brand-text");
+    var logo = document.querySelector(".brand__solid .nav__logo");
+    if (!textEl || !logo || reduceMotion) return;
 
-    var COUNT = 30;
-    var bits = [];
-
-    function rnd(a, b) { return a + Math.random() * (b - a); }
-
-    for (var i = 0; i < COUNT; i++) {
-      var b = document.createElement("i");
-      b.textContent = Math.random() < 0.5 ? "0" : "1";
-      /* Startposition quer über Logo + Schriftzug */
-      b.style.left = rnd(4, 96).toFixed(1) + "%";
-      b.style.top = rnd(10, 82).toFixed(1) + "%";
-      /* Streu-Vektor nach außen */
-      b.style.setProperty("--tx", rnd(-52, 52).toFixed(0) + "px");
-      b.style.setProperty("--ty", rnd(-17, 17).toFixed(0) + "px");
-      /* leichte Staffelung, Periode bleibt 6 s */
-      b.style.animationDelay = (-rnd(0, 0.22)).toFixed(2) + "s";
-      b.style.fontSize = rnd(9, 13).toFixed(0) + "px";
-      host.appendChild(b);
-      bits.push(b);
+    function bit() { return Math.random() < 0.5 ? "0" : "1"; }
+    function makeCh(faceNode, i, accent, logoCh) {
+      var s = document.createElement("span");
+      s.className = "ch" + (accent ? " ch--accent" : "") + (logoCh ? " ch--logo" : "");
+      s.style.setProperty("--i", i);
+      var f = document.createElement("span");
+      f.className = "ch__face";
+      f.appendChild(faceNode);
+      var b = document.createElement("span");
+      b.className = "ch__bit";
+      b.textContent = logoCh ? "01" : bit();
+      s.appendChild(f);
+      s.appendChild(b);
+      return s;
     }
 
-    /* Ziffern gelegentlich neu würfeln, während sie zerstäubt sind */
+    /* Logo -> ch--logo (i = 0) */
+    var logoCh = makeCh(logo.cloneNode(true), 0, false, true);
+    logo.parentNode.replaceChild(logoCh, logo);
+
+    /* Schriftzug in einzelne Zeichen zerlegen; "Code" behält Akzentfarbe */
+    var full = (textEl.getAttribute("data-text") || textEl.textContent || "binaryCode");
+    var accentFrom = full.toLowerCase().indexOf("code");
+    textEl.textContent = "";
+    var textBits = [];
+    for (var k = 0; k < full.length; k++) {
+      var isAccent = accentFrom >= 0 && k >= accentFrom;
+      var ch = makeCh(document.createTextNode(full[k]), k + 1, isAccent, false);
+      textEl.appendChild(ch);
+      textBits.push(ch.querySelector(".ch__bit"));
+    }
+
+    /* Ziffern zwischendurch neu würfeln */
     setInterval(function () {
-      for (var k = 0; k < bits.length; k++) {
-        if (Math.random() < 0.5) bits[k].textContent = Math.random() < 0.5 ? "0" : "1";
+      for (var j = 0; j < textBits.length; j++) {
+        if (Math.random() < 0.55) textBits[j].textContent = bit();
       }
-    }, 900);
+    }, 1600);
   })();
 
   /* ---------------------------------------------------------
