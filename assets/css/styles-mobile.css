@@ -1,0 +1,197 @@
+/* =============================================================
+   Mobile-Version (mobile.html) – Ergänzungen zu styles.css
+   Wird NUR von mobile.html geladen, nach styles.css eingebunden.
+   Ziel: Touch-Bedienung, iOS-Safari-Eigenheiten, Notch-Geräte.
+   ============================================================= */
+
+/* Safe-Area (Notch / Home-Indicator) berücksichtigen */
+.nav {
+  padding-top: calc(6px + env(safe-area-inset-top));
+  padding-left: calc(10px + env(safe-area-inset-left));
+  padding-right: calc(10px + env(safe-area-inset-right));
+}
+.to-top {
+  right: calc(18px + env(safe-area-inset-right));
+  bottom: calc(18px + env(safe-area-inset-bottom));
+}
+.consent {
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+/* iOS-Safari zoomt beim Fokussieren automatisch in Felder < 16px hinein –
+   das verhindern wir, damit Tippen im Formular/Rechner nicht "hüpft". */
+.cform input,
+.cform textarea,
+.conv__field input,
+.ipc__field input {
+  font-size: 16px;
+}
+
+/* Kein grauer Tap-Highlight-Flash auf Buttons/Links */
+a, button, .nav__ico, .soc, .dock__item, .jumpbtn, .cf__card {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Größere Tap-Ziele für Buttons/CTAs auf Touch-Geräten */
+.btn {
+  min-height: 44px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.cform__send {
+  min-height: 48px;
+}
+
+/* Karussell auf schmalen Screens etwas flacher (weniger 3D-Tiefe),
+   damit Nachbarkarten nicht zu stark abgeschnitten wirken. */
+@media (max-width: 480px) {
+  .cf__stage { perspective: 900px; }
+}
+
+/* WURZELURSACHE des "Terminal breiter als Bildschirm"-Bugs, per Messung
+   bestätigt: .hero ist display:flex (Spalte); .container darin ist ein
+   Flex-Item MIT "margin:0 auto". Auto-Margins auf der Cross-Achse eines
+   Flex-Items schalten das normale Stretch-Verhalten ab -> der Browser zieht
+   .container stattdessen auf seine natürliche Inhaltsbreite zusammen
+   (bestimmt durch die längste nicht umbrechende Terminal-Zeile, white-space:
+   pre), zentriert es per Auto-Margin und lässt bei Platzmangel die Margins
+   auf 0 kollabieren -> der Überlauf ragt einfach rechts aus dem Bildschirm.
+   Fix: In der Hero-Flexbox die Auto-Margins von .container aufheben, damit
+   es normal auf die volle Breite gestreckt wird. */
+.hero .container {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  min-width: 0;
+}
+.term-wrap,
+.terminal {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.terminal__body {
+  width: 100%;
+  max-width: 100%;
+  white-space: pre;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y pinch-zoom;
+  font-size: clamp(11.5px, 3.4vw, 13.5px);
+}
+
+/* Weitere einzeilig-scrollbare Kästen (IPv4-Rechner-Ausgabe, Tool-Dock-Fallback
+   ohne Animation): gleiches Touch-Verhalten wie beim Terminal sicherstellen. */
+.ipc__out,
+.dock:not(.dock--ready) {
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y pinch-zoom;
+}
+
+/* Tool-Dock: horizontales Ziehen gehört komplett dem JS-Scrubbing
+   (mobile.js), nicht dem nativen Touch-Scrolling. Icons sind nicht
+   klickbar (Navigation wird per JS unterdrückt) und wachsen bei
+   Berührung kurz wie am Desktop beim Hover. */
+.dock {
+  touch-action: pan-y;
+}
+.dock__item:active {
+  opacity: 1;
+  filter: none;
+  transform: translateY(-3px) scale(1.14);
+}
+
+/* CTA-Buttons ("./werdegang.sh" / "Kontakt aufnehmen"): nebeneinander in
+   einer Reihe, aber flexibel schrumpfend, damit beide auf den Bildschirm passen. */
+.hero__cta {
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+.hero__cta .btn {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: clamp(11px, 3.2vw, 14px);
+  white-space: normal;
+  text-align: center;
+}
+
+/* Horizontales Verrutschen auf iOS zuverlässig verhindern */
+html, body { max-width: 100%; overflow-x: hidden; }
+
+/* Sprung-Tasten "Binär-Rechner" / "IPv4-Rechner": auf dem Handy mittig statt
+   rechtsbündig (rechtsbündig macht auf schmalen Screens keinen Sinn). */
+.hero__jump {
+  justify-content: center;
+}
+
+/* "cat about.txt"-Panel: auf dem Handy nur den ersten Absatz zeigen,
+   Rest (2. Absatz, 3. Absatz, Chip-Liste) hinter "Mehr lesen" verbergen. */
+.about-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--accent);
+  background: rgba(34, 211, 238, 0.06);
+  border: 1px solid rgba(34, 211, 238, 0.28);
+  border-radius: 999px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .16s ease, border-color .16s ease;
+}
+.about-toggle:hover,
+.about-toggle:focus-visible {
+  background: rgba(34, 211, 238, 0.12);
+  border-color: rgba(34, 211, 238, 0.5);
+}
+.about-toggle:active { transform: translateY(1px); }
+.about-toggle__label--less { display: none; }
+.about-toggle.is-open .about-toggle__label--more { display: none; }
+.about-toggle.is-open .about-toggle__label--less { display: inline; }
+.about-toggle__chevron {
+  display: inline-block;
+  font-size: 10px;
+  transition: transform .18s ease;
+}
+.about-toggle.is-open .about-toggle__chevron { transform: rotate(180deg); }
+.about-more { margin-top: 4px; }
+.about-more[hidden] { display: none; }
+
+/* Social-Icons im Footer: mittig statt linksbündig, zunächst klein;
+   sobald die Reihe beim Scrollen sichtbar wird (.is-visible, per
+   IntersectionObserver in mobile.js), rücken sie ein Stück nach oben
+   zusammen und wachsen auf Touch-taugliche Größe. */
+.footer__grid {
+  justify-content: center;
+}
+#SocailIcons {
+  gap: 10px;
+  transition: gap .35s ease, transform .35s ease;
+}
+#SocailIcons .icons {
+  width: 26px;
+  height: 26px;
+  transition: width .35s cubic-bezier(.34, 1.56, .64, 1), height .35s cubic-bezier(.34, 1.56, .64, 1);
+}
+#SocailIcons .icon svg {
+  width: 13px;
+  height: 13px;
+  transition: width .35s ease, height .35s ease;
+}
+#SocailIcons.is-visible {
+  gap: 16px;
+  transform: translateY(-10px);
+}
+#SocailIcons.is-visible .icons {
+  width: 48px;
+  height: 48px;
+}
+#SocailIcons.is-visible .icon svg {
+  width: 22px;
+  height: 22px;
+}

@@ -334,14 +334,14 @@
         - Pfeiltasten / Tastatur / Wischen zum Blättern
         - im Leerlauf automatischer Wechsel alle 6 Sekunden
      --------------------------------------------------------- */
-  (function werdegangCarousel() {
-    var root = document.getElementById("werdegangCarousel");
+  function initCoverflow(rootId) {
+    var root = document.getElementById(rootId);
     if (!root || reduceMotion) return;
 
     var cards = Array.prototype.slice.call(root.querySelectorAll(".cf__card"));
     var track = root.querySelector(".cf__track");
-    var counter = document.getElementById("cfCounter");
-    var bar = document.getElementById("cfBar");
+    var counter = root.querySelector(".cf__counter");
+    var bar = root.querySelector(".cf__bar i");
     var navs = root.querySelectorAll(".cf__nav");
     var n = cards.length;
     if (n < 2) return;
@@ -488,7 +488,9 @@
     }
 
     layout();
-  })();
+  }
+  initCoverflow("werdegangCarousel");
+  initCoverflow("skillsCarousel");
 
   /* ---------------------------------------------------------
      10) Marke: jedes Zeichen + Logo drehen sich im Platz und

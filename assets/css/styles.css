@@ -1796,11 +1796,13 @@ a:hover { text-decoration: underline; }
   .nav { display: block; padding: 6px 10px; overflow: visible; }
   .nav::before { inset: 0; }
   .nav__brand { display: inline-flex; padding: 2px; gap: 8px; }
-  .nav__brand-text { display: none; }
+  /* mobile.html (Klasse .is-mobile-page an <html>) zeigt Schriftzug + Flip-
+     Effekt bewusst wie am Desktop -> diese drei Regeln dort nicht anwenden. */
+  html:not(.is-mobile-page) .nav__brand-text { display: none; }
   .nav__logo { height: 36px; width: auto; }
-  /* Marken-Flip auf Mobil ruhig stellen (Schriftzug ist ausgeblendet) */
-  .nav__brand .ch { animation: none !important; transform: none !important; will-change: auto; }
-  .nav__brand .ch__bit { display: none; }
+  /* Marken-Flip auf Mobil (index.html) ruhig stellen (Schriftzug ist ausgeblendet) */
+  html:not(.is-mobile-page) .nav__brand .ch { animation: none !important; transform: none !important; will-change: auto; }
+  html:not(.is-mobile-page) .nav__brand .ch__bit { display: none; }
   .nav__end {
     display: flex;
     flex-wrap: wrap;

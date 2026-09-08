@@ -26,17 +26,71 @@ python -m http.server 8080   # -> http://localhost:8080
 
 ```
 index.html            One-Page mit allen Sektionen
+mobile.html            Mobile-optimierte Variante von index.html (gleicher Inhalt,
+                       kein Zoom-Regler, zusätzliches styles-mobile.css)
 impressum.html        Rechtstext
 datenschutz.html      Rechtstext
 logo.svg              Marken-Logo (gefüllte Flächen, fill: currentColor -> #22d3ee)
 .nojekyll             GitHub Pages: kein Jekyll-Processing
 
-assets/css/styles.css Gesamtes Design; Farben ganz oben im :root-Block
+assets/css/styles.css        Gesamtes Design; Farben ganz oben im :root-Block
+assets/css/styles-mobile.css Nur von mobile.html geladen: Safe-Area-Insets,
+                              iOS-Zoom-Fix für Formularfelder, größere Tap-Ziele
 assets/js/main.js      Alle Interaktionen (nummerierte Module 1..16)
+assets/js/mobile.js    Nur von mobile.html geladen: "Mehr lesen"-Toggle im
+                       about.txt-Panel (#aboutToggle/#aboutMore)
 assets/img/jonas.jpg   Porträtfoto (640x864, ~45 KB)
 assets/fonts/          Selbst gehostete Schriften (Inter, IBM Plex Mono) + fonts.css
                        -> keine Verbindung zu Google Fonts, kein IP-Transfer
 ```
+
+## Mobile Version (`mobile.html`)
+
+Eigenständige HTML-Datei mit identischem Inhalt wie `index.html`, aber:
+
+- zusätzliches `assets/css/styles-mobile.css` (Safe-Area-Insets für Notch-Geräte,
+  `font-size: 16px` auf Formularfeldern gegen den iOS-Safari-Auto-Zoom, größere
+  Tap-Ziele, flachere Karussell-Perspektive auf sehr schmalen Screens)
+- kein Seiten-Zoom-Regler (`#zoomCtl`) – auf Touch-Geräten übernimmt Pinch-to-Zoom
+  diese Funktion; `main.js` prüft `#zoomCtl` ohnehin auf `null` und überspringt
+  das Modul dann automatisch
+- `<meta name="robots" content="noindex,follow">` + `<link rel="canonical">` auf
+  `https://binarycodes.de/`, damit Suchmaschinen `index.html` als Hauptversion werten
+  (kein Duplicate-Content-Problem)
+- `index.html` verweist per `<link rel="alternate" media="only screen and (max-width: 680px)">`
+  auf `mobile.html`; zusätzlich verlinken sich beide Seiten im Footer gegenseitig
+  („Mobile-Version&quot; / „Desktop-Version&quot;) – kein automatischer Redirect,
+  Nutzer entscheiden selbst
+
+- `#skills` ist auf Mobile kein Grid, sondern dasselbe 3D-Coverflow-Karussell wie
+  `#timeline` (`#skillsCarousel`, Klassen `.cf`/`.cf__card`/`.tl__card`). Dafür wurde
+  `main.js` Modul 9 von einer festen `werdegangCarousel()`-IIFE zu einer
+  parametrisierten `initCoverflow(rootId)`-Funktion verallgemeinert, die für
+  `#werdegangCarousel` **und** `#skillsCarousel` aufgerufen wird (Zähler/Bar werden
+  jetzt pro Karussell über `.cf__counter`/`.cf__bar i` statt über feste IDs
+  gesucht). Auf `index.html` bleibt `#skillsCarousel` nicht vorhanden – der zweite
+  `initCoverflow()`-Aufruf bricht dort einfach früh ab, Desktop-Verhalten
+  unverändert.
+- Tool-Dock: Icons sind in `mobile.html` `<span class="dock__item">` statt
+  `<a href>` (Desktop bleibt `<a>`) – nicht klickbar, keine Navigation. Per Finger
+  ziehen scrubbt die Endlos-Animation direkt (`assets/js/mobile.js`, Web
+  Animations API `currentTime`), da die Maus-Hover-Geschwindigkeitssteuerung aus
+  `main.js` für Touch nicht zuverlässig ist. Berührung vergrößert ein Icon kurz
+  (`.dock__item:active` in `styles-mobile.css`, dieselben Werte wie der
+  Desktop-`:hover`).
+- Header-Logo: `mobile.html` zeigt den Schriftzug „binaryCodes“ inkl. Flip-zu-
+  Binärziffer-Effekt neben dem Logo, genau wie am Desktop – auf `index.html`
+  bleiben Schriftzug und Animation unter 620px weiterhin ausgeblendet
+  (Platzgrund im schmalen Browserfenster). Umgesetzt in `styles.css` über
+  `html:not(.is-mobile-page) .nav__brand-text`/`.ch`/`.ch__bit` – die Klasse
+  `is-mobile-page` sitzt am `<html>` nur in `mobile.html`, Desktop-Verhalten
+  bei schmalem Fenster bleibt dadurch unangetastet.
+
+**Wichtig beim Pflegen:** Inhaltliche Änderungen (Texte, Sektionen, Werdegang) in
+`index.html` **und** `mobile.html` parallel nachziehen, da beide Dateien den Inhalt
+duplizieren. Bei Skills zusätzlich beachten: Desktop pflegt `.skill-card`-Artikel
+in `.skills-grid`, Mobile pflegt `.tl__card`-Artikel in `#skillsCarousel` – gleicher
+Inhalt, zwei unterschiedliche Markup-Strukturen.
 
 ## Sektionen (index.html)
 
