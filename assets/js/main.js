@@ -351,6 +351,10 @@
     var autoTimer = null;
     var idleTimer = null;
     var STEP = 116;
+    /* Auf mobile.html gibt es keine Pfeil-Tasten (.cf__nav) mehr -> ein Tipp
+       auf die aktuelle (einzige antippbare) Karte wechselt stattdessen direkt
+       zur nächsten. Auf dem Desktop unverändert (Pfeile bleiben die Bedienung). */
+    var isMobilePage = document.documentElement.classList.contains("is-mobile-page");
 
     root.classList.add("cf--ready");
 
@@ -467,6 +471,7 @@
     cards.forEach(function (card, i) {
       card.addEventListener("click", function () {
         if (i !== active) { goTo(i); nudgeIdle(); }
+        else if (isMobilePage) { go(1); nudgeIdle(); }
       });
     });
 

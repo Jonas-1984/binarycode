@@ -77,6 +77,12 @@ Eigenständige HTML-Datei mit identischem Inhalt wie `index.html`, aber:
   gesucht). Auf `index.html` bleibt `#skillsCarousel` nicht vorhanden – der zweite
   `initCoverflow()`-Aufruf bricht dort einfach früh ab, Desktop-Verhalten
   unverändert.
+- Beide Karussells: `mobile.html` hat keine Pfeil-Tasten (`.cf__nav`) mehr im
+  Markup (bewusst gelöscht, nicht nur versteckt). Stattdessen wechselt ein
+  einzelnes Tippen auf die aktuelle Karte direkt zur nächsten. Umgesetzt in
+  `initCoverflow()` über `document.documentElement.classList.contains("is-mobile-page")`
+  – auf `index.html` (Pfeile weiterhin vorhanden) bleibt Tippen auf die
+  aktuelle Karte wirkungslos, exakt wie zuvor.
 - Tool-Dock: Icons sind in `mobile.html` `<span class="dock__item">` statt
   `<a href>` (Desktop bleibt `<a>`) – nicht klickbar, keine Navigation. Per Finger
   ziehen scrubbt die Endlos-Animation direkt (`assets/js/mobile.js`, Web
