@@ -58,9 +58,15 @@ Eigenständige HTML-Datei mit identischem Inhalt wie `index.html`, aber:
   `https://binarycodes.de/`, damit Suchmaschinen `index.html` als Hauptversion werten
   (kein Duplicate-Content-Problem)
 - `index.html` verweist per `<link rel="alternate" media="only screen and (max-width: 680px)">`
-  auf `mobile.html`; zusätzlich verlinken sich beide Seiten im Footer gegenseitig
-  („Mobile-Version&quot; / „Desktop-Version&quot;) – kein automatischer Redirect,
-  Nutzer entscheiden selbst
+  auf `mobile.html` (nur ein Hinweis für Suchmaschinen); zusätzlich verlinken sich
+  beide Seiten im Footer gegenseitig („Mobile-Version&quot; / „Desktop-Version&quot;).
+- **Automatische Weiterleitung:** Ein Inline-Skript ganz oben im `<head>` von
+  `index.html` leitet bei `matchMedia("(max-width: 680px)")` sofort auf
+  `mobile.html` weiter (`location.replace`, kein Flackern). Tippt jemand auf
+  dem Handy bewusst auf "Desktop-Version" (Link `#desktopLink` in `mobile.html`),
+  setzt `mobile.js` `sessionStorage.bc_view_pref = "desktop"` – das Kopfskript
+  überspringt die Weiterleitung dann für den Rest der Browser-Sitzung. Neuer
+  Tab/neue Sitzung → automatische Erkennung greift wieder.
 
 - `#skills` ist auf Mobile kein Grid, sondern dasselbe 3D-Coverflow-Karussell wie
   `#timeline` (`#skillsCarousel`, Klassen `.cf`/`.cf__card`/`.tl__card`). Dafür wurde

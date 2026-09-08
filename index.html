@@ -3,6 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>
+    /* Automatische Weiterleitung auf die mobile-optimierte Version bei schmalem
+       Bildschirm. Ausnahme: Nutzer hat in dieser Sitzung bereits bewusst über
+       den Footer-Link "Desktop-Version" hierher zurückgewechselt (mobile.js
+       setzt dann sessionStorage bc_view_pref=desktop). Läuft synchron ganz
+       oben im <head>, damit kein Desktop-Layout kurz aufblitzt. */
+    (function () {
+      try {
+        if (sessionStorage.getItem("bc_view_pref") === "desktop") return;
+      } catch (e) {}
+      if (window.matchMedia("(max-width: 680px)").matches) {
+        location.replace("mobile.html" + location.hash);
+      }
+    })();
+  </script>
   <meta name="description" content="Jonas Shojaei – IT-Spezialist & IT-Systemadministrator in Hamburg. Werdegang als Timeline im Dark-/IT-Design." />
   <meta name="robots" content="index,follow" />
   <meta name="color-scheme" content="dark" />

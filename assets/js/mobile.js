@@ -93,3 +93,20 @@
   dock.addEventListener("touchend", endDrag, { passive: true });
   dock.addEventListener("touchcancel", endDrag, { passive: true });
 })();
+
+/* ---------------------------------------------------------
+   Footer-Link "Desktop-Version": merkt die bewusste Wahl für die
+   restliche Sitzung, damit index.html (dessen Kopfskript bei
+   schmalem Bildschirm sonst sofort hierher zurückleiten würde)
+   den Nutzer nicht postwendend wieder auf mobile.html schickt.
+   --------------------------------------------------------- */
+(function () {
+  "use strict";
+
+  var link = document.getElementById("desktopLink");
+  if (!link) return;
+
+  link.addEventListener("click", function () {
+    try { sessionStorage.setItem("bc_view_pref", "desktop"); } catch (e) {}
+  });
+})();
