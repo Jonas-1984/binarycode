@@ -27,7 +27,9 @@ python -m http.server 8080   # -> http://localhost:8080
 ```
 index.html            One-Page mit allen Sektionen
 mobile.html            Mobile-optimierte Variante von index.html (gleicher Inhalt,
-                       kein Zoom-Regler, zusätzliches styles-mobile.css)
+                       kein Zoom-Regler, zusätzliches styles-mobile.css) – MUSS beim
+                       Veröffentlichen mit hochgeladen werden, sonst 404 beim
+                       automatischen Redirect auf schmalen Bildschirmen!
 impressum.html        Rechtstext
 datenschutz.html      Rechtstext
 logo.svg              Marken-Logo (gefüllte Flächen, fill: currentColor -> #22d3ee)
@@ -42,6 +44,10 @@ assets/css/styles-mobile.css Nur von mobile.html geladen: Safe-Area-Insets,
 assets/js/main.js      Alle Interaktionen (nummerierte Module 1..16)
 assets/js/mobile.js    Nur von mobile.html geladen: "Mehr lesen"-Toggle im
                        about.txt-Panel (#aboutToggle/#aboutMore)
+assets/js/redirect-check.js  Nur von index.html geladen (nicht defer): prüft
+                       matchMedia(max-width:680px) und leitet ggf. auf
+                       mobile.html um; ausgelagert statt inline, damit die
+                       Content-Security-Policy ohne unsafe-inline auskommt
 assets/img/jonas.jpg   Porträtfoto (640x864, ~45 KB)
 assets/fonts/          Selbst gehostete Schriften (Inter, IBM Plex Mono) + fonts.css
                        -> keine Verbindung zu Google Fonts, kein IP-Transfer
@@ -63,9 +69,10 @@ Eigenständige HTML-Datei mit identischem Inhalt wie `index.html`, aber:
 - `index.html` verweist per `<link rel="alternate" media="only screen and (max-width: 680px)">`
   auf `mobile.html` (nur ein Hinweis für Suchmaschinen); zusätzlich verlinken sich
   beide Seiten im Footer gegenseitig („Mobile-Version&quot; / „Desktop-Version&quot;).
-- **Automatische Weiterleitung:** Ein Inline-Skript ganz oben im `<head>` von
-  `index.html` leitet bei `matchMedia("(max-width: 680px)")` sofort auf
-  `mobile.html` weiter (`location.replace`, kein Flackern). Tippt jemand auf
+- **Automatische Weiterleitung:** `assets/js/redirect-check.js`, ganz oben im `<head>`
+  von `index.html` eingebunden (kein `defer`, damit es vor dem ersten Paint läuft),
+  leitet bei `matchMedia("(max-width: 680px)")` sofort auf `mobile.html` weiter
+  (`location.replace`, kein Flackern). Tippt jemand auf
   dem Handy bewusst auf "Desktop-Version" (Link `#desktopLink` in `mobile.html`),
   setzt `mobile.js` `sessionStorage.bc_view_pref = "desktop"` – das Kopfskript
   überspringt die Weiterleitung dann für den Rest der Browser-Sitzung. Neuer
@@ -142,7 +149,7 @@ ganze Seite via CSS `zoom` auf `<html>`; Wahl in `localStorage` (`bc_zoom`).
 Bei Hover steuert die **Maus-X-Position** Richtung und Tempo (Mitte = still, rechts =
 vorwärts, links = rückwärts; WAAPI `playbackRate`). Icons werden per JS für die
 nahtlose Schleife verdoppelt.
-Neues Icon: `<a class="dock__item" href="…" target="_blank" rel="noopener" title="…">`
+Neues Icon: `<a class="dock__item" href="…" target="_blank" rel="noopener noreferrer" title="…">`
 mit Inline-`<svg>` in `#dockTrack` einfügen. SVGs mit eigenen `<defs>` brauchen
 **eindeutige `id`-Präfixe** (sonst Verlaufs-/Mask-Kollisionen).
 
@@ -252,8 +259,10 @@ volle Rechtssicherheit anwaltlich prüfen.
    meist `ftp.binarycodes.de` oder ein von df.eu genanntes `sftp...df.eu`) alle Dateien
    aus dem Repo-Root **inklusive** `.htaccess` in das Web-Wurzelverzeichnis
    (häufig `htdocs/` oder `/`) hochladen:
-   `index.html`, `impressum.html`, `datenschutz.html`, `favicon.svg`, `logo.svg`,
-   `robots.txt`, `sitemap.xml`, `.htaccess`, Ordner `assets/`.
+   `index.html`, **`mobile.html`** (nicht vergessen – sonst 404 beim automatischen
+   Redirect auf dem Handy!), `impressum.html`, `datenschutz.html`, `favicon.svg`,
+   `logo.svg`, `robots.txt`, `sitemap.xml`, `.htaccess`, Ordner `assets/` (komplett,
+   inkl. `styles-mobile.css`, `mobile.js`, `redirect-check.js`).
    **SFTP statt einfachem FTP verwenden**, wenn df.eu es anbietet – die Zugangsdaten
    werden dann verschlüsselt übertragen. `.htaccess`-Dateien sind "versteckt" (Punkt-
    Datei): im FTP-Programm die Anzeige versteckter Dateien einschalten, sonst wird sie
