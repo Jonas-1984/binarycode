@@ -225,7 +225,8 @@
     if (!form) return;
     var hint = document.getElementById("cformHint");
     var hintDefault = hint ? hint.textContent : "";
-    var mail = "shojaei.de@gmail.com";
+    var mail = "info@binarycodes.de";
+    var loadedAt = Date.now();   /* Anti-Spam: Bots senden meist sofort ab */
 
     /* Bei Sprachwechsel hat der Umschalter den Hinweis-Text im DOM schon
        ersetzt – nur den gecachten Standardwert nachziehen. */
@@ -292,6 +293,19 @@
           "?subject=" + encodeURIComponent(betreff) +
           "&body=" + encodeURIComponent(body);
         say(i18n.t("E-Mail-Programm wurde geöffnet. Falls nicht: ", "Your email app was opened. If not: ") + mail, true);
+        return;
+      }
+
+      /* --- Anti-Spam: Honeypot-Feld ausgefuellt oder in unter 2,5 s abgeschickt
+             -> vermutlich Bot. So tun, als waere alles gut, aber nichts senden
+             (Bots sollen nicht merken, dass sie erkannt wurden). --- */
+      var isBot = (f2.botcheck && f2.botcheck.checked) || (Date.now() - loadedAt < 2500);
+      if (isBot) {
+        form.reset();
+        var cOk = form.querySelector(".neo-toggle-container");
+        if (cOk) cOk.classList.remove("is-required");
+        say(i18n.t("Danke! Deine Nachricht ist angekommen – ich melde mich zeitnah.",
+                   "Thanks! Your message arrived – I'll get back to you soon."), true);
         return;
       }
 

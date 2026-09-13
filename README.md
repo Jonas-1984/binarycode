@@ -5,9 +5,9 @@ Dark-/IT-Theme, durchgängig mit Binärcode (0/1) gestaltet. Reines HTML/CSS/Jav
 **kein Build, kein Framework, keine externen Laufzeit-Abhängigkeiten**.
 Zweisprachig **DE / EN** (Umschalter im Header) und mit **Seiten-Zoom-Regler** am Hero-Terminal.
 
-Domain (gekauft, inkl. Webspace): `https://binarycodes.de/` — Auslieferungsweg noch offen
-(eigener Webspace per FTP **oder** GitHub Pages + Custom Domain).
-Remote: `https://github.com/Jonas-1984/binarycode.git`
+Domain + Webhosting: `https://binarycodes.de/` bei **domainFactory GmbH** (`df.eu`),
+Postfach `info@binarycodes.de`. Auslieferung per FTP/SFTP-Upload auf den Webspace
+(siehe „Veröffentlichen"). Remote (Quellcode): `https://github.com/Jonas-1984/binarycode.git`
 
 Kanonische URL, Open-Graph-/Twitter-Tags, `robots.txt` und `sitemap.xml` sind bereits auf
 `https://binarycodes.de/` gesetzt.
@@ -31,7 +31,10 @@ mobile.html            Mobile-optimierte Variante von index.html (gleicher Inhal
 impressum.html        Rechtstext
 datenschutz.html      Rechtstext
 logo.svg              Marken-Logo (gefüllte Flächen, fill: currentColor -> #22d3ee)
-.nojekyll             GitHub Pages: kein Jekyll-Processing
+.htaccess             Sicherheits-Header, HTTPS-/www-Redirect, Caching (Apache/df.eu)
+robots.txt            Crawler-Regeln + Sitemap-Verweis
+sitemap.xml           URL-Liste für Suchmaschinen
+.nojekyll             nur falls zusätzlich per GitHub Pages gespiegelt wird
 
 assets/css/styles.css        Gesamtes Design; Farben ganz oben im :root-Block
 assets/css/styles-mobile.css Nur von mobile.html geladen: Safe-Area-Insets,
@@ -166,10 +169,34 @@ Vorbereitet für **Web3Forms** (`api.web3forms.com`), mit `mailto:`-Fallback.
 - Pflicht-**Neo-Toggle** (Datenschutz-Zustimmung, `#convConsent`) – ohne Aktivierung kein
   Versand. Honeypot-Feld `botcheck`.
 
-**Aktivieren:** 1) Domain + Postfach `info@binarycodes.de` einrichten · 2) auf
+**Aktivieren:** 1) Postfach `info@binarycodes.de` ist bereits eingerichtet · 2) auf
 `web3forms.com` mit dieser Adresse kostenlosen Access Key holen · 3) Platzhalter in
 [index.html](index.html) ersetzen · 4) **§ 5 der Datenschutzerklärung um Web3Forms
 ergänzen**, bevor der Key live geht.
+
+## Sicherheit
+
+- **HTTPS erzwungen** + `www` → Apex-Domain-Redirect (`.htaccess`, `mod_rewrite`).
+- **Content-Security-Policy** – nur eigene Ressourcen + `api.web3forms.com` fürs
+  Kontaktformular; `script-src 'self'` **ohne** `unsafe-inline`/`unsafe-eval` (alle
+  Dock-Icons nutzen SVG-Präsentationsattribute statt inline `style=`, damit auch
+  `style-src 'self'` ohne `unsafe-inline` reicht). Doppelt abgesichert: `<meta
+  http-equiv="Content-Security-Policy">` in jeder HTML-Datei **und** vollständiger
+  HTTP-Header (inkl. `frame-ancestors`, was `<meta>` nicht unterstützt) in `.htaccess`.
+- **Weitere Header** (`.htaccess`): `X-Content-Type-Options: nosniff`,
+  `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`,
+  `Permissions-Policy` (Kamera/Mikro/Standort/Payment/USB aus), `Strict-Transport-
+  Security` (HSTS – siehe Kommentar in `.htaccess`, erst nach HTTPS-Test hochsetzen).
+- **Kein Verzeichnis-Listing**, kein Zugriff auf versteckte/`.env`/`.log`/`.md`-Dateien
+  (`.htaccess`).
+- **Kontaktformular**: Honeypot-Feld `botcheck` + Zeit-Falle (Absenden < 2,5 s nach
+  Laden gilt als Bot) in `assets/js/main.js`, Modul 8 – beides schlägt still fehl,
+  ohne das Bots zu verraten, dass sie erkannt wurden.
+- **Keine externen Laufzeit-Abhängigkeiten**: Schriften selbst gehostet, kein Google
+  Fonts/Analytics/Tracking, kein npm/CDN – entsprechend kleine Angriffsfläche
+  (keine Supply-Chain-Risiken durch Drittanbieter-Skripte).
+- Alle externen Links (Tool-Dock, Social-Icons, Rechtstexte) mit
+  `rel="noopener noreferrer"`.
 
 ## Rechtstexte
 
@@ -177,14 +204,18 @@ ergänzen**, bevor der Key live geht.
 
 **Keine Anschrift, keine Telefonnummer** – auf ausdrücklichen Wunsch des Betreibers
 stehen weder Straßenanschrift noch Telefonnummer irgendwo im Projekt. Impressum und
-Datenschutz nennen nur Name, „Hamburg" und die E-Mail-Adresse. Ein `<!-- BEARBEITEN -->`-
-Kommentar im Impressum weist auf das rechtliche Risiko hin: für geschäftsmäßige / nicht
-rein private Angebote ist eine ladungsfähige Anschrift Pflicht (§ 5 DDG, § 18 MStV).
+Datenschutz nennen nur Name, „Hamburg" und die E-Mail-Adresse `info@binarycodes.de`.
+Ein `<!-- BEARBEITEN -->`-Kommentar im Impressum weist auf das rechtliche Risiko hin:
+für geschäftsmäßige / nicht rein private Angebote ist eine ladungsfähige Anschrift
+Pflicht (§ 5 DDG, § 18 MStV).
 
-`datenschutz.html` Abschnitt 2 („Hosting") ist als `<!-- BEARBEITEN -->` markiert und
-muss angepasst werden, sobald der Auslieferungsweg (eigener Webspace vs. GitHub Pages)
-feststeht. Consent-Hinweis setzt nur den technisch notwendigen `localStorage`-Schlüssel
-`bc_consent`. Texte sind Standardvorlagen – für volle Rechtssicherheit anwaltlich prüfen.
+`datenschutz.html` Abschnitt 2 („Hosting") beschreibt jetzt **domainFactory GmbH
+(df.eu)** mit Serverstandort Deutschland (kein Drittlandtransfer mehr, dadurch
+entfällt der frühere USA-/SCC-Absatz). Der `<!-- BEARBEITEN -->`-Kommentar dort bittet
+darum, die genaue Firmierung/Anschrift sowie den Auftragsverarbeitungsvertrag (AVV)
+im df.eu-Kundencenter gegenzuprüfen. Consent-Hinweis setzt nur den technisch
+notwendigen `localStorage`-Schlüssel `bc_consent`. Texte sind Standardvorlagen – für
+volle Rechtssicherheit anwaltlich prüfen.
 
 ## Anpassen
 
@@ -199,27 +230,42 @@ feststeht. Consent-Hinweis setzt nur den technisch notwendigen `localStorage`-Sc
 
 ## Noch offen
 
-- **Auslieferungsweg für `binarycodes.de` festlegen** (siehe „Veröffentlichen").
-- `datenschutz.html` Abschnitt 2 auf den tatsächlichen Hoster anpassen.
+- Erst-Upload auf den df.eu-Webspace + SSL-Zertifikat im df.eu-Kundencenter aktivieren
+  (siehe „Veröffentlichen").
+- HSTS-`max-age` in `.htaccess` erst erhöhen, wenn HTTPS zuverlässig läuft (Kommentar dort).
+- domainFactory-Firmierung/AVV in `datenschutz.html` Abschnitt 2 mit dem echten
+  Vertrag im df.eu-Kundencenter gegenprüfen.
 - WhatsApp-`href` auf `https://wa.me/49…` und YouTube-`href` auf die Kanal-URL umstellen (aktuell Startseiten).
-- Web3Forms-Access-Key (+ Datenschutz-Ergänzung) für echten Formularversand.
+- Web3Forms-Access-Key mit `info@binarycodes.de` holen (+ § 5 Datenschutz ergänzen) für echten Formularversand.
 
-## Veröffentlichen (`binarycodes.de`)
+## Veröffentlichen (`binarycodes.de` bei domainFactory / df.eu)
 
-Domain + Webspace sind gekauft. Zwei Wege:
-
-**a) Eigener Webspace (FTP/SFTP)** – alle Dateien aus dem Repo-Root in das
-Web-Wurzelverzeichnis hochladen (`index.html`, `impressum.html`, `datenschutz.html`,
-`favicon.svg`, `logo.svg`, `robots.txt`, `sitemap.xml`, Ordner `assets/`).
-`.nojekyll` kann mit hoch, stört nicht. Domain-DNS (A-Record) zeigt bereits auf den
-Hoster. Danach `datenschutz.html` Abschnitt 2 auf den Hoster + AV-Vertrag umschreiben.
-
-**b) GitHub Pages + Custom Domain** – Repo → **Settings → Pages → Deploy from a branch**,
-Branch `main`, Ordner `/ (root)`; unter „Custom domain" `binarycodes.de` eintragen,
-„Enforce HTTPS" anhaken. Beim Domain-Anbieter: `CNAME www → jonas-1984.github.io` plus
-die vier A-Records der GitHub-Pages-Apex-IPs. GitHub legt dann automatisch eine
-`CNAME`-Datei im Repo an (oder vorab selbst anlegen: Datei `CNAME` mit Inhalt
-`binarycodes.de`). `.nojekyll` ist bereits vorhanden. Nach ~1 Minute live.
+1. **DNS**: Im df.eu-Kundencenter (oder beim bisherigen DNS-Halter) für `binarycodes.de`
+   auf die von domainFactory vergebene(n) IP-Adresse(n) zeigen lassen (A-Record) bzw.
+   das Hosting-Paket der Domain zuordnen – df.eu macht das beim Einrichten des
+   Webhosting-Pakets normalerweise automatisch.
+2. **SSL-Zertifikat aktivieren**: im df.eu-Kundencenter unter dem Hosting-Paket ein
+   (kostenloses) Let's-Encrypt-Zertifikat für `binarycodes.de` **und** `www.binarycodes.de`
+   aktivieren. Ohne aktives Zertifikat greift der HTTPS-Redirect in `.htaccess` nicht
+   und die Seite ist nicht sicher erreichbar.
+3. **Dateien hochladen** – per FTP/SFTP (Zugangsdaten aus dem df.eu-Kundencenter, Host
+   meist `ftp.binarycodes.de` oder ein von df.eu genanntes `sftp...df.eu`) alle Dateien
+   aus dem Repo-Root **inklusive** `.htaccess` in das Web-Wurzelverzeichnis
+   (häufig `htdocs/` oder `/`) hochladen:
+   `index.html`, `impressum.html`, `datenschutz.html`, `favicon.svg`, `logo.svg`,
+   `robots.txt`, `sitemap.xml`, `.htaccess`, Ordner `assets/`.
+   **SFTP statt einfachem FTP verwenden**, wenn df.eu es anbietet – die Zugangsdaten
+   werden dann verschlüsselt übertragen. `.htaccess`-Dateien sind "versteckt" (Punkt-
+   Datei): im FTP-Programm die Anzeige versteckter Dateien einschalten, sonst wird sie
+   nicht mit hochgeladen.
+4. **Prüfen**: `https://binarycodes.de/` aufrufen (nicht `http://`), Zertifikat im
+   Browser kontrollieren, `www.binarycodes.de` sollte automatisch auf die Version ohne
+   `www` umleiten. Mit den Browser-Entwicklertools (Netzwerk-Tab → Antwort-Header)
+   prüfen, ob `Content-Security-Policy`, `Strict-Transport-Security` usw. gesetzt sind.
+5. **Bei jeder Änderung**: lokal weiterentwickeln, per `git push` nach GitHub sichern
+   (siehe „Git" unten) und die geänderten Dateien erneut per FTP/SFTP hochladen –
+   GitHub ist hier nur der Quellcode-Speicher, es gibt (noch) kein automatisches
+   Deployment von GitHub zu df.eu.
 
 ## Git
 
