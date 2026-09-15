@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <!-- Sicherheits-Richtlinie (siehe auch .htaccess für die vollständige Header-Variante inkl. frame-ancestors) -->
+  <!-- Sicherheits-Richtlinie: GitHub Pages erlaubt keine eigenen HTTP-Header,
+       daher hier nur per <meta> umsetzbar (kein frame-ancestors möglich) -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'; upgrade-insecure-requests" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Weiterleitung auf mobile.html bei schmalem Bildschirm; ausgelagert

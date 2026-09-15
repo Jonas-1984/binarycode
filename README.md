@@ -5,9 +5,12 @@ Dark-/IT-Theme, durchgängig mit Binärcode (0/1) gestaltet. Reines HTML/CSS/Jav
 **kein Build, kein Framework, keine externen Laufzeit-Abhängigkeiten**.
 Zweisprachig **DE / EN** (Umschalter im Header) und mit **Seiten-Zoom-Regler** am Hero-Terminal.
 
-Domain + Webhosting: `https://binarycodes.de/` bei **domainFactory GmbH** (`df.eu`),
-Postfach `info@binarycodes.de`. Auslieferung per FTP/SFTP-Upload auf den Webspace
-(siehe „Veröffentlichen"). Remote (Quellcode): `https://github.com/Jonas-1984/binarycode.git`
+Domain `binarycodes.de` registriert bei **domainFactory GmbH** (`df.eu`, DNS läuft über
+deren Nameserver auf GoDaddy-Infrastruktur, `ns13`/`ns14.domaincontrol.com`).
+**Gehostet wird die Website über GitHub Pages** (Auslieferung per `git push`, siehe
+„Veröffentlichen"), das domainFactory-Webhosting-Paket wird dafür nicht genutzt.
+Postfach `info@binarycodes.de` läuft über **Zoho Mail** (`zoho.eu`, EU-Rechenzentrum).
+Remote (Quellcode): `https://github.com/Jonas-1984/binarycode.git`
 
 Kanonische URL, Open-Graph-/Twitter-Tags, `robots.txt` und `sitemap.xml` sind bereits auf
 `https://binarycodes.de/` gesetzt.
@@ -33,10 +36,10 @@ mobile.html            Mobile-optimierte Variante von index.html (gleicher Inhal
 impressum.html        Rechtstext
 datenschutz.html      Rechtstext
 logo.svg              Marken-Logo (gefüllte Flächen, fill: currentColor -> #22d3ee)
-.htaccess             Sicherheits-Header, HTTPS-/www-Redirect, Caching (Apache/df.eu)
+CNAME                 GitHub Pages Custom Domain (Inhalt: binarycodes.de)
 robots.txt            Crawler-Regeln + Sitemap-Verweis
 sitemap.xml           URL-Liste für Suchmaschinen
-.nojekyll             nur falls zusätzlich per GitHub Pages gespiegelt wird
+.nojekyll             deaktiviert Jekyll-Processing (nötig für GitHub Pages)
 
 assets/css/styles.css        Gesamtes Design; Farben ganz oben im :root-Block
 assets/css/styles-mobile.css Nur von mobile.html geladen: Safe-Area-Insets,
@@ -176,26 +179,34 @@ Vorbereitet für **Web3Forms** (`api.web3forms.com`), mit `mailto:`-Fallback.
 - Pflicht-**Neo-Toggle** (Datenschutz-Zustimmung, `#convConsent`) – ohne Aktivierung kein
   Versand. Honeypot-Feld `botcheck`.
 
-**Aktivieren:** 1) Postfach `info@binarycodes.de` ist bereits eingerichtet · 2) auf
-`web3forms.com` mit dieser Adresse kostenlosen Access Key holen · 3) Platzhalter in
+**Aktivieren:** 1) Postfach `info@binarycodes.de` ist bereits eingerichtet (Zoho Mail) ·
+2) auf `web3forms.com` mit dieser Adresse kostenlosen Access Key holen · 3) Platzhalter in
 [index.html](index.html) ersetzen · 4) **§ 5 der Datenschutzerklärung um Web3Forms
 ergänzen**, bevor der Key live geht.
 
 ## Sicherheit
 
-- **HTTPS erzwungen** + `www` → Apex-Domain-Redirect (`.htaccess`, `mod_rewrite`).
+**Hinweis:** Die Seite läuft auf **GitHub Pages** – dort lassen sich (anders als auf
+einem eigenen Apache-Server) **keine eigenen HTTP-Response-Header** setzen. Eine
+`.htaccess`-Datei würde ignoriert und wäre zudem öffentlich unter `/.htaccess` abrufbar,
+deshalb gibt es diese Datei in diesem Repo nicht mehr. Aktiv sind nur die
+Schutzmaßnahmen, die sich clientseitig (per `<meta>`/HTML) oder direkt im Code umsetzen
+lassen:
+
+- **HTTPS erzwungen**: GitHub Pages stellt automatisch ein Let's-Encrypt-Zertifikat aus
+  und erzwingt HTTPS (Einstellung "Enforce HTTPS" in den Repo-Settings), inkl.
+  automatischem `www` → Apex-Redirect passend zur `CNAME`-Datei.
 - **Content-Security-Policy** – nur eigene Ressourcen + `api.web3forms.com` fürs
   Kontaktformular; `script-src 'self'` **ohne** `unsafe-inline`/`unsafe-eval` (alle
   Dock-Icons nutzen SVG-Präsentationsattribute statt inline `style=`, damit auch
-  `style-src 'self'` ohne `unsafe-inline` reicht). Doppelt abgesichert: `<meta
-  http-equiv="Content-Security-Policy">` in jeder HTML-Datei **und** vollständiger
-  HTTP-Header (inkl. `frame-ancestors`, was `<meta>` nicht unterstützt) in `.htaccess`.
-- **Weitere Header** (`.htaccess`): `X-Content-Type-Options: nosniff`,
-  `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`,
-  `Permissions-Policy` (Kamera/Mikro/Standort/Payment/USB aus), `Strict-Transport-
-  Security` (HSTS – siehe Kommentar in `.htaccess`, erst nach HTTPS-Test hochsetzen).
-- **Kein Verzeichnis-Listing**, kein Zugriff auf versteckte/`.env`/`.log`/`.md`-Dateien
-  (`.htaccess`).
+  `style-src 'self'` ohne `unsafe-inline` reicht). Umgesetzt als `<meta
+  http-equiv="Content-Security-Policy">` in jeder HTML-Datei – das ist auf GitHub
+  Pages der einzig verfügbare Weg (kein `frame-ancestors` möglich, das unterstützt nur
+  der HTTP-Header, nicht `<meta>`).
+- **Nicht aktiv** (würden einen eigenen Server mit Header-Kontrolle voraussetzen):
+  `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`,
+  `Strict-Transport-Security` (HSTS). Wer das braucht, müsste vor GitHub Pages einen
+  eigenen Reverse-Proxy/CDN (z.&nbsp;B. Cloudflare) schalten, der diese Header ergänzt.
 - **Kontaktformular**: Honeypot-Feld `botcheck` + Zeit-Falle (Absenden < 2,5 s nach
   Laden gilt als Bot) in `assets/js/main.js`, Modul 8 – beides schlägt still fehl,
   ohne das Bots zu verraten, dass sie erkannt wurden.
@@ -204,6 +215,8 @@ ergänzen**, bevor der Key live geht.
   (keine Supply-Chain-Risiken durch Drittanbieter-Skripte).
 - Alle externen Links (Tool-Dock, Social-Icons, Rechtstexte) mit
   `rel="noopener noreferrer"`.
+- **E-Mail-Authentifizierung**: SPF, DKIM (Selektor `zoho`) und DMARC (`p=none`,
+  Monitoring-Modus) sind für `binarycodes.de` bei Zoho Mail eingerichtet.
 
 ## Rechtstexte
 
@@ -216,13 +229,17 @@ Ein `<!-- BEARBEITEN -->`-Kommentar im Impressum weist auf das rechtliche Risiko
 für geschäftsmäßige / nicht rein private Angebote ist eine ladungsfähige Anschrift
 Pflicht (§ 5 DDG, § 18 MStV).
 
-`datenschutz.html` Abschnitt 2 („Hosting") beschreibt jetzt **domainFactory GmbH
-(df.eu)** mit Serverstandort Deutschland (kein Drittlandtransfer mehr, dadurch
-entfällt der frühere USA-/SCC-Absatz). Der `<!-- BEARBEITEN -->`-Kommentar dort bittet
-darum, die genaue Firmierung/Anschrift sowie den Auftragsverarbeitungsvertrag (AVV)
-im df.eu-Kundencenter gegenzuprüfen. Consent-Hinweis setzt nur den technisch
-notwendigen `localStorage`-Schlüssel `bc_consent`. Texte sind Standardvorlagen – für
-volle Rechtssicherheit anwaltlich prüfen.
+`datenschutz.html` Abschnitt 2 („Hosting") beschreibt **GitHub, Inc.** (GitHub Pages)
+als Website-Hoster – da GitHub, Inc. in den USA sitzt, ist das eine
+Drittlandübermittlung, gestützt auf den Angemessenheitsbeschluss zum EU-US Data
+Privacy Framework (Art. 45 DSGVO). Abschnitt 3 („E-Mail-Postfach") beschreibt
+**Zoho Mail** (`zoho.eu`, EU-Rechenzentrum, kein Drittlandtransfer) für
+`info@binarycodes.de`. Beide Abschnitte tragen `<!-- BEARBEITEN -->`-Kommentare, die
+darum bitten, die aktuelle DPF-Zertifizierung von GitHub/Microsoft bzw. die
+Auftragsverarbeitungsvereinbarung (AVV) mit Zoho im jeweiligen Kundenportal
+gegenzuprüfen. Consent-Hinweis setzt nur den technisch notwendigen
+`localStorage`-Schlüssel `bc_consent`. Texte sind Standardvorlagen – für volle
+Rechtssicherheit anwaltlich prüfen.
 
 ## Anpassen
 
@@ -237,44 +254,44 @@ volle Rechtssicherheit anwaltlich prüfen.
 
 ## Noch offen
 
-- Erst-Upload auf den df.eu-Webspace + SSL-Zertifikat im df.eu-Kundencenter aktivieren
-  (siehe „Veröffentlichen").
-- HSTS-`max-age` in `.htaccess` erst erhöhen, wenn HTTPS zuverlässig läuft (Kommentar dort).
-- domainFactory-Firmierung/AVV in `datenschutz.html` Abschnitt 2 mit dem echten
-  Vertrag im df.eu-Kundencenter gegenprüfen.
+- GitHubs aktuelle Data-Privacy-Framework-Zertifizierung bzw. Standardvertragsklauseln
+  in `datenschutz.html` Abschnitt 2 gegenprüfen (Link zur GitHub-Datenschutzerklärung
+  dort im `<!-- BEARBEITEN -->`-Kommentar).
+- Auftragsverarbeitungsvereinbarung (DPA) mit Zoho im Zoho-Admin-Bereich abschließen/
+  prüfen (`datenschutz.html` Abschnitt 3).
 - WhatsApp-`href` auf `https://wa.me/49…` und YouTube-`href` auf die Kanal-URL umstellen (aktuell Startseiten).
 - Web3Forms-Access-Key mit `info@binarycodes.de` holen (+ § 5 Datenschutz ergänzen) für echten Formularversand.
+- Verwaiste DNS-Einträge für die alten, nicht mehr genutzten Mail-Subdomains
+  (`email`/`imap`/`mail`/`mobilemail`/`pda`/`pop`/`smtp`/`webmail.binarycodes.de`,
+  noch mit Ziel "DomainFactory") im df.eu-Kundencenter aufräumen – nicht mehr aktiv
+  genutzt, aber toter Ballast in der DNS-Zone.
 
-## Veröffentlichen (`binarycodes.de` bei domainFactory / df.eu)
+## Veröffentlichen (`binarycodes.de` über GitHub Pages)
 
-1. **DNS**: Im df.eu-Kundencenter (oder beim bisherigen DNS-Halter) für `binarycodes.de`
-   auf die von domainFactory vergebene(n) IP-Adresse(n) zeigen lassen (A-Record) bzw.
-   das Hosting-Paket der Domain zuordnen – df.eu macht das beim Einrichten des
-   Webhosting-Pakets normalerweise automatisch.
-2. **SSL-Zertifikat aktivieren**: im df.eu-Kundencenter unter dem Hosting-Paket ein
-   (kostenloses) Let's-Encrypt-Zertifikat für `binarycodes.de` **und** `www.binarycodes.de`
-   aktivieren. Ohne aktives Zertifikat greift der HTTPS-Redirect in `.htaccess` nicht
-   und die Seite ist nicht sicher erreichbar.
-3. **Dateien hochladen** – per FTP/SFTP (Zugangsdaten aus dem df.eu-Kundencenter, Host
-   meist `ftp.binarycodes.de` oder ein von df.eu genanntes `sftp...df.eu`) alle Dateien
-   aus dem Repo-Root **inklusive** `.htaccess` in das Web-Wurzelverzeichnis
-   (häufig `htdocs/` oder `/`) hochladen:
-   `index.html`, **`mobile.html`** (nicht vergessen – sonst 404 beim automatischen
-   Redirect auf dem Handy!), `impressum.html`, `datenschutz.html`, `favicon.svg`,
-   `logo.svg`, `robots.txt`, `sitemap.xml`, `.htaccess`, Ordner `assets/` (komplett,
-   inkl. `styles-mobile.css`, `mobile.js`, `redirect-check.js`).
-   **SFTP statt einfachem FTP verwenden**, wenn df.eu es anbietet – die Zugangsdaten
-   werden dann verschlüsselt übertragen. `.htaccess`-Dateien sind "versteckt" (Punkt-
-   Datei): im FTP-Programm die Anzeige versteckter Dateien einschalten, sonst wird sie
-   nicht mit hochgeladen.
-4. **Prüfen**: `https://binarycodes.de/` aufrufen (nicht `http://`), Zertifikat im
-   Browser kontrollieren, `www.binarycodes.de` sollte automatisch auf die Version ohne
-   `www` umleiten. Mit den Browser-Entwicklertools (Netzwerk-Tab → Antwort-Header)
-   prüfen, ob `Content-Security-Policy`, `Strict-Transport-Security` usw. gesetzt sind.
-5. **Bei jeder Änderung**: lokal weiterentwickeln, per `git push` nach GitHub sichern
-   (siehe „Git" unten) und die geänderten Dateien erneut per FTP/SFTP hochladen –
-   GitHub ist hier nur der Quellcode-Speicher, es gibt (noch) kein automatisches
-   Deployment von GitHub zu df.eu.
+Domain-Registrierung und DNS-Zone bleiben bei **domainFactory** (`df.eu`), Hosting und
+Auslieferung laufen komplett über **GitHub Pages**. Es gibt keinen manuellen
+Upload-Schritt mehr – ein `git push` genügt.
+
+1. **DNS bei domainFactory** (Auftrag mit der Domain → „Nameserver-Einstellungen"):
+   - 4× **A-Record** für `binarycodes.de` (Hostname leer lassen) auf die GitHub-Pages-IPs:
+     `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+   - **CNAME** für `www.binarycodes.de` → `jonas-1984.github.io`
+   - Diese Einträge sind bereits gesetzt und per DNS-Check bestätigt.
+2. **GitHub Pages konfigurieren**: Unter
+   [Settings → Pages](https://github.com/Jonas-1984/binarycode/settings/pages) ist
+   `binarycodes.de` als Custom Domain eingetragen (liegt zusätzlich in der `CNAME`-Datei
+   im Repo-Root) und „Enforce HTTPS" aktiviert – GitHub stellt automatisch ein
+   Let's-Encrypt-Zertifikat aus und erneuert es selbstständig.
+3. **Deployment**: Jeder `git push` auf `main` wird von GitHub Pages automatisch
+   ausgeliefert (der GitHub-Pages-Workflow baut/deployed direkt aus dem Repo, kein
+   manueller Upload, kein FTP/SFTP mehr nötig).
+4. **Prüfen**: `https://binarycodes.de/` aufrufen, Zertifikat im Browser kontrollieren,
+   `www.binarycodes.de` sollte automatisch weiterleiten. Mit den
+   Browser-Entwicklertools (Netzwerk-Tab → Antwort-Header) lässt sich der aktuelle
+   Header-Umfang von GitHub Pages einsehen (siehe Abschnitt „Sicherheit" – eigene
+   Security-Header wie HSTS sind dort **nicht** möglich).
+5. **Bei jeder Änderung**: lokal weiterentwickeln, `git push` nach GitHub – fertig,
+   kein zusätzlicher Upload-Schritt mehr nötig.
 
 ## Git
 
