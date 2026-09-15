@@ -170,19 +170,20 @@ zwei sofort in beide Richtungen (BigInt, Fehleranzeige bei ungültiger Eingabe).
 
 ## Kontaktformular (`#contact`)
 
-Vorbereitet für **Web3Forms** (`api.web3forms.com`), mit `mailto:`-Fallback.
+Läuft über **Web3Forms** (`api.web3forms.com`), Formular "Kontakt" im Web3Forms-Account
+von `shojaei.de@gmail.com`; Empfänger-E-Mail im Web3Forms-Dashboard (Form → Email
+Configuration) auf das verifizierte `info@binarycodes.de` gesetzt. `mailto:`-Fallback
+bleibt im Code für den Fall, dass der Access Key mal ungültig wird.
 
-- Solange `<input name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY">` der Platzhalter
-  ist → Klick auf „Senden" öffnet das E-Mail-Programm des Besuchers.
-- Mit echtem Key → AJAX-Versand direkt ans Postfach, Button-Status, Erfolg-/Fehlermeldung,
-  Formular wird geleert.
+- AJAX-Versand direkt ans Postfach, Button-Status, Erfolg-/Fehlermeldung, Formular wird
+  geleert.
 - Pflicht-**Neo-Toggle** (Datenschutz-Zustimmung, `#convConsent`) – ohne Aktivierung kein
-  Versand. Honeypot-Feld `botcheck`.
-
-**Aktivieren:** 1) Postfach `info@binarycodes.de` ist bereits eingerichtet (Zoho Mail) ·
-2) auf `web3forms.com` mit dieser Adresse kostenlosen Access Key holen · 3) Platzhalter in
-[index.html](index.html) ersetzen · 4) **§ 5 der Datenschutzerklärung um Web3Forms
-ergänzen**, bevor der Key live geht.
+  Versand. Honeypot-Feld `botcheck` + Zeit-Falle (Modul 8 in `main.js`).
+- Access Key (`a66ce56d-01fa-424f-8d13-54e78b364d3b`) liegt als `value` im versteckten
+  `access_key`-Feld in **beiden** `index.html` **und** `mobile.html` – ist laut Web3Forms
+  ein "public key", darf also im Client-Code stehen.
+- `datenschutz.html` Abschnitt 6 ("Kontaktaufnahme") beschreibt Web3Forms als Auftrags-
+  verarbeiter entsprechend.
 
 ## Sicherheit
 
@@ -259,8 +260,10 @@ Rechtssicherheit anwaltlich prüfen.
   dort im `<!-- BEARBEITEN -->`-Kommentar).
 - Auftragsverarbeitungsvereinbarung (DPA) mit Zoho im Zoho-Admin-Bereich abschließen/
   prüfen (`datenschutz.html` Abschnitt 3).
+- Web3Forms-Anbieter-/Serverstandort auf web3forms.com/privacy gegenprüfen und
+  `datenschutz.html` Abschnitt 6 bei Bedarf um Drittland-Rechtsgrundlage ergänzen
+  (`<!-- BEARBEITEN -->`-Kommentar dort).
 - WhatsApp-`href` auf `https://wa.me/49…` und YouTube-`href` auf die Kanal-URL umstellen (aktuell Startseiten).
-- Web3Forms-Access-Key mit `info@binarycodes.de` holen (+ § 5 Datenschutz ergänzen) für echten Formularversand.
 - Verwaiste DNS-Einträge für die alten, nicht mehr genutzten Mail-Subdomains
   (`email`/`imap`/`mail`/`mobilemail`/`pda`/`pop`/`smtp`/`webmail.binarycodes.de`,
   noch mit Ziel "DomainFactory") im df.eu-Kundencenter aufräumen – nicht mehr aktiv

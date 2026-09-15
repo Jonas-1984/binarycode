@@ -552,16 +552,12 @@
         <p class="section__lead" data-en="Drop me a line &ndash; I'll get back to you soon.">Schreib mir &ndash; ich melde mich zeitnah zurück.</p>
 
         <div class="cform-wrap">
-          <!-- Kontaktformular.
-               Versand über Web3Forms (https://web3forms.com) direkt an dein Postfach.
-               ===== BEARBEITEN: 1) auf web3forms.com mit info@binarycodes.de einen
-               kostenlosen Access Key holen  2) unten value="…" ersetzen.
-               Solange der Platzhalter steht, öffnet sich als Fallback das
-               E-Mail-Programm des Besuchers.
-               HINWEIS: Vor Aktivierung § 5 der Datenschutzerklärung um Web3Forms ergänzen. -->
+          <!-- Kontaktformular. Versand über Web3Forms (https://web3forms.com)
+               direkt an info@binarycodes.de (Empfänger-E-Mail im Web3Forms-
+               Dashboard konfiguriert, verifiziert). -->
           <form class="cform" id="contactForm"
                 action="https://api.web3forms.com/submit" method="POST">
-            <input type="hidden" name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY" />
+            <input type="hidden" name="access_key" value="a66ce56d-01fa-424f-8d13-54e78b364d3b" />
             <input type="hidden" name="from_name" value="binaryCodes Kontaktformular" />
             <input type="hidden" name="subject" value="Neue Nachricht über binaryCodes" />
             <input type="checkbox" name="botcheck" class="cform__botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
