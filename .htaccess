@@ -1,0 +1,94 @@
+# =============================================================
+# binaryCodes – Sicherheits- und Performance-Konfiguration
+# Für Apache-Webhosting (Hetzner Online GmbH)
+# =============================================================
+
+# ---------- HTTPS erzwingen + www -> Apex-Domain (bitbins.de) ----------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # www.bitbins.de -> bitbins.de
+  RewriteCond %{HTTP_HOST} ^www\.bitbins\.de$ [NC]
+  RewriteRule ^(.*)$ https://bitbins.de/$1 [L,R=301]
+
+  # http -> https (nur wenn SSL beim Hoster bereits aktiv ist!)
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ---------- Sicherheits-Header ----------
+<IfModule mod_headers.c>
+  # Content-Security-Policy: nur eigene Ressourcen + Web3Forms fuer das
+  # Kontaktformular. Deckungsgleich mit den <meta>-CSP-Tags in den HTML-Seiten,
+  # hier zusaetzlich mit frame-ancestors (per <meta> nicht moeglich).
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+  # Clickjacking-Schutz (Legacy-Fallback zu frame-ancestors)
+  Header always set X-Frame-Options "DENY"
+
+  # Browser soll den deklarierten Content-Type nicht "erraten"
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Legacy-XSS-Filter der Browser explizit aus (kann selbst Angriffsflaeche sein)
+  Header always set X-XSS-Protection "0"
+
+  # Referrer nur an die eigene Origin in voller Laenge, sonst nur die Origin
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Nicht genutzte Browser-Features abschalten
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+
+  # HSTS: erzwingt HTTPS fuer zukuenftige Aufrufe.
+  # WICHTIG: Erst aktiv lassen, wenn HTTPS auf bitbins.de zuverlaessig laeuft
+  # (SSL-Zertifikat im Hetzner-Kundenportal aktiviert)! Startwert bewusst
+  # niedriger als die vollen 2 Jahre gewaehlt; nach ein paar Wochen Praxistest
+  # ohne Probleme auf "max-age=63072000; includeSubDomains; preload" erhoehen
+  # und optional bei https://hstspreload.org einreichen.
+  Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains"
+</IfModule>
+
+# ---------- Kein Verzeichnis-Listing, kein MultiViews-Rateraten ----------
+Options -Indexes -MultiViews
+
+<IfModule mod_dir.c>
+  DirectoryIndex index.html
+</IfModule>
+
+# ---------- Zugriff auf versteckte/interne Dateien sperren ----------
+<IfModule mod_authz_core.c>
+  <FilesMatch "^\.">
+    Require all denied
+  </FilesMatch>
+  <FilesMatch "\.(env|ini|log|bak|sh|pl|sql|md|htpasswd)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+# ---------- Korrekte MIME-Typen ----------
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/svg+xml .svg
+  AddType application/javascript .js
+</IfModule>
+
+# ---------- Kompression ----------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript image/svg+xml application/xml text/xml application/json text/plain
+</IfModule>
+
+# ---------- Browser-Caching ----------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+# ---------- Sonstiges ----------
+AddDefaultCharset UTF-8
+ServerSignature Off

@@ -5,15 +5,13 @@ Dark-/IT-Theme, durchgängig mit Binärcode (0/1) gestaltet. Reines HTML/CSS/Jav
 **kein Build, kein Framework, keine externen Laufzeit-Abhängigkeiten**.
 Zweisprachig **DE / EN** (Umschalter im Header) und mit **Seiten-Zoom-Regler** am Hero-Terminal.
 
-Domain `binarycodes.de` registriert bei **domainFactory GmbH** (`df.eu`, DNS läuft über
-deren Nameserver auf GoDaddy-Infrastruktur, `ns13`/`ns14.domaincontrol.com`).
-**Gehostet wird die Website über GitHub Pages** (Auslieferung per `git push`, siehe
-„Veröffentlichen"), das domainFactory-Webhosting-Paket wird dafür nicht genutzt.
-Postfach `info@binarycodes.de` läuft über **Zoho Mail** (`zoho.eu`, EU-Rechenzentrum).
-Remote (Quellcode): `https://github.com/Jonas-1984/binarycode.git`
+Domain `bitbins.de`, Webhosting **und** Postfach `info@bitbins.de` liegen komplett bei
+**Hetzner Online GmbH** (Webhosting-Paket, Serverstandort Deutschland). Auslieferung per
+FTP/SFTP-Upload auf den Webspace (siehe „Veröffentlichen"). Remote (Quellcode):
+`https://github.com/Jonas-1984/binarycode.git` (nur Versionsverwaltung, kein Hosting).
 
 Kanonische URL, Open-Graph-/Twitter-Tags, `robots.txt` und `sitemap.xml` sind bereits auf
-`https://binarycodes.de/` gesetzt.
+`https://bitbins.de/` gesetzt.
 
 ---
 
@@ -36,10 +34,10 @@ mobile.html            Mobile-optimierte Variante von index.html (gleicher Inhal
 impressum.html        Rechtstext
 datenschutz.html      Rechtstext
 logo.svg              Marken-Logo (gefüllte Flächen, fill: currentColor -> #22d3ee)
-CNAME                 GitHub Pages Custom Domain (Inhalt: binarycodes.de)
+.htaccess             Sicherheits-Header, HTTPS-/www-Redirect, Caching (Apache/Hetzner)
 robots.txt            Crawler-Regeln + Sitemap-Verweis
 sitemap.xml           URL-Liste für Suchmaschinen
-.nojekyll             deaktiviert Jekyll-Processing (nötig für GitHub Pages)
+.nojekyll             nur falls zusätzlich per GitHub Pages gespiegelt wird
 
 assets/css/styles.css        Gesamtes Design; Farben ganz oben im :root-Block
 assets/css/styles-mobile.css Nur von mobile.html geladen: Safe-Area-Insets,
@@ -67,7 +65,7 @@ Eigenständige HTML-Datei mit identischem Inhalt wie `index.html`, aber:
   diese Funktion; `main.js` prüft `#zoomCtl` ohnehin auf `null` und überspringt
   das Modul dann automatisch
 - `<meta name="robots" content="noindex,follow">` + `<link rel="canonical">` auf
-  `https://binarycodes.de/`, damit Suchmaschinen `index.html` als Hauptversion werten
+  `https://bitbins.de/`, damit Suchmaschinen `index.html` als Hauptversion werten
   (kein Duplicate-Content-Problem)
 - `index.html` verweist per `<link rel="alternate" media="only screen and (max-width: 680px)">`
   auf `mobile.html` (nur ein Hinweis für Suchmaschinen); zusätzlich verlinken sich
@@ -172,7 +170,7 @@ zwei sofort in beide Richtungen (BigInt, Fehleranzeige bei ungültiger Eingabe).
 
 Läuft über **Web3Forms** (`api.web3forms.com`), Formular "Kontakt" im Web3Forms-Account
 von `shojaei.de@gmail.com`; Empfänger-E-Mail im Web3Forms-Dashboard (Form → Email
-Configuration) auf das verifizierte `info@binarycodes.de` gesetzt. `mailto:`-Fallback
+Configuration) auf das verifizierte `info@bitbins.de` gesetzt. `mailto:`-Fallback
 bleibt im Code für den Fall, dass der Access Key mal ungültig wird.
 
 - AJAX-Versand direkt ans Postfach, Button-Status, Erfolg-/Fehlermeldung, Formular wird
@@ -187,27 +185,19 @@ bleibt im Code für den Fall, dass der Access Key mal ungültig wird.
 
 ## Sicherheit
 
-**Hinweis:** Die Seite läuft auf **GitHub Pages** – dort lassen sich (anders als auf
-einem eigenen Apache-Server) **keine eigenen HTTP-Response-Header** setzen. Eine
-`.htaccess`-Datei würde ignoriert und wäre zudem öffentlich unter `/.htaccess` abrufbar,
-deshalb gibt es diese Datei in diesem Repo nicht mehr. Aktiv sind nur die
-Schutzmaßnahmen, die sich clientseitig (per `<meta>`/HTML) oder direkt im Code umsetzen
-lassen:
-
-- **HTTPS erzwungen**: GitHub Pages stellt automatisch ein Let's-Encrypt-Zertifikat aus
-  und erzwingt HTTPS (Einstellung "Enforce HTTPS" in den Repo-Settings), inkl.
-  automatischem `www` → Apex-Redirect passend zur `CNAME`-Datei.
+- **HTTPS erzwungen** + `www` → Apex-Domain-Redirect (`.htaccess`, `mod_rewrite`).
 - **Content-Security-Policy** – nur eigene Ressourcen + `api.web3forms.com` fürs
   Kontaktformular; `script-src 'self'` **ohne** `unsafe-inline`/`unsafe-eval` (alle
   Dock-Icons nutzen SVG-Präsentationsattribute statt inline `style=`, damit auch
-  `style-src 'self'` ohne `unsafe-inline` reicht). Umgesetzt als `<meta
-  http-equiv="Content-Security-Policy">` in jeder HTML-Datei – das ist auf GitHub
-  Pages der einzig verfügbare Weg (kein `frame-ancestors` möglich, das unterstützt nur
-  der HTTP-Header, nicht `<meta>`).
-- **Nicht aktiv** (würden einen eigenen Server mit Header-Kontrolle voraussetzen):
-  `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`,
-  `Strict-Transport-Security` (HSTS). Wer das braucht, müsste vor GitHub Pages einen
-  eigenen Reverse-Proxy/CDN (z.&nbsp;B. Cloudflare) schalten, der diese Header ergänzt.
+  `style-src 'self'` ohne `unsafe-inline` reicht). Doppelt abgesichert: `<meta
+  http-equiv="Content-Security-Policy">` in jeder HTML-Datei **und** vollständiger
+  HTTP-Header (inkl. `frame-ancestors`, was `<meta>` nicht unterstützt) in `.htaccess`.
+- **Weitere Header** (`.htaccess`): `X-Content-Type-Options: nosniff`,
+  `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`,
+  `Permissions-Policy` (Kamera/Mikro/Standort/Payment/USB aus), `Strict-Transport-
+  Security` (HSTS – siehe Kommentar in `.htaccess`, erst nach HTTPS-Test hochsetzen).
+- **Kein Verzeichnis-Listing**, kein Zugriff auf versteckte/`.env`/`.log`/`.md`-Dateien
+  (`.htaccess`).
 - **Kontaktformular**: Honeypot-Feld `botcheck` + Zeit-Falle (Absenden < 2,5 s nach
   Laden gilt als Bot) in `assets/js/main.js`, Modul 8 – beides schlägt still fehl,
   ohne das Bots zu verraten, dass sie erkannt wurden.
@@ -216,8 +206,8 @@ lassen:
   (keine Supply-Chain-Risiken durch Drittanbieter-Skripte).
 - Alle externen Links (Tool-Dock, Social-Icons, Rechtstexte) mit
   `rel="noopener noreferrer"`.
-- **E-Mail-Authentifizierung**: SPF, DKIM (Selektor `zoho`) und DMARC (`p=none`,
-  Monitoring-Modus) sind für `binarycodes.de` bei Zoho Mail eingerichtet.
+- **E-Mail-Authentifizierung**: SPF, DKIM und DMARC für `bitbins.de` im Hetzner-
+  Kundenportal einrichten (siehe „Noch offen").
 
 ## Rechtstexte
 
@@ -225,22 +215,19 @@ lassen:
 
 **Keine Anschrift, keine Telefonnummer** – auf ausdrücklichen Wunsch des Betreibers
 stehen weder Straßenanschrift noch Telefonnummer irgendwo im Projekt. Impressum und
-Datenschutz nennen nur Name, „Hamburg" und die E-Mail-Adresse `info@binarycodes.de`.
+Datenschutz nennen nur Name, „Hamburg" und die E-Mail-Adresse `info@bitbins.de`.
 Ein `<!-- BEARBEITEN -->`-Kommentar im Impressum weist auf das rechtliche Risiko hin:
 für geschäftsmäßige / nicht rein private Angebote ist eine ladungsfähige Anschrift
 Pflicht (§ 5 DDG, § 18 MStV).
 
-`datenschutz.html` Abschnitt 2 („Hosting") beschreibt **GitHub, Inc.** (GitHub Pages)
-als Website-Hoster – da GitHub, Inc. in den USA sitzt, ist das eine
-Drittlandübermittlung, gestützt auf den Angemessenheitsbeschluss zum EU-US Data
-Privacy Framework (Art. 45 DSGVO). Abschnitt 3 („E-Mail-Postfach") beschreibt
-**Zoho Mail** (`zoho.eu`, EU-Rechenzentrum, kein Drittlandtransfer) für
-`info@binarycodes.de`. Beide Abschnitte tragen `<!-- BEARBEITEN -->`-Kommentare, die
-darum bitten, die aktuelle DPF-Zertifizierung von GitHub/Microsoft bzw. die
-Auftragsverarbeitungsvereinbarung (AVV) mit Zoho im jeweiligen Kundenportal
-gegenzuprüfen. Consent-Hinweis setzt nur den technisch notwendigen
-`localStorage`-Schlüssel `bc_consent`. Texte sind Standardvorlagen – für volle
-Rechtssicherheit anwaltlich prüfen.
+`datenschutz.html` Abschnitt 2 („Hosting") und Abschnitt 3 („E-Mail-Postfach")
+beschreiben jetzt **Hetzner Online GmbH** mit Serverstandort Deutschland (kein
+Drittlandtransfer, dadurch entfällt jeglicher USA-/SCC-Absatz). Die
+`<!-- BEARBEITEN -->`-Kommentare dort bitten darum, die genaue Firmierung/Anschrift
+sowie den Auftragsverarbeitungsvertrag (AVV) im Hetzner-Kundenportal gegenzuprüfen.
+Consent-Hinweis setzt nur den technisch notwendigen `localStorage`-Schlüssel
+`bc_consent`. Texte sind Standardvorlagen – für volle Rechtssicherheit anwaltlich
+prüfen.
 
 ## Anpassen
 
@@ -255,46 +242,51 @@ Rechtssicherheit anwaltlich prüfen.
 
 ## Noch offen
 
-- GitHubs aktuelle Data-Privacy-Framework-Zertifizierung bzw. Standardvertragsklauseln
-  in `datenschutz.html` Abschnitt 2 gegenprüfen (Link zur GitHub-Datenschutzerklärung
-  dort im `<!-- BEARBEITEN -->`-Kommentar).
-- Auftragsverarbeitungsvereinbarung (DPA) mit Zoho im Zoho-Admin-Bereich abschließen/
-  prüfen (`datenschutz.html` Abschnitt 3).
-- Web3Forms-Anbieter-/Serverstandort auf web3forms.com/privacy gegenprüfen und
-  `datenschutz.html` Abschnitt 6 bei Bedarf um Drittland-Rechtsgrundlage ergänzen
-  (`<!-- BEARBEITEN -->`-Kommentar dort).
+- **Erst-Upload auf den Hetzner-Webspace** + SSL-Zertifikat im Hetzner-Kundenportal
+  aktivieren (siehe „Veröffentlichen").
+- **`info@bitbins.de`-Postfach bei Hetzner anlegen** (falls noch nicht geschehen) und
+  SPF/DKIM/DMARC-Einträge dafür in der Hetzner-DNS-Zone setzen.
+- **Kontaktformular umstellen**: Web3Forms-Empfänger-E-Mail im Web3Forms-Dashboard
+  von `info@binarycodes.de` auf das neue, verifizierte `info@bitbins.de` ändern
+  (Zieladresse muss dort erst verifiziert werden, bevor sie ausgewählt werden kann).
+- HSTS-`max-age` in `.htaccess` erst erhöhen, wenn HTTPS zuverlässig läuft (Kommentar dort).
+- Hetzner-Firmierung/AVV in `datenschutz.html` Abschnitte 2+3 mit dem echten Vertrag
+  im Hetzner-Kundenportal gegenprüfen.
 - WhatsApp-`href` auf `https://wa.me/49…` und YouTube-`href` auf die Kanal-URL umstellen (aktuell Startseiten).
-- Verwaiste DNS-Einträge für die alten, nicht mehr genutzten Mail-Subdomains
-  (`email`/`imap`/`mail`/`mobilemail`/`pda`/`pop`/`smtp`/`webmail.binarycodes.de`,
-  noch mit Ziel "DomainFactory") im df.eu-Kundencenter aufräumen – nicht mehr aktiv
-  genutzt, aber toter Ballast in der DNS-Zone.
+- Altes GitHub-Pages-Setup abbauen: unter
+  [Settings → Pages](https://github.com/Jonas-1984/binarycode/settings/pages) die
+  Custom Domain `binarycodes.de` entfernen/Pages deaktivieren, da nicht mehr genutzt.
+- Alte Domain `binarycodes.de` (falls noch nicht gekündigt) und den dortigen
+  Zoho-Mail-Account (`info@binarycodes.de`) auslaufen lassen bzw. kündigen.
 
-## Veröffentlichen (`binarycodes.de` über GitHub Pages)
+## Veröffentlichen (`bitbins.de` bei Hetzner)
 
-Domain-Registrierung und DNS-Zone bleiben bei **domainFactory** (`df.eu`), Hosting und
-Auslieferung laufen komplett über **GitHub Pages**. Es gibt keinen manuellen
-Upload-Schritt mehr – ein `git push` genügt.
-
-1. **DNS bei domainFactory** (Auftrag mit der Domain → „Nameserver-Einstellungen"):
-   - 4× **A-Record** für `binarycodes.de` (Hostname leer lassen) auf die GitHub-Pages-IPs:
-     `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-   - **CNAME** für `www.binarycodes.de` → `jonas-1984.github.io`
-   - Diese Einträge sind bereits gesetzt und per DNS-Check bestätigt.
-2. **GitHub Pages konfigurieren**: Unter
-   [Settings → Pages](https://github.com/Jonas-1984/binarycode/settings/pages) ist
-   `binarycodes.de` als Custom Domain eingetragen (liegt zusätzlich in der `CNAME`-Datei
-   im Repo-Root) und „Enforce HTTPS" aktiviert – GitHub stellt automatisch ein
-   Let's-Encrypt-Zertifikat aus und erneuert es selbstständig.
-3. **Deployment**: Jeder `git push` auf `main` wird von GitHub Pages automatisch
-   ausgeliefert (der GitHub-Pages-Workflow baut/deployed direkt aus dem Repo, kein
-   manueller Upload, kein FTP/SFTP mehr nötig).
-4. **Prüfen**: `https://binarycodes.de/` aufrufen, Zertifikat im Browser kontrollieren,
-   `www.binarycodes.de` sollte automatisch weiterleiten. Mit den
-   Browser-Entwicklertools (Netzwerk-Tab → Antwort-Header) lässt sich der aktuelle
-   Header-Umfang von GitHub Pages einsehen (siehe Abschnitt „Sicherheit" – eigene
-   Security-Header wie HSTS sind dort **nicht** möglich).
-5. **Bei jeder Änderung**: lokal weiterentwickeln, `git push` nach GitHub – fertig,
-   kein zusätzlicher Upload-Schritt mehr nötig.
+1. **DNS**: Da Domain und Webhosting beide bei Hetzner liegen, ist die Domain dem
+   Hosting-Paket im Hetzner-Kundenportal (Robot/Konsole) meist schon automatisch
+   zugeordnet – kurz gegenprüfen (DNS-Zone unter der Domain → A-Record zeigt auf die
+   zugewiesene Server-IP).
+2. **SSL-Zertifikat aktivieren**: im Hetzner-Kundenportal unter dem Hosting-Paket ein
+   (kostenloses) Let's-Encrypt-Zertifikat für `bitbins.de` **und** `www.bitbins.de`
+   aktivieren. Ohne aktives Zertifikat greift der HTTPS-Redirect in `.htaccess` nicht
+   und die Seite ist nicht sicher erreichbar.
+3. **Dateien hochladen** – per FTP/SFTP (Zugangsdaten aus dem Hetzner-Kundenportal)
+   alle Dateien aus dem Repo-Root **inklusive** `.htaccess` in das Web-Wurzelverzeichnis
+   hochladen: `index.html`, **`mobile.html`** (nicht vergessen – sonst 404 beim
+   automatischen Redirect auf dem Handy!), `impressum.html`, `datenschutz.html`,
+   `favicon.svg`, `logo.svg`, `robots.txt`, `sitemap.xml`, `.htaccess`, Ordner `assets/`
+   (komplett, inkl. `styles-mobile.css`, `mobile.js`, `redirect-check.js`).
+   **SFTP statt einfachem FTP verwenden**, wenn Hetzner es anbietet – die Zugangsdaten
+   werden dann verschlüsselt übertragen. `.htaccess`-Dateien sind "versteckt" (Punkt-
+   Datei): im FTP-Programm die Anzeige versteckter Dateien einschalten, sonst wird sie
+   nicht mit hochgeladen.
+4. **Prüfen**: `https://bitbins.de/` aufrufen (nicht `http://`), Zertifikat im Browser
+   kontrollieren, `www.bitbins.de` sollte automatisch auf die Version ohne `www`
+   umleiten. Mit den Browser-Entwicklertools (Netzwerk-Tab → Antwort-Header) prüfen,
+   ob `Content-Security-Policy`, `Strict-Transport-Security` usw. gesetzt sind.
+5. **Bei jeder Änderung**: lokal weiterentwickeln, per `git push` nach GitHub sichern
+   (siehe „Git" unten) und die geänderten Dateien erneut per FTP/SFTP hochladen –
+   GitHub ist hier nur der Quellcode-Speicher, es gibt kein automatisches Deployment
+   von GitHub zu Hetzner.
 
 ## Git
 

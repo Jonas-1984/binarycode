@@ -225,7 +225,7 @@
     if (!form) return;
     var hint = document.getElementById("cformHint");
     var hintDefault = hint ? hint.textContent : "";
-    var mail = "info@binarycodes.de";
+    var mail = "info@bitbins.de";
     var loadedAt = Date.now();   /* Anti-Spam: Bots senden meist sofort ab */
 
     /* Bei Sprachwechsel hat der Umschalter den Hinweis-Text im DOM schon
