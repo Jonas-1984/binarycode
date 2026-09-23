@@ -242,14 +242,16 @@ prüfen.
 
 ## Noch offen
 
-- **Erst-Upload auf den Hetzner-Webspace** + SSL-Zertifikat im Hetzner-Kundenportal
-  aktivieren (siehe „Veröffentlichen").
-- **`info@bitbins.de`-Postfach bei Hetzner anlegen** (falls noch nicht geschehen) und
-  SPF/DKIM/DMARC-Einträge dafür in der Hetzner-DNS-Zone setzen.
-- **Kontaktformular umstellen**: Web3Forms-Empfänger-E-Mail im Web3Forms-Dashboard
-  von `info@binarycodes.de` auf das neue, verifizierte `info@bitbins.de` ändern
-  (Zieladresse muss dort erst verifiziert werden, bevor sie ausgewählt werden kann).
-- HSTS-`max-age` in `.htaccess` erst erhöhen, wenn HTTPS zuverlässig läuft (Kommentar dort).
+- ~~Erst-Upload auf den Hetzner-Webspace + SSL-Zertifikat aktivieren~~ ✅ erledigt
+  (2026-09-23, `https://bitbins.de/` live, Zertifikat aktiv, alle Sicherheits-Header
+  von außen verifiziert).
+- ~~`info@bitbins.de`-Postfach anlegen~~ ✅ erledigt, per Outlook eingerichtet.
+- ~~Kontaktformular umstellen (Web3Forms-Empfänger auf `info@bitbins.de`)~~ ✅ erledigt
+  und live getestet – Testnachricht kam in `info@bitbins.de` an.
+- SPF/DKIM/DMARC-Einträge für `info@bitbins.de` in der Hetzner-DNS-Zone setzen (verbessert
+  Zustellbarkeit/Spam-Schutz, aber nicht blockierend – E-Mail funktioniert bereits ohne).
+- HSTS-`max-age` in `.htaccess` jetzt, wo HTTPS ein paar Tage stabil läuft, in den
+  nächsten Wochen schrittweise erhöhen (Kommentar dort).
 - Hetzner-Firmierung/AVV in `datenschutz.html` Abschnitte 2+3 mit dem echten Vertrag
   im Hetzner-Kundenportal gegenprüfen.
 - WhatsApp-`href` auf `https://wa.me/49…` und YouTube-`href` auf die Kanal-URL umstellen (aktuell Startseiten).
