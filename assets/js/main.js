@@ -283,7 +283,7 @@
 
       /* --- Fallback: kein Web3Forms-Key gesetzt -> Mail-Programm öffnen --- */
       if (!keySet) {
-        var betreff = "[binaryCodes] " + (f2.betreff.value || i18n.t("Nachricht von der Webseite", "Message from the website"));
+        var betreff = "[BitBins] " + (f2.betreff.value || i18n.t("Nachricht von der Webseite", "Message from the website"));
         var body =
           "Name: " + f2.name.value + "\n" +
           "E-Mail: " + f2.email.value + "\n\n" +
@@ -512,42 +512,40 @@
   initCoverflow("skillsCarousel");
 
   /* ---------------------------------------------------------
-     10) Marke: jedes Zeichen + Logo drehen sich im Platz und
-         klappen im 6-Sekunden-Takt zur Binärziffer um (und zurück)
+     10) Marke: jedes Zeichen des Schriftzugs dreht sich im Platz
+         und klappt im 6-Sekunden-Takt zur Binärziffer um (und
+         zurück). Das Logo selbst dreht nicht mehr - es bekommt
+         stattdessen per CSS (.nav__logo-wrap) einen kurzen
+         Glanzeffekt im gleichen 6-Sekunden-Takt.
      --------------------------------------------------------- */
   (function brandFlip() {
     var textEl = document.querySelector(".nav__brand-text");
-    var logo = document.querySelector(".brand__solid .nav__logo");
-    if (!textEl || !logo || reduceMotion) return;
+    if (!textEl || reduceMotion) return;
 
     function bit() { return Math.random() < 0.5 ? "0" : "1"; }
-    function makeCh(faceNode, i, accent, logoCh) {
+    function makeCh(letter, i, accent) {
       var s = document.createElement("span");
-      s.className = "ch" + (accent ? " ch--accent" : "") + (logoCh ? " ch--logo" : "");
+      s.className = "ch" + (accent ? " ch--accent" : "");
       s.style.setProperty("--i", i);
       var f = document.createElement("span");
       f.className = "ch__face";
-      f.appendChild(faceNode);
+      f.appendChild(document.createTextNode(letter));
       var b = document.createElement("span");
       b.className = "ch__bit";
-      b.textContent = logoCh ? "01" : bit();
+      b.textContent = bit();
       s.appendChild(f);
       s.appendChild(b);
       return s;
     }
 
-    /* Logo -> ch--logo (i = 0) */
-    var logoCh = makeCh(logo.cloneNode(true), 0, false, true);
-    logo.parentNode.replaceChild(logoCh, logo);
-
-    /* Schriftzug in einzelne Zeichen zerlegen; "Code" behält Akzentfarbe */
-    var full = (textEl.getAttribute("data-text") || textEl.textContent || "binaryCodes");
-    var accentFrom = full.toLowerCase().indexOf("code");
+    /* Schriftzug in einzelne Zeichen zerlegen; "Bins" behält Akzentfarbe */
+    var full = (textEl.getAttribute("data-text") || textEl.textContent || "BitBins");
+    var accentFrom = full.toLowerCase().indexOf("bins");
     textEl.textContent = "";
     var textBits = [];
     for (var k = 0; k < full.length; k++) {
       var isAccent = accentFrom >= 0 && k >= accentFrom;
-      var ch = makeCh(document.createTextNode(full[k]), k + 1, isAccent, false);
+      var ch = makeCh(full[k], k + 1, isAccent);
       textEl.appendChild(ch);
       textBits.push(ch.querySelector(".ch__bit"));
     }

@@ -131,13 +131,21 @@ a:hover { text-decoration: underline; }
 .nav__brand:hover { text-decoration: none; }
 
 /* sichtbarer Zustand (Logo + Schriftzug)
-   6-Sekunden-Takt: jedes Zeichen + das Logo drehen sich im Platz,
-   klappen zur Binärziffer um, halten kurz, drehen zurück. */
+   6-Sekunden-Takt: jedes Zeichen des Schriftzugs dreht sich im Platz,
+   klappt zur Binärziffer um, hält kurz, dreht zurück. Das Logo bleibt
+   fix und bekommt stattdessen im selben Takt einen kurzen Glanzzug. */
 .brand__solid {
   display: flex;
   align-items: center;
   gap: 10px;
   perspective: 720px;
+}
+.nav__logo-wrap {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  flex-shrink: 0;
+  line-height: 0;
 }
 .nav__logo {
   height: 54px;                 /* rund doppelt so groß */
@@ -145,15 +153,36 @@ a:hover { text-decoration: underline; }
   flex-shrink: 0;
   display: block;
 }
+/* Glanzzug: läuft nur in den ersten ~15% des 6s-Takts kurz durchs Logo,
+   den Rest der Zeit unsichtbar links/rechts geparkt. */
+.nav__logo-wrap::after {
+  content: "";
+  position: absolute;
+  top: -25%; left: -60%;
+  width: 40%; height: 150%;
+  background: linear-gradient(75deg, transparent 0%, #eef4f9 50%, transparent 100%);
+  transform: skewX(-20deg);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0;
+  animation: logoShine 6s ease-in-out infinite;
+}
+@keyframes logoShine {
+  0%        { left: -60%; opacity: 0; }
+  4%        { opacity: .9; }
+  16%       { left: 130%; opacity: .9; }
+  20%, 100% { left: 130%; opacity: 0; }
+}
 .nav__brand-text {
   display: inline-flex;
   gap: 0.5px;
   font-size: 17px;
   letter-spacing: 0.5px;
+  transform: translateY(5px);
 }
 .nav__prompt { color: var(--accent); }
 
-/* Zeichen-/Logo-Flip */
+/* Zeichen-Flip (Schriftzug) */
 .ch {
   position: relative;
   display: inline-block;
@@ -175,16 +204,6 @@ a:hover { text-decoration: underline; }
   text-align: center;
   transform: rotateY(180deg);
   color: var(--accent);
-}
-.ch--logo { margin-right: 2px; }
-.ch--logo .ch__bit {
-  top: 50%;
-  transform: translateY(-50%) rotateY(180deg);
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 19px;
-  letter-spacing: 1px;
-  line-height: 1;
 }
 @keyframes brandFlip {
   0%, 46%   { transform: rotateY(0deg); }
