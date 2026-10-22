@@ -120,9 +120,15 @@ a, button, .nav__ico, .soc, .dock__item, .jumpbtn, .cf__card {
 /* Horizontales Verrutschen auf iOS zuverlässig verhindern */
 html, body { max-width: 100%; overflow-x: hidden; }
 
-/* Sprung-Tasten "Binär-Rechner" / "IPv4-Rechner": auf dem Handy mittig statt
-   rechtsbündig (rechtsbündig macht auf schmalen Screens keinen Sinn). */
+/* Sprung-Tasten (Binär-Rechner/IPv4-Rechner/Dokumentation/Folge mir):
+   auf dem Handy als aufgeräumtes 2er-Raster mit gleich großen Tasten
+   statt linksbündig unterschiedlich breiter Pills. */
 .hero__jump {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.hero__jump .jumpbtn {
   justify-content: center;
 }
 
