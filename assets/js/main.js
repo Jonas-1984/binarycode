@@ -514,9 +514,7 @@
   /* ---------------------------------------------------------
      10) Marke: jedes Zeichen des Schriftzugs dreht sich im Platz
          und klappt im 6-Sekunden-Takt zur Binärziffer um (und
-         zurück). Das Logo selbst dreht nicht mehr - es bekommt
-         stattdessen per CSS (.nav__logo-wrap) einen kurzen
-         Glanzeffekt im gleichen 6-Sekunden-Takt.
+         zurück). Das Logo selbst bleibt unverändert fix.
      --------------------------------------------------------- */
   (function brandFlip() {
     var textEl = document.querySelector(".nav__brand-text");

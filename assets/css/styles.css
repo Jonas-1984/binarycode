@@ -133,45 +133,18 @@ a:hover { text-decoration: underline; }
 /* sichtbarer Zustand (Logo + Schriftzug)
    6-Sekunden-Takt: jedes Zeichen des Schriftzugs dreht sich im Platz,
    klappt zur Binärziffer um, hält kurz, dreht zurück. Das Logo bleibt
-   fix und bekommt stattdessen im selben Takt einen kurzen Glanzzug. */
+   fix, ohne eigene Animation. */
 .brand__solid {
   display: flex;
   align-items: center;
   gap: 10px;
   perspective: 720px;
 }
-.nav__logo-wrap {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  flex-shrink: 0;
-  line-height: 0;
-}
 .nav__logo {
   height: 54px;                 /* rund doppelt so groß */
   width: auto;                  /* Seitenverhältnis erhalten */
   flex-shrink: 0;
   display: block;
-}
-/* Glanzzug: läuft nur in den ersten ~15% des 6s-Takts kurz durchs Logo,
-   den Rest der Zeit unsichtbar links/rechts geparkt. */
-.nav__logo-wrap::after {
-  content: "";
-  position: absolute;
-  top: -25%; left: -60%;
-  width: 40%; height: 150%;
-  background: linear-gradient(75deg, transparent 0%, #eef4f9 50%, transparent 100%);
-  transform: skewX(-20deg);
-  mix-blend-mode: screen;
-  pointer-events: none;
-  opacity: 0;
-  animation: logoShine 6s ease-in-out infinite;
-}
-@keyframes logoShine {
-  0%        { left: -60%; opacity: 0; }
-  4%        { opacity: .9; }
-  16%       { left: 130%; opacity: .9; }
-  20%, 100% { left: 130%; opacity: 0; }
 }
 .nav__brand-text {
   display: inline-flex;
